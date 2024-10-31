@@ -41,7 +41,7 @@ func main() {
 				Update:                pulumi.Bool(true),
 				Deletion:              pulumi.Bool(true),
 				RequiredLinearHistory: pulumi.Bool(true),
-				RequiredSignatures:    pulumi.Bool(true),
+				RequiredSignatures:    pulumi.Bool(false),
 			},
 		}); err != nil {
 			return err
