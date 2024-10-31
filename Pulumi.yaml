@@ -1,0 +1,6 @@
+name: holochain
+runtime: go
+description: A minimal Go Pulumi program
+config:
+  github:owner:
+    value: "holochain"
