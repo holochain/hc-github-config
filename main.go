@@ -43,6 +43,13 @@ func main() {
 				RequiredLinearHistory: pulumi.Bool(true),
 				RequiredSignatures:    pulumi.Bool(false),
 			},
+			BypassActors: github.RepositoryRulesetBypassActorArray{
+				&github.RepositoryRulesetBypassActorArgs{
+					ActorId:    pulumi.Int(5), // Repository admin
+					ActorType:  pulumi.String("RepositoryRole"),
+					BypassMode: pulumi.String("always"),
+				},
+			},
 		}); err != nil {
 			return err
 		}
