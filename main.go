@@ -192,6 +192,23 @@ func main() {
 		}
 
 		//
+		// Tx5
+		//
+		description = "Holochain WebRTC P2P Communication Ecosystem"
+		tx5RepositoryArgs := StandardRepositoryArgs("tx5", &description)
+		tx5RepositoryArgs.SquashMergeCommitTitle = pulumi.String("PR_TITLE")
+		tx5, err := github.NewRepository(ctx, "tx5", &tx5RepositoryArgs, pulumi.Import(pulumi.ID("tx5")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "tx5", tx5); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "tx5", tx5); err != nil {
+			return err
+		}
+
+		//
 		// Lair Keystore
 		//
 		description = "secret lair private keystore"
