@@ -43,6 +43,14 @@ func main() {
 				Deletion:              pulumi.Bool(true),
 				RequiredLinearHistory: pulumi.Bool(true),
 				RequiredSignatures:    pulumi.Bool(false),
+				RequiredStatusChecks: &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
+					RequiredChecks: github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
+						github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
+							Context: pulumi.String("check"),
+						},
+					},
+					StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
+				},
 			},
 			BypassActors: github.RepositoryRulesetBypassActorArray{
 				&github.RepositoryRulesetBypassActorArgs{
