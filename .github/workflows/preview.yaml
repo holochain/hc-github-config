@@ -23,5 +23,6 @@ jobs:
           command: preview
           stack-name: holochain/github
           comment-on-pr: true
+          diff: true
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
