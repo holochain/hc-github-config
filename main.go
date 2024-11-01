@@ -8,19 +8,20 @@ import (
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-		selfRepositoryArgs := StandardRepositoryArgs("literate-umbrella", nil)
-		self, err := github.NewRepository(ctx, "literate-umbrella", &selfRepositoryArgs, pulumi.Import(pulumi.ID("literate-umbrella")))
+		description := "Automation for GitHub repository configurations for the Holochain organization."
+		selfRepositoryArgs := StandardRepositoryArgs("hc-github-config", &description)
+		self, err := github.NewRepository(ctx, "hc-github-config", &selfRepositoryArgs, pulumi.Import(pulumi.ID("hc-github-config")))
 		if err != nil {
 			return err
 		}
-		if err = RequireMainAsDefaultBranch(ctx, "literate-umbrella", self); err != nil {
+		if err = RequireMainAsDefaultBranch(ctx, "hc-github-config", self); err != nil {
 			return err
 		}
-		if err = StandardRepositoryAccess(ctx, "literate-umbrella", self); err != nil {
+		if err = StandardRepositoryAccess(ctx, "hc-github-config", self); err != nil {
 			return err
 		}
 
-		if _, err := github.NewRepositoryRuleset(ctx, "literate-umbrella", &github.RepositoryRulesetArgs{
+		if _, err := github.NewRepositoryRuleset(ctx, "hc-github-config", &github.RepositoryRulesetArgs{
 			Name:        pulumi.String("default"),
 			Repository:  self.Name,
 			Target:      pulumi.String("branch"),

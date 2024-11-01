@@ -1,8 +1,6 @@
-# literate-umbrella
+# hc-github-config
 
-<div align="right">
-    [![Deploy](https://github.com/holochain/literate-umbrella/actions/workflows/deploy.yaml/badge.svg)](https://github.com/holochain/literate-umbrella/actions/workflows/deploy.yaml)
-</div>
+[![Deploy](https://github.com/holochain/hc-github-config/actions/workflows/deploy.yaml/badge.svg)](https://github.com/holochain/hc-github-config/actions/workflows/deploy.yaml)
 
 Get started with:
 
