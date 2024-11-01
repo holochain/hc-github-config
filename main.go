@@ -10,6 +10,9 @@ func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		description := "Automation for GitHub repository configurations for the Holochain organization."
 		selfRepositoryArgs := StandardRepositoryArgs("hc-github-config", &description)
+		selfRepositoryArgs.AllowMergeCommit = pulumi.Bool(false)
+		selfRepositoryArgs.AllowSquashMerge = pulumi.Bool(false)
+		selfRepositoryArgs.AllowRebaseMerge = pulumi.Bool(true)
 		self, err := github.NewRepository(ctx, "hc-github-config", &selfRepositoryArgs, pulumi.Import(pulumi.ID("hc-github-config")))
 		if err != nil {
 			return err
