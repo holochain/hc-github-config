@@ -39,7 +39,7 @@ func main() {
 			},
 			Rules: &github.RepositoryRulesetRulesArgs{
 				Creation:              pulumi.Bool(true),
-				Update:                pulumi.Bool(true),
+				Update:                pulumi.Bool(false),
 				Deletion:              pulumi.Bool(true),
 				RequiredLinearHistory: pulumi.Bool(true),
 				RequiredSignatures:    pulumi.Bool(false),
