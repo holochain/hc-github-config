@@ -11,10 +11,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: pulumi/actions@v6
         with:
-          go-version-file: ./go.mod
-      - name: Install dependencies
-        run: go get .
-      - name: Build
-        run: go build -v ./...
+          command: up
+          stack-name: holochain/github
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
