@@ -17,3 +17,4 @@ jobs:
           stack-name: holochain/github
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
