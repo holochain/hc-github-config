@@ -63,7 +63,9 @@ func main() {
 			return err
 		}
 
+		//
 		// holochain-wasmer
+		//
 		holochainWasmerRepositoryArgs := StandardRepositoryArgs("holochain-wasmer", nil)
 		holochainWasmer, err := github.NewRepository(ctx, "holochain-wasmer", &holochainWasmerRepositoryArgs, pulumi.Import(pulumi.ID("holochain-wasmer")))
 		if err != nil {
@@ -73,6 +75,237 @@ func main() {
 			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "holochain-wasmer", holochainWasmer); err != nil {
+			return err
+		}
+
+		//
+		// wind tunnel
+		//
+		description = "Performance testing for Holochain"
+		windTunnelRepositoryArgs := StandardRepositoryArgs("wind-tunnel", &description)
+		windTunnelRepositoryArgs.AllowAutoMerge = pulumi.Bool(false)
+		windTunnel, err := github.NewRepository(ctx, "wind-tunnel", &windTunnelRepositoryArgs, pulumi.Import(pulumi.ID("wind-tunnel")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "wind-tunnel", windTunnel); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "wind-tunnel", windTunnel); err != nil {
+			return err
+		}
+
+		//
+		// Holochain JS client
+		//
+		description = "A JavaScript client for the Holochain Conductor API"
+		jsClientRepositoryArgs := StandardRepositoryArgs("holochain-client-js", &description)
+		jsClient, err := github.NewRepository(ctx, "holochain-client-js", &jsClientRepositoryArgs, pulumi.Import(pulumi.ID("holochain-client-js")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "holochain-client-js", jsClient); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "holochain-client-js", jsClient); err != nil {
+			return err
+		}
+
+		//
+		// Holochain Rust client
+		//
+		description = "A Rust client for the Holochain Conductor API"
+		rustClientRepositoryArgs := StandardRepositoryArgs("holochain-client-rust", &description)
+		rustClient, err := github.NewRepository(ctx, "holochain-client-rust", &rustClientRepositoryArgs, pulumi.Import(pulumi.ID("holochain-client-rust")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "holochain-client-rust", rustClient); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "holochain-client-rust", rustClient); err != nil {
+			return err
+		}
+
+		//
+		// Tryorama
+		//
+		description = "Toolset to manage Holochain conductors and facilitate test scenarios"
+		tryoramaRepositoryArgs := StandardRepositoryArgs("tryorama", &description)
+		tryorama, err := github.NewRepository(ctx, "tryorama", &tryoramaRepositoryArgs, pulumi.Import(pulumi.ID("tryorama")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "tryorama", tryorama); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "tryorama", tryorama); err != nil {
+			return err
+		}
+
+		//
+		// Holonix
+		//
+		description = "Holochain app development environment based on Nix."
+		holonixRepositoryArgs := StandardRepositoryArgs("holonix", &description)
+		holonix, err := github.NewRepository(ctx, "holonix", &holonixRepositoryArgs, pulumi.Import(pulumi.ID("holonix")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "holonix", holonix); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "holonix", holonix); err != nil {
+			return err
+		}
+
+		//
+		// Binaries
+		//
+		description = "Holochain binaries for supported platforms"
+		binariesRepositoryArgs := StandardRepositoryArgs("binaries", &description)
+		binaries, err := github.NewRepository(ctx, "binaries", &binariesRepositoryArgs, pulumi.Import(pulumi.ID("binaries")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "binaries", binaries); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "binaries", binaries); err != nil {
+			return err
+		}
+
+		//
+		// Signal bends decently
+		//
+		description = "Simple websocket-based message relay servers and clients"
+		sbdRepositoryArgs := StandardRepositoryArgs("sbd", &description)
+		sbd, err := github.NewRepository(ctx, "sbd", &sbdRepositoryArgs, pulumi.Import(pulumi.ID("sbd")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "sbd", sbd); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "sbd", sbd); err != nil {
+			return err
+		}
+
+		//
+		// Lair Keystore
+		//
+		description = "secret lair private keystore"
+		lairRepositoryArgs := StandardRepositoryArgs("lair", &description)
+		lairRepositoryArgs.AllowRebaseMerge = pulumi.Bool(false)
+		lairRepositoryArgs.SquashMergeCommitTitle = pulumi.String("PR_TITLE")
+		lair, err := github.NewRepository(ctx, "lair", &lairRepositoryArgs, pulumi.Import(pulumi.ID("lair")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "lair", lair); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "lair", lair); err != nil {
+			return err
+		}
+
+		//
+		// Holochain CHC Service
+		//
+		description = "A local web server that implements the CHC (Chain Head Coordinator) interface in Rust"
+		hcChcServiceRepositoryArgs := StandardRepositoryArgs("hc-chc-service", &description)
+		hcChcService, err := github.NewRepository(ctx, "hc-chc-service", &hcChcServiceRepositoryArgs, pulumi.Import(pulumi.ID("hc-chc-service")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "hc-chc-service", hcChcService); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "hc-chc-service", hcChcService); err != nil {
+			return err
+		}
+
+		//
+		// Holochain Serialization
+		//
+		description = "Abstractions to probably serialize and deserialize things properly without forgetting or doubling"
+		holochainSerializationRepositoryArgs := StandardRepositoryArgs("holochain-serialization", &description)
+		holochainSerialization, err := github.NewRepository(ctx, "holochain-serialization", &holochainSerializationRepositoryArgs, pulumi.Import(pulumi.ID("holochain-serialization")))
+		if err != nil {
+			return err
+		}
+		if err = MigrateDefaultBranchToMain(ctx, "holochain-serialization", holochainSerialization); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "holochain-serialization", holochainSerialization); err != nil {
+			return err
+		}
+
+		//
+		// Influxive
+		//
+		description = "Opinionated tools for working with InfluxDB from Rust"
+		influxiveRepositoryArgs := StandardRepositoryArgs("influxive", &description)
+		influxive, err := github.NewRepository(ctx, "influxive", &influxiveRepositoryArgs, pulumi.Import(pulumi.ID("influxive")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "influxive", influxive); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "influxive", influxive); err != nil {
+			return err
+		}
+
+		//
+		// Holochain Python Client
+		//
+		description = "A Python client for the Holochain Conductor API "
+		pythonClientRepositoryArgs := StandardRepositoryArgs("holochain-client-python", &description)
+		pythonClientRepositoryArgs.Topics = pulumi.StringArray{
+			pulumi.String("python"),
+			pulumi.String("python3"),
+			pulumi.String("holochain"),
+			pulumi.String("conductor-api"),
+		}
+		pythonClient, err := github.NewRepository(ctx, "holochain-client-python", &pythonClientRepositoryArgs, pulumi.Import(pulumi.ID("holochain-client-python")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "holochain-client-python", pythonClient); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "holochain-client-python", pythonClient); err != nil {
+			return err
+		}
+
+		//
+		// Holochain Python Serialization
+		//
+		pythonSerializationRepositoryArgs := StandardRepositoryArgs("holochain-serialization-python", nil)
+		pythonSerialization, err := github.NewRepository(ctx, "holochain-serialization-python", &pythonSerializationRepositoryArgs, pulumi.Import(pulumi.ID("holochain-serialization-python")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "holochain-serialization-python", pythonSerialization); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "holochain-serialization-python", pythonSerialization); err != nil {
+			return err
+		}
+
+		//
+		// Nix Cache Check
+		//
+		nixCacheCheckRepositoryArgs := StandardRepositoryArgs("nix-cache-check", nil)
+		nixCacheCheck, err := github.NewRepository(ctx, "nix-cache-check", &nixCacheCheckRepositoryArgs, pulumi.Import(pulumi.ID("nix-cache-check")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "nix-cache-check", nixCacheCheck); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "nix-cache-check", nixCacheCheck); err != nil {
 			return err
 		}
 
@@ -92,6 +325,10 @@ func StandardRepositoryArgs(name string, description *string) github.RepositoryA
 		VulnerabilityAlerts: pulumi.Bool(true),
 		AllowAutoMerge:      pulumi.Bool(true),
 		DeleteBranchOnMerge: pulumi.Bool(true),
+		AllowUpdateBranch:   pulumi.Bool(true),
+		AllowSquashMerge:    pulumi.Bool(true),
+		AllowRebaseMerge:    pulumi.Bool(true),
+		AllowMergeCommit:    pulumi.Bool(false),
 	}
 
 	if description != nil {
@@ -127,6 +364,15 @@ func RequireMainAsDefaultBranch(ctx *pulumi.Context, name string, repository *gi
 		Repository: repository.Name,
 		Branch:     pulumi.String("main"),
 		Rename:     pulumi.Bool(false),
+	})
+	return err
+}
+
+func MigrateDefaultBranchToMain(ctx *pulumi.Context, name string, repository *github.Repository) error {
+	_, err := github.NewBranchDefault(ctx, fmt.Sprintf("%s-default-branch-migrate", name), &github.BranchDefaultArgs{
+		Repository: repository.Name,
+		Branch:     pulumi.String("main"),
+		Rename:     pulumi.Bool(true),
 	})
 	return err
 }
