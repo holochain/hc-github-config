@@ -1,5 +1,9 @@
 # literate-umbrella
 
+<div align="right">
+    [![Deploy](https://github.com/holochain/literate-umbrella/actions/workflows/deploy.yaml/badge.svg)](https://github.com/holochain/literate-umbrella/actions/workflows/deploy.yaml)
+</div>
+
 Get started with:
 
 ```bash
