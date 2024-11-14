@@ -326,6 +326,26 @@ func main() {
 			return err
 		}
 
+		//
+		// Kitsune2
+		//
+		kitsune2RepositoryArgs := StandardRepositoryArgs("kitsune2", nil)
+		kitsune2RepositoryArgs.Description = pulumi.String("p2p / dht communication framework")
+		kitsune2, err := github.NewRepository(ctx, "kitsune2", &kitsune2RepositoryArgs, pulumi.Import(pulumi.ID("kitsune2")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "kitsune2", kitsune2); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "kitsune2", kitsune2); err != nil {
+			return err
+		}
+        kitsune2RepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kitsune2)
+        if _, err = github.NewRepositoryRuleset(ctx, "kitsune2", &kitsune2RepositoryRulesetArgs); err != nil {
+            return err
+        }
+
 		return nil
 	})
 }
@@ -392,4 +412,44 @@ func MigrateDefaultBranchToMain(ctx *pulumi.Context, name string, repository *gi
 		Rename:     pulumi.Bool(true),
 	})
 	return err
+}
+
+func DefaultRepositoryRulesetArgs(repository *github.Repository) github.RepositoryRulesetArgs {
+	return github.RepositoryRulesetArgs{
+		Name:        pulumi.String("default"),
+		Repository:  repository.Name,
+		Target:      pulumi.String("branch"),
+		Enforcement: pulumi.String("active"),
+		Conditions: &github.RepositoryRulesetConditionsArgs{
+			RefName: &github.RepositoryRulesetConditionsRefNameArgs{
+				Includes: pulumi.StringArray{
+					pulumi.String("~DEFAULT_BRANCH"),
+				},
+				Excludes: pulumi.StringArray{},
+			},
+		},
+		Rules: &github.RepositoryRulesetRulesArgs{
+			Creation:              pulumi.Bool(true),
+			Update:                pulumi.Bool(false),
+			Deletion:              pulumi.Bool(true),
+			RequiredLinearHistory: pulumi.Bool(true),
+			RequiredSignatures:    pulumi.Bool(false),
+            PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
+                DismissStaleReviewsOnPush:      pulumi.Bool(true),
+                RequireCodeOwnerReview:         pulumi.Bool(false),
+                RequireLastPushApproval:        pulumi.Bool(true),
+                RequiredApprovingReviewCount:   pulumi.Int(1),
+                RequiredReviewThreadResolution: pulumi.Bool(true),
+            },
+			RequiredStatusChecks: &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
+				RequiredChecks: github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
+					github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
+					    // Each repository should define a single job that checks all the required checks passed.
+						Context: pulumi.String("ci_pass"),
+					},
+				},
+				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
+			},
+		},
+	}
 }
