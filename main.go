@@ -341,10 +341,30 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "kitsune2", kitsune2); err != nil {
 			return err
 		}
-        kitsune2RepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kitsune2)
-        if _, err = github.NewRepositoryRuleset(ctx, "kitsune2", &kitsune2RepositoryRulesetArgs); err != nil {
-            return err
-        }
+		kitsune2RepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kitsune2)
+		if _, err = github.NewRepositoryRuleset(ctx, "kitsune2", &kitsune2RepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// ghost_actor
+		//
+		ghostActorRepositoryArgs := StandardRepositoryArgs("ghost_actor", nil)
+		ghostActorRepositoryArgs.Description = pulumi.String("GhostActor makes it simple, ergonomic, and idiomatic to implement async / concurrent code using an Actor model.")
+		ghostActor, err := github.NewRepository(ctx, "ghost_actor", &ghostActorRepositoryArgs, pulumi.Import(pulumi.ID("ghost_actor")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "ghost_actor", ghostActor); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "ghost_actor", ghostActor); err != nil {
+			return err
+		}
+		ghostActorRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(ghostActor)
+		if _, err = github.NewRepositoryRuleset(ctx, "ghost_actor", &ghostActorRepositoryRulesetArgs); err != nil {
+			return err
+		}
 
 		return nil
 	})
@@ -434,17 +454,17 @@ func DefaultRepositoryRulesetArgs(repository *github.Repository) github.Reposito
 			Deletion:              pulumi.Bool(true),
 			RequiredLinearHistory: pulumi.Bool(true),
 			RequiredSignatures:    pulumi.Bool(false),
-            PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
-                DismissStaleReviewsOnPush:      pulumi.Bool(true),
-                RequireCodeOwnerReview:         pulumi.Bool(false),
-                RequireLastPushApproval:        pulumi.Bool(true),
-                RequiredApprovingReviewCount:   pulumi.Int(1),
-                RequiredReviewThreadResolution: pulumi.Bool(true),
-            },
+			PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
+				DismissStaleReviewsOnPush:      pulumi.Bool(true),
+				RequireCodeOwnerReview:         pulumi.Bool(false),
+				RequireLastPushApproval:        pulumi.Bool(true),
+				RequiredApprovingReviewCount:   pulumi.Int(1),
+				RequiredReviewThreadResolution: pulumi.Bool(true),
+			},
 			RequiredStatusChecks: &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
 				RequiredChecks: github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
 					github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
-					    // Each repository should define a single job that checks all the required checks passed.
+						// Each repository should define a single job that checks all the required checks passed.
 						Context: pulumi.String("ci_pass"),
 					},
 				},
