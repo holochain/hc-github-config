@@ -325,6 +325,14 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "nix-cache-check", nixCacheCheck); err != nil {
 			return err
 		}
+		nixCacheCheckDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(nixCacheCheck)
+		if _, err = github.NewRepositoryRuleset(ctx, "nix-cache-check-default", &nixCacheCheckDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		nixCacheCheckReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(nixCacheCheck)
+		if _, err = github.NewRepositoryRuleset(ctx, "nix-cache-check-release", &nixCacheCheckReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
 
 		//
 		// Kitsune2
