@@ -325,11 +325,11 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "nix-cache-check", nixCacheCheck); err != nil {
 			return err
 		}
-		nixCacheCheckDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(nixCacheCheck)
+		nixCacheCheckDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(nixCacheCheck, nil)
 		if _, err = github.NewRepositoryRuleset(ctx, "nix-cache-check-default", &nixCacheCheckDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		nixCacheCheckReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(nixCacheCheck)
+		nixCacheCheckReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(nixCacheCheck, nil)
 		if _, err = github.NewRepositoryRuleset(ctx, "nix-cache-check-release", &nixCacheCheckReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -349,7 +349,7 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "kitsune2", kitsune2); err != nil {
 			return err
 		}
-		kitsune2RepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kitsune2)
+		kitsune2RepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kitsune2, nil)
 		if _, err = github.NewRepositoryRuleset(ctx, "kitsune2", &kitsune2RepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -369,11 +369,11 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "ghost_actor", ghostActor); err != nil {
 			return err
 		}
-		ghostActorDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(ghostActor)
+		ghostActorDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(ghostActor, nil)
 		if _, err = github.NewRepositoryRuleset(ctx, "ghost_actor-default", &ghostActorDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		ghostActorReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(ghostActor)
+		ghostActorReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(ghostActor, nil)
 		if _, err = github.NewRepositoryRuleset(ctx, "ghost_actor-release", &ghostActorReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -395,7 +395,20 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "docs-pages", docsPages); err != nil {
 			return err
 		}
-		docsPagesDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(docsPages)
+		docsPagesDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(docsPages, []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
+			{
+				IntegrationId: pulumi.Int(13473), // Netlify
+				Context:       pulumi.String("Header rules - developer-portal-production"),
+			},
+			{
+				IntegrationId: pulumi.Int(13473), // Netlify
+				Context:       pulumi.String("netlify/developer-portal-production/deploy-preview"),
+			},
+			{
+				IntegrationId: pulumi.Int(13473), // Netlify
+				Context:       pulumi.String("Redirect rules - developer-portal-production"),
+			},
+		})
 		if _, err = github.NewRepositoryRuleset(ctx, "docs-pages-default", &docsPagesDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -468,7 +481,19 @@ func MigrateDefaultBranchToMain(ctx *pulumi.Context, name string, repository *gi
 	return err
 }
 
-func DefaultRepositoryRulesetArgs(repository *github.Repository) github.RepositoryRulesetArgs {
+func DefaultRepositoryRulesetArgs(repository *github.Repository, extraStatusChecks []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs) github.RepositoryRulesetArgs {
+	requiredChecks := github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
+		github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
+			// Each repository should define a single job that checks all the required checks passed.
+			Context: pulumi.String("ci_pass"),
+		},
+	}
+	if extraStatusChecks != nil {
+		for _, check := range extraStatusChecks {
+			requiredChecks = append(requiredChecks, &check)
+		}
+	}
+
 	return github.RepositoryRulesetArgs{
 		Name:        pulumi.String("default"),
 		Repository:  repository.Name,
@@ -496,19 +521,26 @@ func DefaultRepositoryRulesetArgs(repository *github.Repository) github.Reposito
 				RequiredReviewThreadResolution: pulumi.Bool(true),
 			},
 			RequiredStatusChecks: &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
-				RequiredChecks: github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
-					github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
-						// Each repository should define a single job that checks all the required checks passed.
-						Context: pulumi.String("ci_pass"),
-					},
-				},
+				RequiredChecks:                   requiredChecks,
 				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
 			},
 		},
 	}
 }
 
-func ReleaseRepositoryRulesetArgs(repository *github.Repository) github.RepositoryRulesetArgs {
+func ReleaseRepositoryRulesetArgs(repository *github.Repository, extraStatusChecks []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs) github.RepositoryRulesetArgs {
+	requiredChecks := github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
+		github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
+			// Each repository should define a single job that checks all the required checks passed.
+			Context: pulumi.String("ci_pass"),
+		},
+	}
+	if extraStatusChecks != nil {
+		for _, check := range extraStatusChecks {
+			requiredChecks = append(requiredChecks, &check)
+		}
+	}
+
 	return github.RepositoryRulesetArgs{
 		Name:        pulumi.String("release"),
 		Repository:  repository.Name,
@@ -538,12 +570,7 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository) github.Reposito
 				RequiredReviewThreadResolution: pulumi.Bool(true),
 			},
 			RequiredStatusChecks: &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
-				RequiredChecks: github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
-					github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
-						// Each repository should define a single job that checks all the required checks passed.
-						Context: pulumi.String("ci_pass"),
-					},
-				},
+				RequiredChecks:                   requiredChecks,
 				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
 			},
 		},
