@@ -378,6 +378,28 @@ func main() {
 			return err
 		}
 
+		//
+		// docs-pages
+		//
+		docsPagesRepositoryArgs := StandardRepositoryArgs("docs-pages", nil)
+		docsPagesRepositoryArgs.Description = pulumi.String("The hosted static files for the Holochain developer documentation")
+		docsPagesRepositoryArgs.HasDiscussions = pulumi.Bool(true)
+		docsPagesRepositoryArgs.HomepageUrl = pulumi.String("https://developer.holochain.org")
+		docsPages, err := github.NewRepository(ctx, "docs-pages", &docsPagesRepositoryArgs, pulumi.Import(pulumi.ID("docs-pages")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "docs-pages", docsPages); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "docs-pages", docsPages); err != nil {
+			return err
+		}
+		docsPagesDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(docsPages)
+		if _, err = github.NewRepositoryRuleset(ctx, "docs-pages-default", &docsPagesDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
