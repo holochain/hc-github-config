@@ -110,6 +110,14 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "holochain-client-js", jsClient); err != nil {
 			return err
 		}
+		jsClientDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(jsClient, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "holochain-client-js-default", &jsClientDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		jsClientReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(jsClient, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "holochain-client-js-release", &jsClientReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
 
 		//
 		// Holochain Rust client
