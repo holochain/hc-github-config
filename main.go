@@ -421,6 +421,37 @@ func main() {
 			return err
 		}
 
+		//
+		// scaffolding
+		//
+		scaffoldingDescription := "Scaffolding tool to quickly generate and modify holochain applications"
+		scaffoldingRepositoryArgs := StandardRepositoryArgs("scaffolding", &scaffoldingDescription)
+		scaffoldingRepositoryArgs.HomepageUrl = pulumi.String("https://docs.rs/holochain_scaffolding_cli")
+		scaffoldingRepositoryArgs.AllowMergeCommit = pulumi.Bool(true)
+		scaffoldingRepositoryArgs.HasDownloads = pulumi.Bool(true)
+		scaffoldingRepositoryArgs.HasWiki = pulumi.Bool(true)
+		scaffolding, err := github.NewRepository(ctx, "scaffolding", &scaffoldingRepositoryArgs, pulumi.Import(pulumi.ID("scaffolding")))
+		if err != nil {
+			return err
+		}
+		if err = MigrateDefaultBranchToMain(ctx, "scaffolding", scaffolding); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "scaffolding", scaffolding); err != nil {
+			return err
+		}
+		if err = AdditionalRepositoryAdmin(ctx, "scaffolding", "c12i", scaffolding); err != nil {
+			return err
+		}
+		scaffoldingDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(scaffolding, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "scaffolding-default", &scaffoldingDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		scaffoldingReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(scaffolding, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "scaffolding-release", &scaffoldingReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
@@ -469,6 +500,16 @@ func StandardRepositoryAccess(ctx *pulumi.Context, name string, repository *gith
 	}
 
 	return nil
+}
+
+func AdditionalRepositoryAdmin(ctx *pulumi.Context, resourceName string, username string, repository *github.Repository) error {
+	_, err := github.NewRepositoryCollaborator(ctx, fmt.Sprintf("%s-collaborator-%s", resourceName, username), &github.RepositoryCollaboratorArgs{
+		Repository: repository.Name,
+		Username:   pulumi.String(username),
+		Permission: pulumi.String("admin"),
+	})
+
+	return err
 }
 
 func RequireMainAsDefaultBranch(ctx *pulumi.Context, name string, repository *github.Repository) error {
