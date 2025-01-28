@@ -15,3 +15,22 @@ Then deploy using:
 ```bash
 pulumi up
 ```
+
+### Rotating the GitHub access token
+
+The automation user is provided with an access token that can be used in workflows.
+
+To rotate the token, you can run the following command:
+
+```bash
+pulumi config set --secret automationUserToken <new-token>
+```
+
+This value is encrypted by Pulumi and stored in `Pulumi.github.yaml`.
+
+Then you will need to ask Pulumi to deploy the token to projects that are 
+configured to use it. You can do this by running:
+
+```bash
+pulumi up
+```
