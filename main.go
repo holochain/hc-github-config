@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
+		conf := config.New(ctx, "")
+
 		description := "Automation for GitHub repository configurations for the Holochain organization."
 		selfRepositoryArgs := StandardRepositoryArgs("hc-github-config", &description)
 		selfRepositoryArgs.AllowMergeCommit = pulumi.Bool(false)
@@ -358,7 +361,14 @@ func main() {
 			return err
 		}
 		kitsune2RepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kitsune2, nil)
-		if _, err = github.NewRepositoryRuleset(ctx, "kitsune2", &kitsune2RepositoryRulesetArgs); err != nil {
+		if _, err = github.NewRepositoryRuleset(ctx, "kitsune2-default", &kitsune2RepositoryRulesetArgs); err != nil {
+			return err
+		}
+		kitsune2ReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kitsune2, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "kitsune2-release", &kitsune2ReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddAutomationUserSecret(ctx, conf, "kitsune2"); err != nil {
 			return err
 		}
 
@@ -624,4 +634,18 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, extraStatusChec
 			},
 		},
 	}
+}
+
+func AddAutomationUserSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-automation-user-token", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("AUTOMATION_USER_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("automationUserToken"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -1,0 +1,3 @@
+config:
+  holochain:automationUserToken:
+    secure: AAABAMlBFfkdQybCGmTBT99+prfFkJ/NBtu6+S2gpnH/6XkYEAPrVM6B8/9aVLsgwqP7tLUCvEaLvHs84Nky2iPOYRS4XEaI
