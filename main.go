@@ -486,7 +486,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "dino-adventure-default", &dinoAdventureDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		dinoAdventureReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(scaffolding, nil)
+		dinoAdventureReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(dinoAdventure, nil)
 		if _, err = github.NewRepositoryRuleset(ctx, "dino-adventure-release", &dinoAdventureReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
