@@ -445,9 +445,6 @@ func main() {
 		scaffoldingDescription := "Scaffolding tool to quickly generate and modify holochain applications"
 		scaffoldingRepositoryArgs := StandardRepositoryArgs("scaffolding", &scaffoldingDescription)
 		scaffoldingRepositoryArgs.HomepageUrl = pulumi.String("https://docs.rs/holochain_scaffolding_cli")
-		scaffoldingRepositoryArgs.AllowMergeCommit = pulumi.Bool(true)
-		scaffoldingRepositoryArgs.HasDownloads = pulumi.Bool(true)
-		scaffoldingRepositoryArgs.HasWiki = pulumi.Bool(true)
 		scaffolding, err := github.NewRepository(ctx, "scaffolding", &scaffoldingRepositoryArgs, pulumi.Import(pulumi.ID("scaffolding")))
 		if err != nil {
 			return err
