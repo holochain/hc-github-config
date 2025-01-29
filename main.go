@@ -26,6 +26,14 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "hc-github-config", self); err != nil {
 			return err
 		}
+		selfDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(self, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-github-config-default", &selfDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		selfReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(self, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-github-config-release", &selfReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
 
 		if _, err := github.NewRepositoryRuleset(ctx, "hc-github-config", &github.RepositoryRulesetArgs{
 			Name:        pulumi.String("default"),
