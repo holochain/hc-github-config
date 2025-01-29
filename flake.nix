@@ -30,8 +30,10 @@
           {
             formatter = pkgs.nixpkgs-fmt;
             devShells.default = pkgs.mkShell {
-              # Note that Go is not provided, because it does not behave correctly inside a Nix shell.
-              packages = [ pulumiBundle ];
+              packages = with pkgs; [
+                go
+                pulumiBundle
+              ];
             };
           };
       };
