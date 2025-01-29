@@ -467,6 +467,30 @@ func main() {
 			return err
 		}
 
+		//
+		// Dino Adventure
+		//
+		dinoAdventureDescription := "A dinosaur adventure game for testing Holochain"
+		dinoAdventureRepositoryArgs := StandardRepositoryArgs("dino-adventure", &dinoAdventureDescription)
+		dinoAdventure, err := github.NewRepository(ctx, "dino-adventure", &dinoAdventureRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "dino-adventure", dinoAdventure); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "dino-adventure", dinoAdventure); err != nil {
+			return err
+		}
+		dinoAdventureDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(dinoAdventure, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "dino-adventure-default", &dinoAdventureDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		dinoAdventureReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(scaffolding, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "dino-adventure-release", &dinoAdventureReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
