@@ -491,6 +491,26 @@ func main() {
 			return err
 		}
 
+		//
+		// nomad-server
+		//
+		nomadServerDescription := "A Pulumi definition for deploying a cluster of Nomad servers as DigitalOcean droplets"
+		nomadServerRepositoryArgs := StandardRepositoryArgs("nomad-server", &nomadServerDescription)
+		nomadServer, err := github.NewRepository(ctx, "nomad-server", &nomadServerRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "nomad-server", nomadServer); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "nomad-server", nomadServer); err != nil {
+			return err
+		}
+		nomadServerDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(nomadServer, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "nomad-server-default", &nomadServerDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
