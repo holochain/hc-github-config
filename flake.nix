@@ -14,6 +14,9 @@
 
         perSystem = { config, pkgs, system, ... }:
           let
+            # Bundle the Pulumi binary with the language package to remove the
+            # warning about them not being in the same directory.
+            # See: https://github.com/pulumi/pulumi/issues/14525
             pulumiBundle = pkgs.stdenv.mkDerivation {
               name = "pulumi-bundle";
               phases = [ "installPhase" "fixupPhase" ];
