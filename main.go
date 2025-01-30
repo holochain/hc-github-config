@@ -531,6 +531,7 @@ func StandardRepositoryArgs(name string, description *string) github.RepositoryA
 		AllowSquashMerge:    pulumi.Bool(true),
 		AllowRebaseMerge:    pulumi.Bool(true),
 		AllowMergeCommit:    pulumi.Bool(false),
+		AutoInit:            pulumi.Bool(true),
 	}
 
 	if description != nil {
