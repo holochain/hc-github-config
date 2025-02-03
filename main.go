@@ -510,6 +510,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "nomad-server-default", &nomadServerDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddAutomationUserSecret(ctx, conf, "nomad-server"); err != nil {
+			return err
+		}
 
 		return nil
 	})
