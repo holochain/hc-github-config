@@ -34,7 +34,6 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-github-config-release", &selfReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
-
 		if _, err := github.NewRepositoryRuleset(ctx, "hc-github-config", &github.RepositoryRulesetArgs{
 			Name:        pulumi.String("default"),
 			Repository:  self.Name,
@@ -71,6 +70,9 @@ func main() {
 				},
 			},
 		}); err != nil {
+			return err
+		}
+		if err = AddPulumiAccessTokenSecret(ctx, conf, "hc-github-config"); err != nil {
 			return err
 		}
 
