@@ -34,3 +34,24 @@ configured to use it. You can do this by running:
 ```bash
 pulumi up
 ```
+
+### Rotating the Pulumi access token
+
+The secret `hra2PulumiAccessToken` can be used to give repositories access to
+Pulumi itself so that changes can be deployed in the CI.
+
+To rotate the token, you can run the following command:
+
+```bash
+pulumi config set --secret hra2PulumiAccessToken <new-token>
+```
+
+This value is encrypted by Pulumi and stored in `Pulumi.github.yaml`.
+
+Then you will need to ask Pulumi to deploy the token to projects that are
+configured to use it. You can do this by getting a PR merged into `main` and
+allowing the CI to deploy it or by manually running:
+
+```bash
+pulumi up
+```

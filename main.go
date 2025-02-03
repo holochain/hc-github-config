@@ -513,6 +513,9 @@ func main() {
 		if err = AddAutomationUserSecret(ctx, conf, "nomad-server"); err != nil {
 			return err
 		}
+		if err = AddPulumiAccessTokenSecret(ctx, conf, "nomad-server"); err != nil {
+			return err
+		}
 
 		return nil
 	})
@@ -695,6 +698,20 @@ func AddAutomationUserSecret(ctx *pulumi.Context, cfg *config.Config, repository
 		SecretName: pulumi.String("AUTOMATION_USER_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("automationUserToken"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func AddPulumiAccessTokenSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-pulumi-access-token", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("HRA2_PULUMI_ACCESS_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("hra2PulumiAccessToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
