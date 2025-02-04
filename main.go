@@ -378,7 +378,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "kitsune2-release", &kitsune2ReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		if err = AddAutomationUserSecret(ctx, conf, "kitsune2"); err != nil {
+		if err = AddGithubUserTokenSecret(ctx, conf, "kitsune2"); err != nil {
 			return err
 		}
 
@@ -512,7 +512,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "nomad-server-default", &nomadServerDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		if err = AddAutomationUserSecret(ctx, conf, "nomad-server"); err != nil {
+		if err = AddGithubUserTokenSecret(ctx, conf, "nomad-server"); err != nil {
 			return err
 		}
 		if err = AddPulumiAccessTokenSecret(ctx, conf, "nomad-server"); err != nil {
@@ -694,12 +694,13 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, extraStatusChec
 	}
 }
 
-func AddAutomationUserSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
-	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-automation-user-token", repository), &github.ActionsSecretArgs{
+func AddGithubUserTokenSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	// A GITHUB_TOKEN with standard repository access to be used on most repositories.
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-github-token", repository), &github.ActionsSecretArgs{
 		Repository: pulumi.String(repository),
-		SecretName: pulumi.String("AUTOMATION_USER_TOKEN"),
+		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("automationUserToken"),
+		PlaintextValue: cfg.RequireSecret("hra2GithubUserToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
