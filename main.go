@@ -72,6 +72,9 @@ func main() {
 		}); err != nil {
 			return err
 		}
+		if err = AddGithubAdminTokenSecret(ctx, conf, "hc-github-config"); err != nil {
+			return err
+		}
 		if err = AddPulumiAccessTokenSecret(ctx, conf, "hc-github-config"); err != nil {
 			return err
 		}
@@ -701,6 +704,21 @@ func AddGithubUserTokenSecret(ctx *pulumi.Context, cfg *config.Config, repositor
 		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("hra2GithubUserToken"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func AddGithubAdminTokenSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	// A GITHUB_TOKEN with more access rights to larger scopes.
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-github-token", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("hra2GithubAdminToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err

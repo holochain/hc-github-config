@@ -1,4 +1,6 @@
 config:
+  holochain:hra2GithubAdminToken:
+    secure: AAABAOyIx+vIwadmmKfppkSey6PPcnomEJlo9F6olNsoBq6NxTB/pNLheCSL02YL27JxAfGOSdvf+iOg957fHX0Z1tvks7E/
   holochain:hra2GithubUserToken:
     secure: AAABAJoOP517E0wIlRNaJM90ozYbdTffr1Nfqnz3cSnD2kAWck1akvfgFazvM5qO7LocIAM2dmyaBxbaBK9zpiNmSOpDA+4m
   holochain:hra2PulumiAccessToken:
