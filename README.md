@@ -18,7 +18,7 @@ pulumi up
 
 ### Rotating the GitHub access token
 
-The automation user is provided with an access token that can be used in workflows.
+The automation user is provided with an access token that can be used in standard workflows.
 
 To rotate the token, you can run the following command:
 
@@ -33,6 +33,18 @@ configured to use it. You can do this by running:
 
 ```bash
 pulumi up
+```
+
+### Rotating the GitHub admin access token
+
+There is also a GitHub access token with admin scope to modify other
+repositories. This token is likely only meant to be used by this repository
+itself.
+
+To rotate the token, you can run the following command:
+
+```bash
+pulumi config set --secret hra2GithubAdminToken <new-token>
 ```
 
 ### Rotating the Pulumi access token
