@@ -23,7 +23,7 @@ The automation user is provided with an access token that can be used in workflo
 To rotate the token, you can run the following command:
 
 ```bash
-pulumi config set --secret automationUserToken <new-token>
+pulumi config set --secret hra2GithubUserToken <new-token>
 ```
 
 This value is encrypted by Pulumi and stored in `Pulumi.github.yaml`.
