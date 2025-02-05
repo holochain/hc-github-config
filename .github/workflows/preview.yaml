@@ -24,7 +24,7 @@ jobs:
           comment-on-pr: true
           diff: true
         env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          PULUMI_ACCESS_TOKEN: ${{ secrets.HRA2_PULUMI_ACCESS_TOKEN }}
   ci_pass:
     if: always()
     needs:
