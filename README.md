@@ -101,7 +101,7 @@ if err != nil {
 ```
 
 Now you can check which repository settings don't match. Try running `pulumi preview` and seeing what fields are reported as 
-changed. You will need to update the default repository settings to match. This might look something like:
+changed. You may need to override the repository settings in Pulumi to match the existing settings for the repository. This might look something like:
 
 ```diff
 description = "My repo description"
