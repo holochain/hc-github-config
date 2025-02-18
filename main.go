@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
@@ -519,6 +520,26 @@ func main() {
 			return err
 		}
 		if err = AddPulumiAccessTokenSecret(ctx, conf, "nomad-server"); err != nil {
+			return err
+		}
+
+		//
+		// hc-http-gw
+		//
+    hcHttpGwDescription := "The Holochain HTTP Gateway for providing a way to bridge from the web2 world into Holochain"
+		hcHttpGwRepositoryArgs := StandardRepositoryArgs("hc-http-gw", &hcHttpGwDescription)
+		hcHttpGw, err := github.NewRepository(ctx, "hc-http-gw", &hcHttpGwRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "hc-http-gw", hcHttpGw); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "hc-http-gw", hcHttpGw); err != nil {
+			return err
+		}
+		hcHttpGwDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcHttpGw, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-http-gw-default", &hcHttpGwDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
 
