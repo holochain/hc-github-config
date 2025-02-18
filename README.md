@@ -148,4 +148,4 @@ if err != nil {
 + }
 ```
 
-Finally, apply these changes with `pullumi up`.
+Finally, apply these changes with `pulumi up`.
