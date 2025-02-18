@@ -100,7 +100,7 @@ if err != nil {
 }
 ```
 
-Now you can check which repository settings don't match. Try running `pulumi up` and seeing what fields are reported as 
+Now you can check which repository settings don't match. Try running `pulumi preview` and seeing what fields are reported as 
 changed. You will need to update the default repository settings to match. This might look something like:
 
 ```diff
