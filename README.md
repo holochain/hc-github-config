@@ -67,3 +67,85 @@ allowing the CI to deploy it or by manually running:
 ```bash
 pulumi up
 ```
+
+### Importing a repository
+
+Importing a repository is a little different to creating a new one. Pulumi requires that you describe the current state 
+of the repository in order to import it. Once you have done that, you can make changes.
+
+So to get started, find an existing imported repository in `main.go` and copy it. We'll use `holochain-serialization` 
+as an example.
+
+```go
+description = "Abstractions to probably serialize and deserialize things properly without forgetting or doubling"
+holochainSerializationRepositoryArgs := StandardRepositoryArgs("holochain-serialization", &description)
+holochainSerialization, err := github.NewRepository(ctx, "holochain-serialization", &holochainSerializationRepositoryArgs, pulumi.Import(pulumi.ID("holochain-serialization")))
+if err != nil {
+    return err
+}
+```
+
+Note the `pulumi.Import`, which is telling Pulumi that this repository already exists. Rename all the fields and 
+variables to describe the repository you are importing. Let's call it `example`:
+
+```diff
+- description = "Abstractions to probably serialize and deserialize things properly without forgetting or doubling"
++ description = "My repo description"
+- holochainSerializationRepositoryArgs := StandardRepositoryArgs("holochain-serialization", &description)
++ exampleRepositoryArgs := StandardRepositoryArgs("example", &description)
+- holochainSerialization, err := github.NewRepository(ctx, "holochain-serialization", &holochainSerializationRepositoryArgs, pulumi.Import(pulumi.ID("holochain-serialization")))
++ example, err := github.NewRepository(ctx, "example", &exampleRepositoryArgs, pulumi.Import(pulumi.ID("example")))
+if err != nil {
+    return err
+}
+```
+
+Now you can check which repository settings don't match. Try running `pulumi preview` and seeing what fields are reported as 
+changed. You may need to override the repository settings in Pulumi to match the existing settings for the repository. This might look something like:
+
+```diff
+description = "My repo description"
+exampleRepositoryArgs := StandardRepositoryArgs("example", &description)
++ exampleRepositoryArgs.AllowRebaseMerge = pulumi.Bool(false)
++ exampleRepositoryArgs.SquashMergeCommitTitle = pulumi.String("PR_TITLE")
+example, err := github.NewRepository(ctx, "example", &exampleRepositoryArgs, pulumi.Import(pulumi.ID("example")))
+if err != nil {
+    return err
+}
+```
+
+Once there are no differences, you will be able to do the import by running `pulumi up`.
+
+Next, you can configure the repository with the standard settings. Remove any overrides that you had to include for the
+import that aren't intended to be kept. Then you need to:
+
+- Either require or migrate the default branch to be `main`
+- Set the access rules, which is the groups that are given roles against the repository
+- Add rulesets which control how changes are made to the default branch and release branches
+
+```diff
+description = "My repo description"
+exampleRepositoryArgs := StandardRepositoryArgs("example", &description)
+- exampleRepositoryArgs.AllowRebaseMerge = pulumi.Bool(false)
+- exampleRepositoryArgs.SquashMergeCommitTitle = pulumi.String("PR_TITLE")
+example, err := github.NewRepository(ctx, "example", &exampleRepositoryArgs, pulumi.Import(pulumi.ID("example")))
+if err != nil {
+    return err
+}
++ if err = RequireMainAsDefaultBranch(ctx, "example", example); err != nil {
++     return err
++ }
++ if err = StandardRepositoryAccess(ctx, "example", example); err != nil {
++     return err
++ }
++ exampleDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(example, nil)
++ if _, err = github.NewRepositoryRuleset(ctx, "example-default", &exampleDefaultRepositoryRulesetArgs); err != nil {
++     return err
++ }
++ exampleReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(example, nil)
++ if _, err = github.NewRepositoryRuleset(ctx, "example-release", &exampleReleaseRepositoryRulesetArgs); err != nil {
++     return err
++ }
+```
+
+Finally, apply these changes with `pulumi up`.
