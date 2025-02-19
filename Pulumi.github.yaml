@@ -5,5 +5,3 @@ config:
     secure: AAABAJoOP517E0wIlRNaJM90ozYbdTffr1Nfqnz3cSnD2kAWck1akvfgFazvM5qO7LocIAM2dmyaBxbaBK9zpiNmSOpDA+4m
   holochain:hra2PulumiAccessToken:
     secure: AAABAESpY2fKLjLgiRFaQqZ1pE+H+SFfYbkKo2jKidYtZQT5KK26u3VKW/jmlG6JQTHebMt+M1OSgYk/Bt8r8UDjKbma6gbcwr/K6w==
-  github:token:
-    secure: AAABAL1gFfEkNE8ekvNJzyvfu0v5h3jS5aB3G1OVDDlVQDCCMYXJgG/N78s7kobBj2JqsMl0tOgE1GIGJXAU5BHs7XtxSclv
