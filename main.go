@@ -526,7 +526,7 @@ func main() {
 		//
 		// hc-http-gw
 		//
-    hcHttpGwDescription := "The Holochain HTTP Gateway for providing a way to bridge from the web2 world into Holochain"
+		hcHttpGwDescription := "The Holochain HTTP Gateway for providing a way to bridge from the web2 world into Holochain"
 		hcHttpGwRepositoryArgs := StandardRepositoryArgs("hc-http-gw", &hcHttpGwDescription)
 		hcHttpGw, err := github.NewRepository(ctx, "hc-http-gw", &hcHttpGwRepositoryArgs)
 		if err != nil {
@@ -540,6 +540,32 @@ func main() {
 		}
 		hcHttpGwDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcHttpGw, nil)
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-http-gw-default", &hcHttpGwDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// network-services
+		//
+		networkServicesDescription := "A Pulumi definition for deploying Holochain network services to be used for development"
+		networkServicesRepositoryArgs := StandardRepositoryArgs("network-services", &networkServicesDescription)
+		networkServices, err := github.NewRepository(ctx, "network-services", &networkServicesRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "network-services", networkServices); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "network-services", networkServices); err != nil {
+			return err
+		}
+		networkServicesDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(networkServices, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "network-services-default", &networkServicesDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddGithubUserTokenSecret(ctx, conf, "network-services"); err != nil {
+			return err
+		}
+		if err = AddPulumiAccessTokenSecret(ctx, conf, "network-services"); err != nil {
 			return err
 		}
 
