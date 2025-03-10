@@ -473,6 +473,33 @@ func main() {
 			return err
 		}
 
+
+		//
+		// hc-launch
+		//
+		hcLaunchDescription := "tauri based CLI to run holochain apps in development mode"
+		hcLaunchRepositoryArgs := StandardRepositoryArgs("hc-launch", &hcLaunchDescription)
+		hcLaunchRepositoryArgs.AllowAutoMerge = pulumi.Bool(false)
+		hcLaunchRepositoryArgs.AllowSquashMerge = pulumi.Bool(false)
+		hcLaunchRepositoryArgs.AllowRebaseMerge = pulumi.Bool(false)
+		hcLaunchRepositoryArgs.AllowUpdateBranch = pulumi.Bool(false)
+		hcLaunchRepositoryArgs.AutoInit = pulumi.Bool(false)
+		hcLaunchRepositoryArgs.DeleteBranchOnMerge = pulumi.Bool(false)
+		hcLaunchRepositoryArgs.HasDownloads = pulumi.Bool(true)
+		hcLaunchRepositoryArgs.HasWiki = pulumi.Bool(true)
+
+		hcLaunchRepositoryArgs.MergeCommitMessage = pulumi.String("BLANK");
+		hcLaunchRepositoryArgs.MergeCommitTitle = pulumi.String("MERGE_MESSAGE");
+		hcLaunchRepositoryArgs.SquashMergeCommitMessage = pulumi.String("BLANK");
+		hcLaunchRepositoryArgs.SquashMergeCommitTitle = pulumi.String("COMMIT_OR_PR_TITLE");
+
+		hcLaunchRepositoryArgs.VulnerabilityAlerts = pulumi.Bool(false)
+
+
+		if _ , err = github.NewRepository(ctx, "hc-launch", &hcLaunchRepositoryArgs, pulumi.Import(pulumi.ID("hc-launch"))); err != nil {
+			return err
+		}
+
 		//
 		// Dino Adventure
 		//
