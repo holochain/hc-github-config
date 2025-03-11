@@ -474,6 +474,34 @@ func main() {
 		}
 
 		//
+		// hc-launch
+		//
+		hcLaunchDescription := "tauri based CLI to run holochain apps in development mode"
+		hcLaunchRepositoryArgs := StandardRepositoryArgs("hc-launch", &hcLaunchDescription)
+
+		hcLaunch, err := github.NewRepository(ctx, "hc-launch", &hcLaunchRepositoryArgs, pulumi.Import(pulumi.ID("hc-launch")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "hc-launch", hcLaunch); err != nil {
+		  return err
+		}
+		if err = StandardRepositoryAccess(ctx, "hc-launch", hcLaunch); err != nil {
+			return err
+		}
+		if err = AdditionalRepositoryAdmin(ctx, "hc-launch", "matthme", hcLaunch); err != nil {
+			return err
+		}
+		hcLaunchDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcLaunch, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-launch-default", &hcLaunchDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		hcLaunchReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcLaunch, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-launch-release", &hcLaunchReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
 		// Dino Adventure
 		//
 		dinoAdventureDescription := "A dinosaur adventure game for testing Holochain"
