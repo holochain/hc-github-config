@@ -10,6 +10,11 @@ pulumi org set-default holochain
 pulumi stack select github
 ```
 
+You may also need to authenticate with github in order for pulumi to be able to properly access repository settings. Using the github CLI you can run:
+```
+gh auth login
+```
+
 Then deploy using:
 
 ```bash
@@ -28,7 +33,7 @@ pulumi config set --secret hra2GithubUserToken <new-token>
 
 This value is encrypted by Pulumi and stored in `Pulumi.github.yaml`.
 
-Then you will need to ask Pulumi to deploy the token to projects that are 
+Then you will need to ask Pulumi to deploy the token to projects that are
 configured to use it. You can do this by running:
 
 ```bash
@@ -70,10 +75,10 @@ pulumi up
 
 ### Importing a repository
 
-Importing a repository is a little different to creating a new one. Pulumi requires that you describe the current state 
+Importing a repository is a little different to creating a new one. Pulumi requires that you describe the current state
 of the repository in order to import it. Once you have done that, you can make changes.
 
-So to get started, find an existing imported repository in `main.go` and copy it. We'll use `holochain-serialization` 
+So to get started, find an existing imported repository in `main.go` and copy it. We'll use `holochain-serialization`
 as an example.
 
 ```go
@@ -85,8 +90,10 @@ if err != nil {
 }
 ```
 
-Note the `pulumi.Import`, which is telling Pulumi that this repository already exists. Rename all the fields and 
-variables to describe the repository you are importing. Let's call it `example`:
+Note the `pulumi.Import`, which is telling Pulumi that this repository already exists. Rename all the fields and
+variables to describe the repository you are importing and adapt variable assignement where necessary for the code to compile.
+
+Let's call the repository `example`:
 
 ```diff
 - description = "Abstractions to probably serialize and deserialize things properly without forgetting or doubling"
@@ -94,13 +101,16 @@ variables to describe the repository you are importing. Let's call it `example`:
 - holochainSerializationRepositoryArgs := StandardRepositoryArgs("holochain-serialization", &description)
 + exampleRepositoryArgs := StandardRepositoryArgs("example", &description)
 - holochainSerialization, err := github.NewRepository(ctx, "holochain-serialization", &holochainSerializationRepositoryArgs, pulumi.Import(pulumi.ID("holochain-serialization")))
-+ example, err := github.NewRepository(ctx, "example", &exampleRepositoryArgs, pulumi.Import(pulumi.ID("example")))
-if err != nil {
-    return err
-}
+- if err != nil {
+-     return err
+- }
++ if _, err = github.NewRepository(ctx, "example", &exampleRepositoryArgs, pulumi.Import(pulumi.ID("example"))); err != nil {
++     return err
++ }
+
 ```
 
-Now you can check which repository settings don't match. Try running `pulumi preview` and seeing what fields are reported as 
+Now you can check which repository settings don't match. Try running `pulumi preview` and seeing what fields are reported as
 changed. You may need to override the repository settings in Pulumi to match the existing settings for the repository. This might look something like:
 
 ```diff
@@ -108,8 +118,7 @@ description = "My repo description"
 exampleRepositoryArgs := StandardRepositoryArgs("example", &description)
 + exampleRepositoryArgs.AllowRebaseMerge = pulumi.Bool(false)
 + exampleRepositoryArgs.SquashMergeCommitTitle = pulumi.String("PR_TITLE")
-example, err := github.NewRepository(ctx, "example", &exampleRepositoryArgs, pulumi.Import(pulumi.ID("example")))
-if err != nil {
+if _, err = github.NewRepository(ctx, "example", &exampleRepositoryArgs, pulumi.Import(pulumi.ID("example"))); err != nil {
     return err
 }
 ```
@@ -128,10 +137,13 @@ description = "My repo description"
 exampleRepositoryArgs := StandardRepositoryArgs("example", &description)
 - exampleRepositoryArgs.AllowRebaseMerge = pulumi.Bool(false)
 - exampleRepositoryArgs.SquashMergeCommitTitle = pulumi.String("PR_TITLE")
-example, err := github.NewRepository(ctx, "example", &exampleRepositoryArgs, pulumi.Import(pulumi.ID("example")))
-if err != nil {
-    return err
-}
+- if _, err = github.NewRepository(ctx, "example", &exampleRepositoryArgs, pulumi.Import(pulumi.ID("example"))); err != nil {
+-     return err
+- }
++ example, err := github.NewRepository(ctx, "example", &exampleRepositoryArgs, pulumi.Import(pulumi.ID("example")))
++ if err != nil {
++     return err
++ }
 + if err = RequireMainAsDefaultBranch(ctx, "example", example); err != nil {
 +     return err
 + }
