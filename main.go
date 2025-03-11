@@ -502,6 +502,34 @@ func main() {
 		}
 
 		//
+		// hc-spin
+		//
+		hcSpinDescription := "CLI to run Holochain Apps in Development Mode"
+		hcSpinRepositoryArgs := StandardRepositoryArgs("hc-spin", &hcSpinDescription)
+
+		hcSpin, err := github.NewRepository(ctx, "hc-spin", &hcSpinRepositoryArgs, pulumi.Import(pulumi.ID("hc-spin")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "hc-spin", hcSpin); err != nil {
+		  return err
+		}
+		if err = StandardRepositoryAccess(ctx, "hc-spin", hcSpin); err != nil {
+			return err
+		}
+		if err = AdditionalRepositoryAdmin(ctx, "hc-spin", "matthme", hcSpin); err != nil {
+			return err
+		}
+		hcSpinDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcSpin, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-default", &hcSpinDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		hcSpinReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcSpin, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-release", &hcSpinReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
 		// Dino Adventure
 		//
 		dinoAdventureDescription := "A dinosaur adventure game for testing Holochain"
