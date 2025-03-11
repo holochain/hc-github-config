@@ -25,6 +25,7 @@ jobs:
           diff: true
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.HRA2_PULUMI_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.HRA2_GITHUB_TOKEN }}
   ci_pass:
     if: always()
     needs:
