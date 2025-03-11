@@ -478,24 +478,26 @@ func main() {
 		//
 		hcLaunchDescription := "tauri based CLI to run holochain apps in development mode"
 		hcLaunchRepositoryArgs := StandardRepositoryArgs("hc-launch", &hcLaunchDescription)
-		hcLaunchRepositoryArgs.AllowAutoMerge = pulumi.Bool(false)
-		hcLaunchRepositoryArgs.AllowSquashMerge = pulumi.Bool(true)
-		hcLaunchRepositoryArgs.AllowRebaseMerge = pulumi.Bool(true)
-		hcLaunchRepositoryArgs.AllowUpdateBranch = pulumi.Bool(false)
-		hcLaunchRepositoryArgs.AllowMergeCommit = pulumi.Bool(true)
-		hcLaunchRepositoryArgs.AutoInit = pulumi.Bool(false)
-		hcLaunchRepositoryArgs.DeleteBranchOnMerge = pulumi.Bool(false)
-		hcLaunchRepositoryArgs.HasDownloads = pulumi.Bool(true)
-		hcLaunchRepositoryArgs.HasWiki = pulumi.Bool(true)
 
-		hcLaunchRepositoryArgs.MergeCommitMessage = pulumi.String("PR_TITLE")
-		hcLaunchRepositoryArgs.MergeCommitTitle = pulumi.String("MERGE_MESSAGE")
-		hcLaunchRepositoryArgs.SquashMergeCommitMessage = pulumi.String("COMMIT_MESSAGES")
-		hcLaunchRepositoryArgs.SquashMergeCommitTitle = pulumi.String("COMMIT_OR_PR_TITLE")
-
-		hcLaunchRepositoryArgs.VulnerabilityAlerts = pulumi.Bool(true)
-
-		if _, err = github.NewRepository(ctx, "hc-launch", &hcLaunchRepositoryArgs, pulumi.Import(pulumi.ID("hc-launch"))); err != nil {
+		hcLaunch, err := github.NewRepository(ctx, "hc-launch", &hcLaunchRepositoryArgs, pulumi.Import(pulumi.ID("hc-launch")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "hc-launch", hcLaunch); err != nil {
+		  return err
+		}
+		if err = StandardRepositoryAccess(ctx, "hc-launch", hcLaunch); err != nil {
+			return err
+		}
+		if err = AdditionalRepositoryAdmin(ctx, "hc-launch", "matthme", hcLaunch); err != nil {
+			return err
+		}
+		hcLaunchDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcLaunch, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-launch-default", &hcLaunchDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		hcLaunchReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcLaunch, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-launch-release", &hcLaunchReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
 
