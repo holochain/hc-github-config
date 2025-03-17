@@ -10,7 +10,7 @@ pulumi org set-default holochain
 pulumi stack select github
 ```
 
-You may also need to authenticate with github in order for pulumi to be able to properly access repository settings. Using the github CLI you can run:
+You may also need to authenticate with github in order for Pulumi to be able to properly access repository settings. Using the [GitHub CLI](https://cli.github.com/), you can run:
 ```
 gh auth login
 ```
