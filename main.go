@@ -530,6 +530,35 @@ func main() {
 		}
 
 		//
+		// kangaroo-electron
+		//
+		kangarooElectronDescription := "Bundle your holochain app a a standalone electron app with a built-in conductor"
+		kangarooElectronRepositoryArgs := StandardRepositoryArgs("kangaroo-electron", &kangarooElectronDescription)
+		kangarooElectronRepositoryArgs.IsTemplate = pulumi.Bool(true)
+
+		kangarooElectron, err := github.NewRepository(ctx, "kangaroo-electron", &kangarooElectronRepositoryArgs, pulumi.Import(pulumi.ID("kangaroo-electron")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "kangaroo-electron", kangarooElectron); err != nil {
+		  return err
+		}
+		if err = StandardRepositoryAccess(ctx, "kangaroo-electron", kangarooElectron); err != nil {
+			return err
+		}
+		if err = AdditionalRepositoryAdmin(ctx, "kangaroo-electron", "matthme", kangarooElectron); err != nil {
+			return err
+		}
+		kangarooElectronDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kangarooElectron, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-default", &kangarooElectronDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-release", &kangarooElectronReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
 		// Dino Adventure
 		//
 		dinoAdventureDescription := "A dinosaur adventure game for testing Holochain"
