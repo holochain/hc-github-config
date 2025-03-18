@@ -553,10 +553,40 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-default", &kangarooElectronDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		kangarooElectronDefaultRepositoryRulesetArgs.Rules = &github.RepositoryRulesetRulesArgs{
+			Creation:              pulumi.Bool(true),
+			Update:                pulumi.Bool(false),
+			Deletion:              pulumi.Bool(true),
+			RequiredLinearHistory: pulumi.Bool(true),
+			RequiredSignatures:    pulumi.Bool(false),
+			PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
+				DismissStaleReviewsOnPush:      pulumi.Bool(true),
+				RequireCodeOwnerReview:         pulumi.Bool(false),
+				RequireLastPushApproval:        pulumi.Bool(true),
+				RequiredApprovingReviewCount:   pulumi.Int(1),
+				RequiredReviewThreadResolution: pulumi.Bool(true),
+			},
+		}
+
 		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, nil)
 		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-release", &kangarooElectronReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		kangarooElectronReleaseRepositoryRulesetArgs.Rules = &github.RepositoryRulesetRulesArgs{
+			Creation:              pulumi.Bool(true),
+			Update:                pulumi.Bool(false),
+			Deletion:              pulumi.Bool(true),
+			RequiredLinearHistory: pulumi.Bool(true),
+			RequiredSignatures:    pulumi.Bool(false),
+			PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
+				DismissStaleReviewsOnPush:      pulumi.Bool(true),
+				RequireCodeOwnerReview:         pulumi.Bool(false),
+				RequireLastPushApproval:        pulumi.Bool(true),
+				RequiredApprovingReviewCount:   pulumi.Int(0),
+				RequiredReviewThreadResolution: pulumi.Bool(true),
+			},
+		}
+
 
 		//
 		// Dino Adventure
