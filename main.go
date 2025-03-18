@@ -553,6 +553,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-default", &kangarooElectronDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		// Since kangaroo is a Github Template we currently omit mandatory CI checks
 		kangarooElectronDefaultRepositoryRulesetArgs.Rules = &github.RepositoryRulesetRulesArgs{
 			Creation:              pulumi.Bool(true),
 			Update:                pulumi.Bool(false),
@@ -572,6 +573,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-release", &kangarooElectronReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		// Since kangaroo is a Github Template we currently omit mandatory CI checks
 		kangarooElectronReleaseRepositoryRulesetArgs.Rules = &github.RepositoryRulesetRulesArgs{
 			Creation:              pulumi.Bool(true),
 			Update:                pulumi.Bool(false),
@@ -586,7 +588,6 @@ func main() {
 				RequiredReviewThreadResolution: pulumi.Bool(true),
 			},
 		}
-
 
 		//
 		// Dino Adventure
