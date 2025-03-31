@@ -111,6 +111,10 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "wind-tunnel", windTunnel); err != nil {
 			return err
 		}
+		windTunnelConf := config.New(ctx, "wind-tunnel")
+		if err = AddNomadAccessTokenSecret(ctx, windTunnelConf, "wind-tunnel"); err != nil {
+			return err
+		}
 
 		//
 		// Holochain JS client
@@ -896,6 +900,20 @@ func AddPulumiAccessTokenSecret(ctx *pulumi.Context, cfg *config.Config, reposit
 		SecretName: pulumi.String("HRA2_PULUMI_ACCESS_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("hra2PulumiAccessToken"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func AddNomadAccessTokenSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-nomad-access-token", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("NOMAD_ACCESS_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("nomadAccessToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
