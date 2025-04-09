@@ -6,4 +6,4 @@ config:
   holochain:hra2PulumiAccessToken:
     secure: AAABAESpY2fKLjLgiRFaQqZ1pE+H+SFfYbkKo2jKidYtZQT5KK26u3VKW/jmlG6JQTHebMt+M1OSgYk/Bt8r8UDjKbma6gbcwr/K6w==
   wind-tunnel:nomadAccessToken:
-    secure: AAABAKN2V0c0i485JERlIbH4QUkGRlwc+jQ1VO9KYfQQdYwpC5+SJU8Pj8xwfhqpf42Fj8nUFxk8Ui6Fa1hUEB3a38Q=
+    secure: AAABAJFXFB0dfeUEtmVVVdcUdA/7b2FDc7tBKhujc0paJhYN6ZSUC3S/UGft6ym7Z7Qi2dtQ8Dpl0whCatc6XL1ksLk=
