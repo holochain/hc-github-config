@@ -689,6 +689,26 @@ func main() {
 			return err
 		}
 
+		//
+		// wind-tunnel-runner
+		//
+		windTunnelRunnerDescription := "The guide and NixOS configuration for setting up a machine to run Wind Tunnel scenarios"
+		windTunnelRunnerRepositoryArgs := StandardRepositoryArgs("wind-tunnel-runner", &windTunnelRunnerDescription)
+		windTunnelRunner, err := github.NewRepository(ctx, "wind-tunnel-runner", &windTunnelRunnerRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "wind-tunnel-runner", windTunnelRunner); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "wind-tunnel-runner", windTunnelRunner); err != nil {
+			return err
+		}
+		windTunnelRunnerDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(windTunnelRunner, nil)
+		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-runner-default", &windTunnelRunnerDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
