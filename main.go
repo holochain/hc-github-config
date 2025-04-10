@@ -488,7 +488,7 @@ func main() {
 			return err
 		}
 		if err = RequireMainAsDefaultBranch(ctx, "hc-launch", hcLaunch); err != nil {
-		  return err
+			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "hc-launch", hcLaunch); err != nil {
 			return err
@@ -516,7 +516,7 @@ func main() {
 			return err
 		}
 		if err = RequireMainAsDefaultBranch(ctx, "hc-spin", hcSpin); err != nil {
-		  return err
+			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "hc-spin", hcSpin); err != nil {
 			return err
@@ -545,7 +545,7 @@ func main() {
 			return err
 		}
 		if err = RequireMainAsDefaultBranch(ctx, "kangaroo-electron", kangarooElectron); err != nil {
-		  return err
+			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "kangaroo-electron", kangarooElectron); err != nil {
 			return err
