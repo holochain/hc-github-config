@@ -708,6 +708,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-runner-default", &windTunnelRunnerDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddTailscaleOAuthSecrets(ctx, conf, "wind-tunnel-runner"); err != nil {
+			return err
+		}
 
 		return nil
 	})
@@ -934,6 +937,30 @@ func AddNomadAccessTokenSecret(ctx *pulumi.Context, cfg *config.Config, reposito
 		SecretName: pulumi.String("NOMAD_ACCESS_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("nomadAccessToken"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func AddTailscaleOAuthSecrets(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-tailscale-oauth-client-id", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("TS_OAUTH_CLIENT_ID"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("tailscaleOAuthClientId"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-tailscale-oauth-secret", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("TS_OAUTH_SECRET"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("tailscaleOAuthSecret"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
