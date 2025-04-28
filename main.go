@@ -860,6 +860,7 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, extraStatusChec
 			RefName: &github.RepositoryRulesetConditionsRefNameArgs{
 				Includes: pulumi.StringArray{
 					pulumi.String("refs/heads/release/*"),
+					pulumi.String("refs/heads/release-*"),
 					pulumi.String("refs/heads/main-*"),
 					pulumi.String("refs/heads/develop-*"),
 				},
