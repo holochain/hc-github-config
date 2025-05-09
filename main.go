@@ -500,10 +500,20 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-launch-default", &hcLaunchDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
+
 		hcLaunchReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcLaunch, nil)
+		// Since hc-launch has merge commits in its git history, we need to omit RequiredLinearHistory to be
+		// able to create branches
+		if rules, ok := hcLaunchReleaseRepositoryRulesetArgs.Rules.(github.RepositoryRulesetRulesArgs); ok {
+				rules.RequiredLinearHistory = pulumi.Bool(false)
+				hcLaunchReleaseRepositoryRulesetArgs.Rules = rules // Set it back to the interface field
+		} else {
+				panic("hcLaunchReleaseRepositoryRulesetArgs.Rules is not of type RepositoryRulesetRulesArgs")
+		}
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-launch-release", &hcLaunchReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+
 
 		//
 		// hc-spin
@@ -529,6 +539,14 @@ func main() {
 			return err
 		}
 		hcSpinReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcSpin, nil)
+		// Since hc-spin has merge commits in its git history, we need to omit RequiredLinearHistory to be
+		// able to create branches
+		if rules, ok := hcSpinReleaseRepositoryRulesetArgs.Rules.(github.RepositoryRulesetRulesArgs); ok {
+			rules.RequiredLinearHistory = pulumi.Bool(false)
+			hcSpinReleaseRepositoryRulesetArgs.Rules = rules // Set it back to the interface field
+		} else {
+				panic("hcSpinReleaseRepositoryRulesetArgs.Rules is not of type RepositoryRulesetRulesArgs")
+		}
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-release", &hcSpinReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -554,9 +572,6 @@ func main() {
 			return err
 		}
 		kangarooElectronDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kangarooElectron, nil)
-		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-default", &kangarooElectronDefaultRepositoryRulesetArgs); err != nil {
-			return err
-		}
 		// Since kangaroo is a Github Template we currently omit mandatory CI checks
 		kangarooElectronDefaultRepositoryRulesetArgs.Rules = &github.RepositoryRulesetRulesArgs{
 			Creation:              pulumi.Bool(true),
@@ -572,11 +587,11 @@ func main() {
 				RequiredReviewThreadResolution: pulumi.Bool(true),
 			},
 		}
-
-		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, nil)
-		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-release", &kangarooElectronReleaseRepositoryRulesetArgs); err != nil {
+		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-default", &kangarooElectronDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
+
+		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, nil)
 		// Since kangaroo is a Github Template we currently omit mandatory CI checks
 		kangarooElectronReleaseRepositoryRulesetArgs.Rules = &github.RepositoryRulesetRulesArgs{
 			Creation:              pulumi.Bool(true),
@@ -591,6 +606,9 @@ func main() {
 				RequiredApprovingReviewCount:   pulumi.Int(0),
 				RequiredReviewThreadResolution: pulumi.Bool(true),
 			},
+		}
+		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-release", &kangarooElectronReleaseRepositoryRulesetArgs); err != nil {
+			return err
 		}
 
 		//
@@ -867,7 +885,7 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, extraStatusChec
 				Excludes: pulumi.StringArray{},
 			},
 		},
-		Rules: &github.RepositoryRulesetRulesArgs{
+		Rules: github.RepositoryRulesetRulesArgs{
 			Creation:              pulumi.Bool(false),
 			Update:                pulumi.Bool(false),
 			Deletion:              pulumi.Bool(true),
