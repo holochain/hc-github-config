@@ -868,7 +868,7 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, extraStatusChec
 			},
 		},
 		Rules: &github.RepositoryRulesetRulesArgs{
-			Creation:              pulumi.Bool(true),
+			Creation:              pulumi.Bool(false),
 			Update:                pulumi.Bool(false),
 			Deletion:              pulumi.Bool(true),
 			RequiredLinearHistory: pulumi.Bool(true),
