@@ -882,8 +882,8 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, extraStatusChec
 			},
 			RequiredStatusChecks: &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
 				RequiredChecks:                   requiredChecks,
+				DoNotEnforceOnCreate: pulumi.Bool(true),
 				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
-				doNotEnforceOnCreate: pulumi.Bool(true),
 			},
 		},
 	}
