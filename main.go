@@ -27,11 +27,11 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "hc-github-config", self); err != nil {
 			return err
 		}
-		selfDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(self, nil)
+		selfDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(self, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-github-config-default", &selfDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		selfReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(self, nil)
+		selfReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(self, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-github-config-release", &selfReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -131,11 +131,11 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "holochain-client-js", jsClient); err != nil {
 			return err
 		}
-		jsClientDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(jsClient, nil)
+		jsClientDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(jsClient, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "holochain-client-js-default", &jsClientDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		jsClientReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(jsClient, nil)
+		jsClientReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(jsClient, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "holochain-client-js-release", &jsClientReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -354,11 +354,11 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "nix-cache-check", nixCacheCheck); err != nil {
 			return err
 		}
-		nixCacheCheckDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(nixCacheCheck, nil)
+		nixCacheCheckDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(nixCacheCheck, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "nix-cache-check-default", &nixCacheCheckDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		nixCacheCheckReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(nixCacheCheck, nil)
+		nixCacheCheckReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(nixCacheCheck, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "nix-cache-check-release", &nixCacheCheckReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -378,11 +378,11 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "kitsune2", kitsune2); err != nil {
 			return err
 		}
-		kitsune2RepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kitsune2, nil)
+		kitsune2RepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kitsune2, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "kitsune2-default", &kitsune2RepositoryRulesetArgs); err != nil {
 			return err
 		}
-		kitsune2ReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kitsune2, nil)
+		kitsune2ReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kitsune2, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "kitsune2-release", &kitsune2ReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -405,11 +405,11 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "ghost_actor", ghostActor); err != nil {
 			return err
 		}
-		ghostActorDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(ghostActor, nil)
+		ghostActorDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(ghostActor, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "ghost_actor-default", &ghostActorDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		ghostActorReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(ghostActor, nil)
+		ghostActorReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(ghostActor, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "ghost_actor-release", &ghostActorReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -431,7 +431,7 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "docs-pages", docsPages); err != nil {
 			return err
 		}
-		docsPagesDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(docsPages, []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
+		docsPagesDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(docsPages, NewRulesetOptions().withExtraStatusChecks([]github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
 			{
 				IntegrationId: pulumi.Int(13473), // Netlify
 				Context:       pulumi.String("Header rules - developer-portal-production"),
@@ -444,7 +444,7 @@ func main() {
 				IntegrationId: pulumi.Int(13473), // Netlify
 				Context:       pulumi.String("Redirect rules - developer-portal-production"),
 			},
-		})
+		}))
 		if _, err = github.NewRepositoryRuleset(ctx, "docs-pages-default", &docsPagesDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -468,11 +468,11 @@ func main() {
 		if err = AdditionalRepositoryAdmin(ctx, "scaffolding", "c12i", scaffolding); err != nil {
 			return err
 		}
-		scaffoldingDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(scaffolding, nil)
+		scaffoldingDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(scaffolding, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "scaffolding-default", &scaffoldingDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		scaffoldingReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(scaffolding, nil)
+		scaffoldingReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(scaffolding, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "scaffolding-release", &scaffoldingReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -496,11 +496,11 @@ func main() {
 		if err = AdditionalRepositoryAdmin(ctx, "hc-launch", "matthme", hcLaunch); err != nil {
 			return err
 		}
-		hcLaunchDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcLaunch, nil)
+		hcLaunchDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcLaunch, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-launch-default", &hcLaunchDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		hcLaunchReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcLaunch, nil)
+		hcLaunchReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcLaunch, NewRulesetOptions().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-launch-release", &hcLaunchReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -524,11 +524,11 @@ func main() {
 		if err = AdditionalRepositoryAdmin(ctx, "hc-spin", "matthme", hcSpin); err != nil {
 			return err
 		}
-		hcSpinDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcSpin, nil)
+		hcSpinDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcSpin, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-default", &hcSpinDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		hcSpinReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcSpin, nil)
+		hcSpinReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcSpin, NewRulesetOptions().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-release", &hcSpinReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -553,27 +553,13 @@ func main() {
 		if err = AdditionalRepositoryAdmin(ctx, "kangaroo-electron", "matthme", kangarooElectron); err != nil {
 			return err
 		}
-		kangarooElectronDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kangarooElectron, nil)
+		// Since kangaroo is a Github Template we currently omit mandatory CI checks
+		kangarooElectronDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(kangarooElectron, NewRulesetOptions().noStatusChecks())
 		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-default", &kangarooElectronDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		// Since kangaroo is a Github Template we currently omit mandatory CI checks
-		kangarooElectronDefaultRepositoryRulesetArgs.Rules = &github.RepositoryRulesetRulesArgs{
-			Creation:              pulumi.Bool(true),
-			Update:                pulumi.Bool(false),
-			Deletion:              pulumi.Bool(true),
-			RequiredLinearHistory: pulumi.Bool(true),
-			RequiredSignatures:    pulumi.Bool(false),
-			PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
-				DismissStaleReviewsOnPush:      pulumi.Bool(true),
-				RequireCodeOwnerReview:         pulumi.Bool(false),
-				RequireLastPushApproval:        pulumi.Bool(true),
-				RequiredApprovingReviewCount:   pulumi.Int(1),
-				RequiredReviewThreadResolution: pulumi.Bool(true),
-			},
-		}
 
-		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, nil)
+		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-release", &kangarooElectronReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -608,11 +594,11 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "dino-adventure", dinoAdventure); err != nil {
 			return err
 		}
-		dinoAdventureDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(dinoAdventure, nil)
+		dinoAdventureDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(dinoAdventure, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "dino-adventure-default", &dinoAdventureDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		dinoAdventureReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(dinoAdventure, nil)
+		dinoAdventureReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(dinoAdventure, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "dino-adventure-release", &dinoAdventureReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -632,7 +618,7 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "nomad-server", nomadServer); err != nil {
 			return err
 		}
-		nomadServerDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(nomadServer, nil)
+		nomadServerDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(nomadServer, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "nomad-server-default", &nomadServerDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -658,7 +644,7 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "hc-http-gw", hcHttpGw); err != nil {
 			return err
 		}
-		hcHttpGwDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcHttpGw, nil)
+		hcHttpGwDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcHttpGw, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-http-gw-default", &hcHttpGwDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -678,7 +664,7 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "network-services", networkServices); err != nil {
 			return err
 		}
-		networkServicesDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(networkServices, nil)
+		networkServicesDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(networkServices, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "network-services-default", &networkServicesDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -704,7 +690,7 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "wind-tunnel-runner", windTunnelRunner); err != nil {
 			return err
 		}
-		windTunnelRunnerDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(windTunnelRunner, nil)
+		windTunnelRunnerDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(windTunnelRunner, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-runner-default", &windTunnelRunnerDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
@@ -791,17 +777,59 @@ func MigrateDefaultBranchToMain(ctx *pulumi.Context, name string, repository *gi
 	return err
 }
 
-func DefaultRepositoryRulesetArgs(repository *github.Repository, extraStatusChecks []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs) github.RepositoryRulesetArgs {
+type RulesetOptions struct {
+	extraStatusChecks   []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs
+	withoutStatusChecks bool
+	noLinearHistory     bool
+}
+
+func NewRulesetOptions() RulesetOptions {
+	return RulesetOptions{}
+}
+
+func (options RulesetOptions) withExtraStatusChecks(extraStatusChecks []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs) RulesetOptions {
+	if options.withoutStatusChecks {
+		panic("withExtraStatusChecks() cannot be called if noStatusChecks() has already been called.")
+	}
+	options.extraStatusChecks = extraStatusChecks
+	return options
+}
+
+func (options RulesetOptions) noLinearHistoryRequired() RulesetOptions {
+	options.noLinearHistory = true
+	return options
+}
+
+func (options RulesetOptions) noStatusChecks() RulesetOptions {
+	if options.extraStatusChecks != nil {
+		panic("noStatusChecks() cannot be called if extraStatusChecks() has already been called.")
+	}
+	options.withoutStatusChecks = true
+	return options
+}
+
+func DefaultRepositoryRulesetArgs(repository *github.Repository, options RulesetOptions) github.RepositoryRulesetArgs {
 	requiredChecks := github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
 		github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
 			// Each repository should define a single job that checks all the required checks passed.
 			Context: pulumi.String("ci_pass"),
 		},
 	}
-	if extraStatusChecks != nil {
-		for _, check := range extraStatusChecks {
+	if options.extraStatusChecks != nil {
+		for _, check := range options.extraStatusChecks {
 			requiredChecks = append(requiredChecks, &check)
 		}
+	}
+	linearHistory := pulumi.Bool(true)
+	if options.noLinearHistory {
+		linearHistory = pulumi.Bool(false)
+	}
+	requiredStatusChecks := &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
+		RequiredChecks:                   requiredChecks,
+		StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
+	}
+	if options.withoutStatusChecks {
+		requiredStatusChecks = nil
 	}
 
 	return github.RepositoryRulesetArgs{
@@ -821,7 +849,7 @@ func DefaultRepositoryRulesetArgs(repository *github.Repository, extraStatusChec
 			Creation:              pulumi.Bool(true),
 			Update:                pulumi.Bool(false),
 			Deletion:              pulumi.Bool(true),
-			RequiredLinearHistory: pulumi.Bool(true),
+			RequiredLinearHistory: linearHistory,
 			RequiredSignatures:    pulumi.Bool(false),
 			PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
 				DismissStaleReviewsOnPush:      pulumi.Bool(true),
@@ -830,25 +858,37 @@ func DefaultRepositoryRulesetArgs(repository *github.Repository, extraStatusChec
 				RequiredApprovingReviewCount:   pulumi.Int(1),
 				RequiredReviewThreadResolution: pulumi.Bool(true),
 			},
-			RequiredStatusChecks: &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
-				RequiredChecks:                   requiredChecks,
-				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
-			},
+			RequiredStatusChecks: requiredStatusChecks,
 		},
 	}
 }
 
-func ReleaseRepositoryRulesetArgs(repository *github.Repository, extraStatusChecks []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs) github.RepositoryRulesetArgs {
+func ReleaseRepositoryRulesetArgs(repository *github.Repository, options RulesetOptions) github.RepositoryRulesetArgs {
 	requiredChecks := github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
 		github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
 			// Each repository should define a single job that checks all the required checks passed.
 			Context: pulumi.String("ci_pass"),
 		},
 	}
-	if extraStatusChecks != nil {
-		for _, check := range extraStatusChecks {
+	if options.extraStatusChecks != nil {
+		for _, check := range options.extraStatusChecks {
 			requiredChecks = append(requiredChecks, &check)
 		}
+	}
+	if options.withoutStatusChecks {
+		requiredChecks = nil
+	}
+	linearHistory := pulumi.Bool(true)
+	if options.noLinearHistory {
+		linearHistory = pulumi.Bool(false)
+	}
+	requiredStatusChecks := &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
+		RequiredChecks:                   requiredChecks,
+		DoNotEnforceOnCreate:             pulumi.Bool(true),
+		StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
+	}
+	if options.withoutStatusChecks {
+		requiredStatusChecks = nil
 	}
 
 	return github.RepositoryRulesetArgs{
@@ -871,7 +911,7 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, extraStatusChec
 			Creation:              pulumi.Bool(false),
 			Update:                pulumi.Bool(false),
 			Deletion:              pulumi.Bool(true),
-			RequiredLinearHistory: pulumi.Bool(true),
+			RequiredLinearHistory: linearHistory,
 			RequiredSignatures:    pulumi.Bool(false),
 			PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
 				DismissStaleReviewsOnPush:      pulumi.Bool(true),
@@ -880,11 +920,7 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, extraStatusChec
 				RequiredApprovingReviewCount:   pulumi.Int(0),
 				RequiredReviewThreadResolution: pulumi.Bool(true),
 			},
-			RequiredStatusChecks: &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
-				RequiredChecks:                   requiredChecks,
-				DoNotEnforceOnCreate: pulumi.Bool(true),
-				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
-			},
+			RequiredStatusChecks: requiredStatusChecks,
 		},
 	}
 }
