@@ -472,7 +472,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "scaffolding-default", &scaffoldingDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		scaffoldingReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(scaffolding, NewRulesetOptions())
+		scaffoldingReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(scaffolding, NewRulesetOptions().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "scaffolding-release", &scaffoldingReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
