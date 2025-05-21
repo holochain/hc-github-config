@@ -642,6 +642,12 @@ func main() {
 				RequiredReviewThreadResolution: pulumi.Bool(true),
 			},
 		}
+		if err = AddAppleAppSigningSecrets(ctx, conf, "kangaroo-electron"); err != nil {
+			return err
+		}
+		if err = AddWindowsCodeSigningCertificates(ctx, conf, "kangaroo-electron"); err != nil {
+			return err
+		}
 
 		//
 		// Dino Adventure
@@ -683,6 +689,9 @@ func main() {
 			return err
 		}
 		if err = AddAppleAppSigningSecrets(ctx, conf, "dino-adventure-kangaroo"); err != nil {
+			return err
+		}
+		if err = AddWindowsCodeSigningCertificates(ctx, conf, "dino-adventure-kangaroo"); err != nil {
 			return err
 		}
 
@@ -1154,6 +1163,57 @@ func AddAppleAppSigningSecrets(ctx *pulumi.Context, cfg *config.Config, reposito
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func AddWindowsCodeSigningCertificates(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-azure-key-vault-uri", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("AZURE_KEY_VAULT_URI"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("azureKeyVaultUri"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-azure-cert-name", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("AZURE_CERT_NAME"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("azureCertName"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-azure-tenant-id", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("AZURE_TENANT_ID"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("azureTenantId"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-azure-client-id", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("AZURE_CLIENT_ID"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("azureClientId"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-azure-client-secret", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("AZURE_CLIENT_SECRET"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("azureClientSecret"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return nil
 }
