@@ -87,6 +87,20 @@ cat apple.cert | pulumi config set --secret appleCertificate
 pulumi config set --secret appleCertificatePassword '<new-value>'
 ```
 
+### Rotating the Windows App signing credentials
+
+There are a list of secrets required to enable Apple App signing. Pick from the list of commands below to rotate the
+values you need to change.
+
+```bash
+pulumi config set --secret azureKeyVaultUri '<new-value>'
+pulumi config set --secret azureCertName '<new-value>'
+pulumi config set --secret azureTenantId '<new-value>'
+pulumi config set --secret azureClientId '<new-value>'
+pulumi config set --secret azureClientSecret '<new-value>'
+```
+
+
 ### Importing a repository
 
 Importing a repository is a little different to creating a new one. Pulumi requires that you describe the current state
