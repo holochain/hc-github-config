@@ -668,6 +668,25 @@ func main() {
 		}
 
 		//
+		// Dino Adventure - Kangaroo
+		//
+		dinoAdventureKangarooDescription := "Kangaroo packaging for the dino adventure app"
+		dinoAdventureKangarooRepositoryArgs := StandardRepositoryArgs("dino-adventure-kangaroo", &dinoAdventureKangarooDescription)
+		dinoAdventureKangaroo, err := github.NewRepository(ctx, "dino-adventure-kangaroo", &dinoAdventureKangarooRepositoryArgs, pulumi.Import(pulumi.ID("dino-adventure-kangaroo")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "dino-adventure-kangaroo", dinoAdventureKangaroo); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "dino-adventure-kangaroo", dinoAdventureKangaroo); err != nil {
+			return err
+		}
+		if err = AddAppleAppSigningSecrets(ctx, conf, "dino-adventure-kangaroo"); err != nil {
+			return err
+		}
+
+		//
 		// nomad-server
 		//
 		nomadServerDescription := "A Pulumi definition for deploying a cluster of Nomad servers as DigitalOcean droplets"
@@ -1067,6 +1086,70 @@ func AddTailscaleOAuthSecrets(ctx *pulumi.Context, cfg *config.Config, repositor
 		SecretName: pulumi.String("TS_OAUTH_SECRET"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("tailscaleOAuthSecret"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func AddAppleAppSigningSecrets(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-apple-dev-identity", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("APPLE_DEV_IDENTITY"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("appleDevIdentity"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-apple-id-email", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("APPLE_ID_EMAIL"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("appleIdEmail"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-apple-id-password", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("APPLE_ID_PASSWORD"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("appleIdPassword"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-apple-team-id", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("APPLE_TEAM_ID"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("appleTeamId"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-apple-certificate", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("APPLE_CERTIFICATE"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("appleCertificate"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-apple-certificate-password", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("APPLE_CERTIFICATE_PASSWORD"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("appleCertificatePassword"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
