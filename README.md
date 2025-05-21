@@ -73,6 +73,20 @@ allowing the CI to deploy it or by manually running:
 pulumi up
 ```
 
+### Rotating the Apple App signing credentials
+
+There are a list of secrets required to enable Apple App signing. Pick from the list of commands below to rotate the
+values you need to change.
+
+```bash
+pulumi config set --secret appleDevIdentity '<new-value>'
+pulumi config set --secret appleIdEmail '<new-value>'
+pulumi config set --secret appleIdPassword '<new-value>'
+pulumi config set --secret appleTeamId '<new-value>'
+cat apple.cert | pulumi config set --secret appleCertificate
+pulumi config set --secret appleCertificatePassword '<new-value>'
+```
+
 ### Importing a repository
 
 Importing a repository is a little different to creating a new one. Pulumi requires that you describe the current state
