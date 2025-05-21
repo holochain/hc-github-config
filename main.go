@@ -94,6 +94,14 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "holochain-wasmer", holochainWasmer); err != nil {
 			return err
 		}
+		holochainWasmerDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(holochainWasmer, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "holochain-wasmer-default", &holochainWasmerDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		holochainWasmerReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(holochainWasmer, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "holochain-wasmer-release", &holochainWasmerReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
 
 		//
 		// wind tunnel
@@ -109,6 +117,14 @@ func main() {
 			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "wind-tunnel", windTunnel); err != nil {
+			return err
+		}
+		windTunnelDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(windTunnel, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-default", &windTunnelDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		windTunnelReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(windTunnel, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-release", &windTunnelReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
 		windTunnelConf := config.New(ctx, "wind-tunnel")
@@ -171,6 +187,14 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "tryorama", tryorama); err != nil {
 			return err
 		}
+		tryoramaDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(tryorama, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "tryorama-default", &tryoramaDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		tryoramaReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(tryorama, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "tryorama-release", &tryoramaReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
 
 		//
 		// Holonix
@@ -185,6 +209,14 @@ func main() {
 			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "holonix", holonix); err != nil {
+			return err
+		}
+		holonixDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(holonix, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "holonix-default", &holonixDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		holonixReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(holonix, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "holonix-release", &holonixReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
 
@@ -219,6 +251,14 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "sbd", sbd); err != nil {
 			return err
 		}
+		sbdDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(sbd, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "sbd-default", &sbdDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		sbdReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(sbd, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "sbd-release", &sbdReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
 
 		//
 		// Tx5
@@ -234,6 +274,14 @@ func main() {
 			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "tx5", tx5); err != nil {
+			return err
+		}
+		tx5DefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(tx5, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "tx5-default", &tx5DefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		tx5ReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(tx5, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "tx5-release", &tx5ReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
 
@@ -270,6 +318,14 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "hc-chc-service", hcChcService); err != nil {
 			return err
 		}
+		hcChcServiceDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcChcService, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-chc-service-default", &hcChcServiceDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		hcChcServiceReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcChcService, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-chc-service-release", &hcChcServiceReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
 
 		//
 		// Holochain Serialization
@@ -284,6 +340,14 @@ func main() {
 			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "holochain-serialization", holochainSerialization); err != nil {
+			return err
+		}
+		holochainSerializationDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(holochainSerialization, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "holochain-serialization-default", &holochainSerializationDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		holochainSerializationReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(holochainSerialization, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "holochain-serialization-release", &holochainSerializationReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
 
@@ -646,6 +710,10 @@ func main() {
 		}
 		hcHttpGwDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcHttpGw, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-http-gw-default", &hcHttpGwDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		hcHttpGwReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcHttpGw, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-http-gw-release", &hcHttpGwReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
 
