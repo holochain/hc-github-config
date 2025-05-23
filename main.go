@@ -795,6 +795,318 @@ func main() {
 			return err
 		}
 
+		//
+		// must_future
+		//
+		mustFutureDescription := "A wrapper future marked must_use - mainly to wrap BoxFutures"
+		mustFutureRepositoryArgs := StandardRepositoryArgs("must_future", &mustFutureDescription)
+		mustFuture, err := github.NewRepository(ctx, "must_future", &mustFutureRepositoryArgs, pulumi.Import(pulumi.ID("must_future")))
+		if err != nil {
+			return err
+		}
+		if err = MigrateDefaultBranchToMain(ctx, "must_future", mustFuture); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "must_future", mustFuture); err != nil {
+			return err
+		}
+		mustFutureDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(mustFuture, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "must_future-default", &mustFutureDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		mustFutureReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(mustFuture, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "must_future-release", &mustFutureReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// url2
+		//
+		url2Description := "ergonomic wrapper around the popular url crate"
+		url2RepositoryArgs := StandardRepositoryArgs("url2", &url2Description)
+		url2, err := github.NewRepository(ctx, "url2", &url2RepositoryArgs, pulumi.Import(pulumi.ID("url2")))
+		if err != nil {
+			return err
+		}
+		if err = MigrateDefaultBranchToMain(ctx, "url2", url2); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "url2", url2); err != nil {
+			return err
+		}
+		url2DefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(url2, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "url2-default", &url2DefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		url2ReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(url2, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "url2-release", &url2ReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// automap-rs
+		//
+		automapRsDescription := "Simple pattern for expressing Rust maps where the Value type contains the Key"
+		automapRsRepositoryArgs := StandardRepositoryArgs("automap-rs", &automapRsDescription)
+		automapRs, err := github.NewRepository(ctx, "automap-rs", &automapRsRepositoryArgs, pulumi.Import(pulumi.ID("automap-rs")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "automap-rs", automapRs); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "automap-rs", automapRs); err != nil {
+			return err
+		}
+		automapRsDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(automapRs, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "automap-rs-default", &automapRsDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		automapRsReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(automapRs, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "automap-rs-release", &automapRsReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// rand-utf8
+		//
+		randUtf8Description := "Random utf8 utility"
+		randUtf8RepositoryArgs := StandardRepositoryArgs("rand-utf8", &randUtf8Description)
+		randUtf8, err := github.NewRepository(ctx, "rand-utf8", &randUtf8RepositoryArgs, pulumi.Import(pulumi.ID("rand-utf8")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "rand-utf8", randUtf8); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "rand-utf8", randUtf8); err != nil {
+			return err
+		}
+		randUtf8DefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(randUtf8, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "rand-utf8-default", &randUtf8DefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		randUtf8ReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(randUtf8, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "rand-utf8-release", &randUtf8ReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// isotest-rs
+		//
+		isoTestRsDescription := "Opinionated way to solve a very particular problem in Rust testing"
+		isoTestRsRepositoryArgs := StandardRepositoryArgs("isotest-rs", &isoTestRsDescription)
+		isoTestRs, err := github.NewRepository(ctx, "isotest-rs", &isoTestRsRepositoryArgs, pulumi.Import(pulumi.ID("isotest-rs")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "isotest-rs", isoTestRs); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "isotest-rs", isoTestRs); err != nil {
+			return err
+		}
+		isoTestRsDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(isoTestRs, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "isotest-rs-default", &isoTestRsDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		isoTestRsReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(isoTestRs, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "isotest-rs-release", &isoTestRsReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// one_err
+		//
+		oneErrDescription := "OneErr to rule them all"
+		oneErrRepositoryArgs := StandardRepositoryArgs("one_err", &oneErrDescription)
+		oneErr, err := github.NewRepository(ctx, "one_err", &oneErrRepositoryArgs, pulumi.Import(pulumi.ID("one_err")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "one_err", oneErr); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "one_err", oneErr); err != nil {
+			return err
+		}
+		oneErrDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(oneErr, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "one_err-default", &oneErrDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		oneErrReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(oneErr, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "one_err-release", &oneErrReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// bootstrap
+		//
+		bootstrapDescription := "Bootstrap nodes onto a network by allowing existing nodes to list themselves under a URL"
+		bootstrapRepositoryArgs := StandardRepositoryArgs("bootstrap", &bootstrapDescription)
+		bootstrap, err := github.NewRepository(ctx, "bootstrap", &bootstrapRepositoryArgs, pulumi.Import(pulumi.ID("bootstrap")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "bootstrap", bootstrap); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "bootstrap", bootstrap); err != nil {
+			return err
+		}
+		bootstrapDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(bootstrap, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "bootstrap-default", &bootstrapDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		bootstrapReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(bootstrap, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "bootstrap-release", &bootstrapReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// ametrics
+		//
+		ametricsDescription := "ametrics metric abstraction helpers"
+		ametricsRepositoryArgs := StandardRepositoryArgs("ametrics", &ametricsDescription)
+		ametrics, err := github.NewRepository(ctx, "ametrics", &ametricsRepositoryArgs, pulumi.Import(pulumi.ID("ametrics")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "ametrics", ametrics); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "ametrics", ametrics); err != nil {
+			return err
+		}
+		ametricsDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(ametrics, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "ametrics-default", &ametricsDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		ametricsReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(ametrics, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "ametrics-release", &ametricsReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// contrafact-rs
+		//
+		contrafactRsDescription := "Generate test fixtures and check data properties with declarative, modular constraints"
+		contrafactRsRepositoryArgs := StandardRepositoryArgs("contrafact-rs", &contrafactRsDescription)
+		contrafactRs, err := github.NewRepository(ctx, "contrafact-rs", &contrafactRsRepositoryArgs, pulumi.Import(pulumi.ID("contrafact-rs")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "contrafact-rs", contrafactRs); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "contrafact-rs", contrafactRs); err != nil {
+			return err
+		}
+		contrafactRsDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(contrafactRs, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "contrafact-rs-default", &contrafactRsDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		contrafactRsReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(contrafactRs, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "contrafact-rs-release", &contrafactRsReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// task-motel-rs
+		//
+		taskMotelRsDescription := "An opinionated Tokio task manager"
+		taskMotelRsRepositoryArgs := StandardRepositoryArgs("task-motel-rs", &taskMotelRsDescription)
+		taskMotelRs, err := github.NewRepository(ctx, "task-motel-rs", &taskMotelRsRepositoryArgs, pulumi.Import(pulumi.ID("task-motel-rs")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "task-motel-rs", taskMotelRs); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "task-motel-rs", taskMotelRs); err != nil {
+			return err
+		}
+		taskMotelRsDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(taskMotelRs, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "task-motel-rs-default", &taskMotelRsDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		taskMotelRsReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(taskMotelRs, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "task-motel-rs-release", &taskMotelRsReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// devhub-gui
+		//
+		devHubGuiDescription := "A web-based UI that works with Holochain's collection of DevHub DNAs."
+		devHubGuiRepositoryArgs := StandardRepositoryArgs("devhub-gui", &devHubGuiDescription)
+		devHubGui, err := github.NewRepository(ctx, "devhub-gui", &devHubGuiRepositoryArgs, pulumi.Import(pulumi.ID("devhub-gui")))
+		if err != nil {
+			return err
+		}
+		if err = MigrateDefaultBranchToMain(ctx, "devhub-gui", devHubGui); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "devhub-gui", devHubGui); err != nil {
+			return err
+		}
+		devHubGuiDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(devHubGui, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "devhub-gui-default", &devHubGuiDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		devHubGuiReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(devHubGui, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "devhub-gui-release", &devHubGuiReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// app-store-gui
+		//
+		appStoreGuiDescription := "A web-based UI that works with Holochain's collection of App Store DNAs."
+		appStoreGuiRepositoryArgs := StandardRepositoryArgs("app-store-gui", &appStoreGuiDescription)
+		appStoreGui, err := github.NewRepository(ctx, "app-store-gui", &appStoreGuiRepositoryArgs, pulumi.Import(pulumi.ID("app-store-gui")))
+		if err != nil {
+			return err
+		}
+		if err = MigrateDefaultBranchToMain(ctx, "app-store-gui", appStoreGui); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "app-store-gui", appStoreGui); err != nil {
+			return err
+		}
+		appStoreGuiDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(appStoreGui, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "app-store-gui-default", &appStoreGuiDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		appStoreGuiReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(appStoreGui, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "app-store-gui-release", &appStoreGuiReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
+		// bootstrap2
+		//
+		bootstrap2Description := "Holochain bootstrap peer discovery."
+		bootstrap2RepositoryArgs := StandardRepositoryArgs("bootstrap2", &bootstrap2Description)
+		bootstrap2, err := github.NewRepository(ctx, "bootstrap2", &bootstrap2RepositoryArgs, pulumi.Import(pulumi.ID("bootstrap2")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "bootstrap2", bootstrap2); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "bootstrap2", bootstrap2); err != nil {
+			return err
+		}
+		bootstrap2DefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(bootstrap2, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "bootstrap2-default", &bootstrap2DefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		bootstrap2ReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(bootstrap2, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "bootstrap2-release", &bootstrap2ReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
