@@ -1107,6 +1107,26 @@ func main() {
 			return err
 		}
 
+		//
+		// release-integration
+		//
+		releaseIntegrationDescription := "Integration of third-party release tools with Holochain repositories"
+		releaseIntegrationRepositoryArgs := StandardRepositoryArgs("release-integration", &releaseIntegrationDescription)
+		releaseIntegration, err := github.NewRepository(ctx, "release-integration", &releaseIntegrationRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "release-integration", releaseIntegration); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "release-integration", releaseIntegration); err != nil {
+			return err
+		}
+		releaseIntegrationDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(releaseIntegration, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "release-integration-default", &releaseIntegrationDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
