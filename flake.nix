@@ -20,13 +20,13 @@
             pulumiBundle = pkgs.stdenv.mkDerivation {
               name = "pulumi-bundle";
               phases = [ "installPhase" "fixupPhase" ];
-              buildInputs = with pkgs; [ pulumi pulumiPackages.pulumi-language-go ];
+              buildInputs = with pkgs; [ pulumi pulumiPackages.pulumi-go ];
               installPhase = ''
                 mkdir -p $out/bin
                 mkdir -p $out/share
                 cp ${pkgs.pulumi}/bin/* $out/bin/
                 cp -r ${pkgs.pulumi}/share $out/share
-                cp ${pkgs.pulumiPackages.pulumi-language-go}/bin/* $out/bin/
+                cp ${pkgs.pulumiPackages.pulumi-go}/bin/* $out/bin/
               '';
             };
           in
