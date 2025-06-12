@@ -1127,6 +1127,26 @@ func main() {
 			return err
 		}
 
+		//
+		// actions
+		//
+		actionsDescription := "Actions for common tasks in Holochain repositories"
+		actionsRepositoryArgs := StandardRepositoryArgs("actions", &actionsDescription)
+		actions, err := github.NewRepository(ctx, "actions", &actionsRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "actions", actions); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "actions", actions); err != nil {
+			return err
+		}
+		actionsDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(actions, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "actions-default", &actionsDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
