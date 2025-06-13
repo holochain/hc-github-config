@@ -28,7 +28,7 @@ The automation user is provided with an access token that can be used in standar
 To rotate the token, you can run the following command:
 
 ```bash
-pulumi config set --secret hra2GithubUserToken <new-token>
+pulumi config set --secret hra2GithubUserToken '<new-token>'
 ```
 
 This value is encrypted by Pulumi and stored in `Pulumi.github.yaml`.
@@ -49,7 +49,17 @@ itself.
 To rotate the token, you can run the following command:
 
 ```bash
-pulumi config set --secret hra2GithubAdminToken <new-token>
+pulumi config set --secret hra2GithubAdminToken '<new-token>'
+```
+
+### Rotating the crates.io access token
+
+There is an access token for crates.io that is used to publish crates.
+
+A new token requires the "publish-new" and "publish-update" scopes.
+
+```bash
+pulumi config set --secret hra2CratesIoToken '<new-token>'
 ```
 
 ### Rotating the Pulumi access token
@@ -99,7 +109,6 @@ pulumi config set --secret azureTenantId '<new-value>'
 pulumi config set --secret azureClientId '<new-value>'
 pulumi config set --secret azureClientSecret '<new-value>'
 ```
-
 
 ### Importing a repository
 
