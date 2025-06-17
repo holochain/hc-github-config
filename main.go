@@ -102,6 +102,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "holochain-wasmer-release", &holochainWasmerReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "holochain-wasmer", holochainWasmer); err != nil {
+			return err
+		}
 
 		//
 		// wind tunnel
@@ -129,6 +132,9 @@ func main() {
 		}
 		windTunnelConf := config.New(ctx, "wind-tunnel")
 		if err = AddNomadAccessTokenSecret(ctx, windTunnelConf, "wind-tunnel"); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "wind-tunnel", windTunnel); err != nil {
 			return err
 		}
 
@@ -259,6 +265,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "sbd-release", &sbdReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "sbd", sbd); err != nil {
+			return err
+		}
 
 		//
 		// Tx5
@@ -284,6 +293,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "tx5-release", &tx5ReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "tx5", tx5); err != nil {
+			return err
+		}
 
 		//
 		// Lair Keystore
@@ -300,6 +312,17 @@ func main() {
 			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "lair", lair); err != nil {
+			return err
+		}
+		lairDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(lair, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "lair-default", &lairDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		lairReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(lair, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "lair-release", &lairReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "lair", lair); err != nil {
 			return err
 		}
 
@@ -353,6 +376,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "holochain-serialization-release", &holochainSerializationReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "holochain-serialization", holochainSerialization); err != nil {
+			return err
+		}
 
 		//
 		// Influxive
@@ -367,6 +393,17 @@ func main() {
 			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "influxive", influxive); err != nil {
+			return err
+		}
+		influxiveDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(influxive, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "influxive-default", &influxiveDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		influxiveReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(influxive, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "influxive-release", &influxiveReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "influxive", influxive); err != nil {
 			return err
 		}
 
@@ -453,7 +490,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "kitsune2-release", &kitsune2ReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		if err = AddGithubUserTokenSecret(ctx, conf, "kitsune2"); err != nil {
+		if err = AddReleaseIntegrationSupport(ctx, conf, "kitsune2", kitsune2); err != nil {
 			return err
 		}
 
@@ -542,6 +579,9 @@ func main() {
 		}
 		scaffoldingReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(scaffolding, NewRulesetOptions().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "scaffolding-release", &scaffoldingReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "scaffolding", scaffolding); err != nil {
 			return err
 		}
 
@@ -746,6 +786,9 @@ func main() {
 		}
 		hcHttpGwReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcHttpGw, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-http-gw-release", &hcHttpGwReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "hc-http-gw", hcHttpGw); err != nil {
 			return err
 		}
 
