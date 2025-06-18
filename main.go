@@ -31,10 +31,6 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-github-config-default", &selfDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		selfReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(self, NewRulesetOptions())
-		if _, err = github.NewRepositoryRuleset(ctx, "hc-github-config-release", &selfReleaseRepositoryRulesetArgs); err != nil {
-			return err
-		}
 		if _, err := github.NewRepositoryRuleset(ctx, "hc-github-config", &github.RepositoryRulesetArgs{
 			Name:        pulumi.String("default"),
 			Repository:  self.Name,
@@ -111,7 +107,6 @@ func main() {
 		//
 		description = "Performance testing for Holochain"
 		windTunnelRepositoryArgs := StandardRepositoryArgs("wind-tunnel", &description)
-		windTunnelRepositoryArgs.AllowAutoMerge = pulumi.Bool(false)
 		windTunnel, err := github.NewRepository(ctx, "wind-tunnel", &windTunnelRepositoryArgs, pulumi.Import(pulumi.ID("wind-tunnel")))
 		if err != nil {
 			return err
@@ -1374,7 +1369,7 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, options Ruleset
 	}
 	linearHistory := pulumi.Bool(true)
 	if options.noLinearHistory {
-		linearHistory = pulumi.Bool(false)
+		linearHistory = false
 	}
 	requiredStatusChecks := &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
 		RequiredChecks:                   requiredChecks,
