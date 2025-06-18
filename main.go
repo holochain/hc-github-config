@@ -1411,6 +1411,13 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, options Ruleset
 			},
 			RequiredStatusChecks: requiredStatusChecks,
 		},
+		BypassActors: github.RepositoryRulesetBypassActorArray{
+			&github.RepositoryRulesetBypassActorArgs{
+				ActorId:    pulumi.Int(5),
+				ActorType:  pulumi.String("RepositoryRole"),
+				BypassMode: pulumi.String("always"),
+			},
+		},
 	}
 }
 
