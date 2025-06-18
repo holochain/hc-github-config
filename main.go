@@ -490,31 +490,6 @@ func main() {
 		}
 
 		//
-		// ghost_actor
-		//
-		ghostActorRepositoryArgs := StandardRepositoryArgs("ghost_actor", nil)
-		ghostActorRepositoryArgs.Description = pulumi.String("GhostActor makes it simple, ergonomic, and idiomatic to implement async / concurrent code using an Actor model.")
-		ghostActorRepositoryArgs.Archived = pulumi.Bool(true)
-		ghostActor, err := github.NewRepository(ctx, "ghost_actor", &ghostActorRepositoryArgs, pulumi.Import(pulumi.ID("ghost_actor")))
-		if err != nil {
-			return err
-		}
-		if err = RequireMainAsDefaultBranch(ctx, "ghost_actor", ghostActor); err != nil {
-			return err
-		}
-		if err = StandardRepositoryAccess(ctx, "ghost_actor", ghostActor); err != nil {
-			return err
-		}
-		ghostActorDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(ghostActor, NewRulesetOptions())
-		if _, err = github.NewRepositoryRuleset(ctx, "ghost_actor-default", &ghostActorDefaultRepositoryRulesetArgs); err != nil {
-			return err
-		}
-		ghostActorReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(ghostActor, NewRulesetOptions())
-		if _, err = github.NewRepositoryRuleset(ctx, "ghost_actor-release", &ghostActorReleaseRepositoryRulesetArgs); err != nil {
-			return err
-		}
-
-		//
 		// docs-pages
 		//
 		docsPagesRepositoryArgs := StandardRepositoryArgs("docs-pages", nil)
