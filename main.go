@@ -53,7 +53,7 @@ func main() {
 				RequiredStatusChecks: &github.RepositoryRulesetRulesRequiredStatusChecksArgs{
 					RequiredChecks: github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
 						github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
-							Context: pulumi.String("check"),
+							Context: pulumi.String("ci_pass"),
 						},
 					},
 					StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
