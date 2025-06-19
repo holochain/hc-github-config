@@ -297,7 +297,6 @@ func main() {
 		//
 		description = "secret lair private keystore"
 		lairRepositoryArgs := StandardRepositoryArgs("lair", &description)
-		lairRepositoryArgs.AllowRebaseMerge = pulumi.Bool(false)
 		lairRepositoryArgs.SquashMergeCommitTitle = pulumi.String("PR_TITLE")
 		lair, err := github.NewRepository(ctx, "lair", &lairRepositoryArgs, pulumi.Import(pulumi.ID("lair")))
 		if err != nil {
