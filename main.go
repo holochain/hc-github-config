@@ -907,6 +907,30 @@ func main() {
 		}
 
 		//
+		// serde-json
+		//
+		serdeJsonDescription := "Strongly typed JSON library for Rust"
+		serdeJsonRepositoryArgs := StandardRepositoryArgs("serde-json", &serdeJsonDescription)
+		serdeJson, err := github.NewRepository(ctx, "serde-json", &serdeJsonRepositoryArgs, pulumi.Import(pulumi.ID("serde-json")))
+		if err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "serde-json", serdeJson); err != nil {
+			return err
+		}
+		serdeJsonDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(serdeJson, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "serde-json-default", &serdeJsonDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		serdeJsonReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(serdeJson, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "serde-json-release", &serdeJsonReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "serde-json", serdeJson); err != nil {
+			return err
+		}
+
+		//
 		// isotest-rs
 		//
 		isoTestRsDescription := "Opinionated way to solve a very particular problem in Rust testing"
