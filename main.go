@@ -905,6 +905,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "rand-utf8-release", &randUtf8ReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "rand-utf8", randUtf8); err != nil {
+			return err
+		}
 
 		//
 		// serde-json
