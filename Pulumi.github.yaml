@@ -28,10 +28,10 @@ config:
   holochain:azureCertName:
     secure: AAABAFCSemPqeEOKthoZ8H0M+XorPBQRS2t0vHtfV8wIREYik0xE5T5Ft/2MiMwsrvkBTZ/hpKb5R0tCa9I=
   holochain:azureTenantId:
-    secure: AAABALbEolFjthJgyf01DpGbPvw3xr8ZXLWtCux6URTW6dxBTiDqHODbDANm3e25mh6dgf13BmA7O0WE473XACDHB8k=
+    secure: AAABAL3mKPl2ZXah7ZQ8zg8wbm1Jb9bBb+1H0DCMSOJCm6SQ7lrUxE3dEU2xHJeyS+l+U4eSKH79HLxuO3PbMKQBmyw=
   holochain:azureClientId:
-    secure: AAABAA3pbLLnbxNSLUJ55YvfYvzzG8d9C/znSgf/k0uqoIdSCRirvR+xhyMnBviormFnq4mBcCAc6GRLQoDmiNnEzs0=
+    secure: AAABAHJdsy1HEgX68WXV9Ja7xV4Ndat/AjYZwkXcnch8pfgOR6cUA7U9DRo0K1WgmQwTc1ViBwe7DUiMMZhsj+4VYlA=
   holochain:azureClientSecret:
-    secure: AAABAIdVfCSdb3/D5OPbc4Xu8gicoXdP2beJl/dDHaKcYXQcXQFgmpNiLwiqq2Ngp311jcmNjE9VALMT44qKJGYi4qac43ym
+    secure: AAABAL7MI18NSLZ1+UjNSL8OnOUTmwNKOqbW+MY8/WRhVvgtyBq2Ew4eSelynQQp5HrWDbQWqsYAyVhIw7PzValG8gA5APFW
   holochain:hra2CratesIoToken:
     secure: AAABAEzGqFu7Q51/mzbbfEMiQL4b2Amg4qINikyLr83PmORh660kXx/ePDUtle3wF9DV+JiLkp74U5qpDn2UFWeOpg==
