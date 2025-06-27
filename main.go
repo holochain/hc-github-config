@@ -539,9 +539,6 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "scaffolding", scaffolding); err != nil {
 			return err
 		}
-		if err = AdditionalRepositoryAdmin(ctx, "scaffolding", "c12i", scaffolding); err != nil {
-			return err
-		}
 		scaffoldingDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(scaffolding, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "scaffolding-default", &scaffoldingDefaultRepositoryRulesetArgs); err != nil {
 			return err
@@ -570,9 +567,6 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "hc-launch", hcLaunch); err != nil {
 			return err
 		}
-		if err = AdditionalRepositoryAdmin(ctx, "hc-launch", "matthme", hcLaunch); err != nil {
-			return err
-		}
 		hcLaunchDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcLaunch, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-launch-default", &hcLaunchDefaultRepositoryRulesetArgs); err != nil {
 			return err
@@ -596,9 +590,6 @@ func main() {
 			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "hc-spin", hcSpin); err != nil {
-			return err
-		}
-		if err = AdditionalRepositoryAdmin(ctx, "hc-spin", "matthme", hcSpin); err != nil {
 			return err
 		}
 		hcSpinDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcSpin, NewRulesetOptions())
@@ -625,9 +616,6 @@ func main() {
 			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "kangaroo-electron", kangarooElectron); err != nil {
-			return err
-		}
-		if err = AdditionalRepositoryAdmin(ctx, "kangaroo-electron", "matthme", kangarooElectron); err != nil {
 			return err
 		}
 		// Since kangaroo is a Github Template we currently omit mandatory CI checks
@@ -1232,16 +1220,6 @@ func StandardRepositoryAccess(ctx *pulumi.Context, name string, repository *gith
 		Repository: repository.Name,
 		Permission: pulumi.String("maintain"),
 		TeamId:     pulumi.String("holochain-devs"),
-	})
-
-	return err
-}
-
-func AdditionalRepositoryAdmin(ctx *pulumi.Context, resourceName string, username string, repository *github.Repository) error {
-	_, err := github.NewRepositoryCollaborator(ctx, fmt.Sprintf("%s-collaborator-%s", resourceName, username), &github.RepositoryCollaboratorArgs{
-		Repository: repository.Name,
-		Username:   pulumi.String(username),
-		Permission: pulumi.String("admin"),
 	})
 
 	return err
