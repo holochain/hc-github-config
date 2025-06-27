@@ -1230,7 +1230,7 @@ func StandardRepositoryAccess(ctx *pulumi.Context, name string, repository *gith
 	}
 	_, err = github.NewTeamRepository(ctx, fmt.Sprintf("%s-collaborator-holochain-devs", name), &github.TeamRepositoryArgs{
 		Repository: repository.Name,
-		Permission: pulumi.String("maintain"),
+		Permission: pulumi.String("admin"),
 		TeamId:     pulumi.String("holochain-devs"),
 	})
 
