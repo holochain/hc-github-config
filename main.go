@@ -535,7 +535,7 @@ func main() {
 		hcStaticSiteRepositoryArgs.AutoInit = pulumi.Bool(false)
 		hcStaticSiteRepositoryArgs.DeleteBranchOnMerge = pulumi.Bool(false)
 		hcStaticSiteRepositoryArgs.HasDownloads = pulumi.Bool(true)
-		hcStaticSiteRepositoryArgs.visibility = pulumi.String("private")
+		hcStaticSiteRepositoryArgs.Visibility = pulumi.String("private")
 		hcStaticSiteRepositoryArgs.HomepageUrl = pulumi.String("https://www.holochain.org")
 		hcStaticSiteRepositoryArgs.MergeCommitMessage = pulumi.String("PR_TITLE")
 		hcStaticSiteRepositoryArgs.MergeCommitTitle = pulumi.String("MERGE_MESSAGE")
