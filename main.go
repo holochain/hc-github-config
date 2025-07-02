@@ -526,22 +526,26 @@ func main() {
 		//
 		// hc-static-site
 		//
-		hcStaticSiteRepositoryArgs := StandardRepositoryArgs("hc-static-site", nil)
-		hcStaticSiteRepositoryArgs.Description = pulumi.String("Static website")
-		hcStaticSiteRepositoryArgs.AllowAutoMerge = pulumi.Bool(false)
-		hcStaticSiteRepositoryArgs.AllowRebaseMerge = pulumi.Bool(false)
-		hcStaticSiteRepositoryArgs.AllowSquashMerge = pulumi.Bool(false)
-		hcStaticSiteRepositoryArgs.AllowUpdateBranch = pulumi.Bool(false)
-		hcStaticSiteRepositoryArgs.AutoInit = pulumi.Bool(false)
-		hcStaticSiteRepositoryArgs.DeleteBranchOnMerge = pulumi.Bool(false)
-		hcStaticSiteRepositoryArgs.HasDownloads = pulumi.Bool(true)
-		hcStaticSiteRepositoryArgs.Visibility = pulumi.String("private")
-		hcStaticSiteRepositoryArgs.HomepageUrl = pulumi.String("https://www.holochain.org")
-		hcStaticSiteRepositoryArgs.MergeCommitMessage = pulumi.String("PR_TITLE")
-		hcStaticSiteRepositoryArgs.MergeCommitTitle = pulumi.String("MERGE_MESSAGE")
-		hcStaticSiteRepositoryArgs.SquashMergeCommitMessage = pulumi.String("COMMIT_MESSAGES")
-		hcStaticSiteRepositoryArgs.MergeCommitTitle = pulumi.String("COMMIT_OR_PR_TITLE")
-		hcStaticSiteRepositoryArgs.VulnerabilityAlerts = pulumi.Bool(false)
+		// There's enough different about this repo's config that it makes
+		// sense just to start from scratch.
+		hcStaticSiteRepositoryArgs := github.RepositoryArgs{
+			Name:                pulumi.String("hc-static-site"),
+			Description:         pulumi.String("Static website"),
+			Visibility:          pulumi.String("private"),
+			HasDownloads:        pulumi.Bool(true),
+			HasIssues:           pulumi.Bool(true),
+			HasProjects:         pulumi.Bool(true),
+			HasWiki:             pulumi.Bool(false),
+			VulnerabilityAlerts: pulumi.Bool(false),
+			AllowAutoMerge:      pulumi.Bool(false),
+			DeleteBranchOnMerge: pulumi.Bool(false),
+			AllowUpdateBranch:   pulumi.Bool(false),
+			AllowSquashMerge:    pulumi.Bool(false),
+			AllowRebaseMerge:    pulumi.Bool(false),
+			AllowMergeCommit:    pulumi.Bool(false),
+			AutoInit:            pulumi.Bool(false),
+			VulnerabilityAlerts: pulumi.Bool(false),
+		}
 		hcStaticSite, err := github.NewRepository(ctx, "hc-static-site", &hcStaticSiteRepositoryArgs, pulumi.Import(pulumi.ID("hc-static-site")))
 		if err != nil {
 			return err
