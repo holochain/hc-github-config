@@ -524,6 +524,41 @@ func main() {
 		}
 
 		//
+		// hc-static-site
+		//
+		hcStaticSiteRepositoryArgs := StandardRepositoryArgs("hc-static-site", nil)
+		hcStaticSiteRepositoryArgs.Description = pulumi.String("The hosted static site builder for the holochain.org website")
+		hcStaticSiteRepositoryArgs.HasDiscussions = pulumi.Bool(false)
+		hcStaticSiteRepositoryArgs.HomepageUrl = pulumi.String("https://www.holochain.org")
+		hcStaticSite, err := github.NewRepository(ctx, "hc-static-site", &hcStaticSiteRepositoryArgs, pulumi.Import(pulumi.ID("hc-static-site")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "hc-static-site", hcStaticSite); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "hc-static-site", hcStaticSite); err != nil {
+			return err
+		}
+		hcStaticSiteDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcStaticSite, NewRulesetOptions().withExtraStatusChecks([]github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
+			{
+				IntegrationId: pulumi.Int(13473), // Netlify
+				Context:       pulumi.String("Header rules - holochain-prod"),
+			},
+			{
+				IntegrationId: pulumi.Int(13473), // Netlify
+				Context:       pulumi.String("netlify/holochain-prod/deploy-preview"),
+			},
+			{
+				IntegrationId: pulumi.Int(13473), // Netlify
+				Context:       pulumi.String("Redirect rules - holochain-prod"),
+			},
+		}))
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-static-site-default", &hcStaticSiteDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
 		// scaffolding
 		//
 		scaffoldingDescription := "Scaffolding tool to quickly generate and modify holochain applications"
