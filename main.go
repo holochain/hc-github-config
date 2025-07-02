@@ -544,7 +544,6 @@ func main() {
 			AllowRebaseMerge:    pulumi.Bool(false),
 			AllowMergeCommit:    pulumi.Bool(false),
 			AutoInit:            pulumi.Bool(false),
-			VulnerabilityAlerts: pulumi.Bool(false),
 		}
 		hcStaticSite, err := github.NewRepository(ctx, "hc-static-site", &hcStaticSiteRepositoryArgs, pulumi.Import(pulumi.ID("hc-static-site")))
 		if err != nil {
