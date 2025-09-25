@@ -1186,9 +1186,9 @@ func main() {
 		}
 
 		//
-		// MatterMost bot
+		// Mattermost bot
 		//
-		mattermostBotDescription := "A MatterMost ChatOps bot for the Holochain project"
+		mattermostBotDescription := "A Mattermost ChatOps bot for the Holochain project"
 		mattermostBotRepositoryArgs := StandardRepositoryArgs("hc-mattermost-bot", &mattermostBotDescription)
 		mattermostBot, err := github.NewRepository(ctx, "hc-mattermost-bot", &mattermostBotRepositoryArgs)
 		if err != nil {
