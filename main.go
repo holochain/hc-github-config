@@ -236,6 +236,14 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "binaries", binaries); err != nil {
 			return err
 		}
+		binariesDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(binaries, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "binaries-default", &binariesDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		binariesReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(binaries, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "binaries-release", &binariesReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
 
 		//
 		// Signal bends decently
@@ -1177,30 +1185,29 @@ func main() {
 			return err
 		}
 
-        //
-        // MatterMost bot
-        //
-        mattermostBotDescription := "A MatterMost ChatOps bot for the Holochain project"
-        mattermostBotRepositoryArgs := StandardRepositoryArgs("hc-mattermost-bot", &mattermostBotDescription)
-        mattermostBot, err := github.NewRepository(ctx, "hc-mattermost-bot", &mattermostBotRepositoryArgs)
-        if err != nil {
-            return err
-        }
-        if err = RequireMainAsDefaultBranch(ctx, "hc-mattermost-bot", mattermostBot); err != nil {
-            return err
-        }
-        if err = StandardRepositoryAccess(ctx, "hc-mattermost-bot", mattermostBot); err != nil {
-            return err
-        }
-        mattermostBotDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(mattermostBot, NewRulesetOptions())
-        if _, err = github.NewRepositoryRuleset(ctx, "hc-mattermost-bot-default", &mattermostBotDefaultRepositoryRulesetArgs); err != nil {
-            return err
-        }
-        mattermostBotReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(mattermostBot, NewRulesetOptions())
-        if _, err = github.NewRepositoryRuleset(ctx, "hc-mattermost-bot-release", &mattermostBotReleaseRepositoryRulesetArgs); err != nil {
-            return err
-        }
-
+		//
+		// MatterMost bot
+		//
+		mattermostBotDescription := "A MatterMost ChatOps bot for the Holochain project"
+		mattermostBotRepositoryArgs := StandardRepositoryArgs("hc-mattermost-bot", &mattermostBotDescription)
+		mattermostBot, err := github.NewRepository(ctx, "hc-mattermost-bot", &mattermostBotRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "hc-mattermost-bot", mattermostBot); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "hc-mattermost-bot", mattermostBot); err != nil {
+			return err
+		}
+		mattermostBotDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(mattermostBot, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-mattermost-bot-default", &mattermostBotDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		mattermostBotReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(mattermostBot, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-mattermost-bot-release", &mattermostBotReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
 
 		return nil
 	})
