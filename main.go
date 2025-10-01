@@ -632,25 +632,12 @@ func main() {
 			return err
 		}
 
-		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, NewRulesetOptions().noLinearHistoryRequired())
+		// Since kangaroo is a Github Template we currently omit mandatory CI checks
+		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, NewRulesetOptions().noStatusChecks().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-release", &kangarooElectronReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		// Since kangaroo is a Github Template we currently omit mandatory CI checks
-		kangarooElectronReleaseRepositoryRulesetArgs.Rules = &github.RepositoryRulesetRulesArgs{
-			Creation:              pulumi.Bool(true),
-			Update:                pulumi.Bool(false),
-			Deletion:              pulumi.Bool(true),
-			RequiredLinearHistory: pulumi.Bool(true),
-			RequiredSignatures:    pulumi.Bool(false),
-			PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
-				DismissStaleReviewsOnPush:      pulumi.Bool(true),
-				RequireCodeOwnerReview:         pulumi.Bool(false),
-				RequireLastPushApproval:        pulumi.Bool(true),
-				RequiredApprovingReviewCount:   pulumi.Int(0),
-				RequiredReviewThreadResolution: pulumi.Bool(true),
-			},
-		}
+
 		if err = AddAppleAppSigningSecrets(ctx, conf, "kangaroo-electron"); err != nil {
 			return err
 		}
