@@ -632,7 +632,7 @@ func main() {
 			return err
 		}
 
-		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, NewRulesetOptions())
+		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, NewRulesetOptions().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-release", &kangarooElectronReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
