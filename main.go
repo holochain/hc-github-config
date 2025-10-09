@@ -1268,6 +1268,7 @@ type RulesetOptions struct {
 	extraStatusChecks   []github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs
 	withoutStatusChecks bool
 	noLinearHistory     bool
+	allowDeletion	bool
 }
 
 func NewRulesetOptions() RulesetOptions {
@@ -1295,6 +1296,11 @@ func (options RulesetOptions) noStatusChecks() RulesetOptions {
 	return options
 }
 
+func (options RulesetOptions) allowBranchDeletion() RulesetOptions {
+	options.allowDeletion = true
+	return options
+}
+
 func DefaultRepositoryRulesetArgs(repository *github.Repository, options RulesetOptions) github.RepositoryRulesetArgs {
 	requiredChecks := github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray{
 		github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
@@ -1319,6 +1325,11 @@ func DefaultRepositoryRulesetArgs(repository *github.Repository, options Ruleset
 		requiredStatusChecks = nil
 	}
 
+	deletion := pulumi.Bool(true)
+	if options.allowDeletion {
+		deletion = pulumi.Bool(false)
+	}
+
 	return github.RepositoryRulesetArgs{
 		Name:        pulumi.String("default"),
 		Repository:  repository.Name,
@@ -1335,7 +1346,7 @@ func DefaultRepositoryRulesetArgs(repository *github.Repository, options Ruleset
 		Rules: &github.RepositoryRulesetRulesArgs{
 			Creation:              pulumi.Bool(true),
 			Update:                pulumi.Bool(false),
-			Deletion:              pulumi.Bool(true),
+			Deletion:              deletion,
 			RequiredLinearHistory: linearHistory,
 			RequiredSignatures:    pulumi.Bool(false),
 			PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
@@ -1378,6 +1389,11 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, options Ruleset
 		requiredStatusChecks = nil
 	}
 
+	deletion := pulumi.Bool(true)
+	if options.allowDeletion {
+		deletion = pulumi.Bool(false)
+	}
+
 	return github.RepositoryRulesetArgs{
 		Name:        pulumi.String("release"),
 		Repository:  repository.Name,
@@ -1397,7 +1413,7 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, options Ruleset
 		Rules: &github.RepositoryRulesetRulesArgs{
 			Creation:              pulumi.Bool(false),
 			Update:                pulumi.Bool(false),
-			Deletion:              pulumi.Bool(true),
+			Deletion:              deletion,
 			RequiredLinearHistory: linearHistory,
 			RequiredSignatures:    pulumi.Bool(false),
 			PullRequest: &github.RepositoryRulesetRulesPullRequestArgs{
