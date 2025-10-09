@@ -604,7 +604,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-default", &hcSpinDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		hcSpinReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcSpin, NewRulesetOptions().noLinearHistoryRequired())
+		hcSpinReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcSpin, NewRulesetOptions().noLinearHistoryRequired().allowBranchDeletion())
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-release", &hcSpinReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
