@@ -110,6 +110,14 @@ pulumi config set --secret azureClientId '<new-value>'
 pulumi config set --secret azureClientSecret '<new-value>'
 ```
 
+### Rotating the Cachix auth token
+
+There is an auth token for Cachix that is used to write to the cache.
+
+```bash
+pulumi config set --secret cachixAuthToken '<new-token>'
+```
+
 ### Importing a repository
 
 Importing a repository is a little different to creating a new one. Pulumi requires that you describe the current state

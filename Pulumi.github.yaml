@@ -35,3 +35,5 @@ config:
     secure: AAABAL7MI18NSLZ1+UjNSL8OnOUTmwNKOqbW+MY8/WRhVvgtyBq2Ew4eSelynQQp5HrWDbQWqsYAyVhIw7PzValG8gA5APFW
   holochain:hra2CratesIoToken:
     secure: AAABAEzGqFu7Q51/mzbbfEMiQL4b2Amg4qINikyLr83PmORh660kXx/ePDUtle3wF9DV+JiLkp74U5qpDn2UFWeOpg==
+  holochain:cachixAuthToken:
+    secure: AAABAF+5oAjNgNow3t2voqguYOGzwLcD1cKI2ajkPfhH9+2RwsUApwFa7axbLCl3AxIhUUt95SndU7G1YqcHNqreYkUeKiZQPL01lwR1jFBr16kkmdB2EH8ezXC4aqLvTSuldokm8ME6J1ZVz4odtRdf6DqeqQDpLpKs+w/3+HKHUF+iQwBP+840jTR+vFt4AJi463qWiyPbkHa+DZPr4O9Nu/DXRQci7BWOslu2TNLTCZkXYw==
