@@ -792,6 +792,9 @@ func main() {
 		if err = AddTailscaleOAuthSecrets(ctx, conf, "wind-tunnel-runner"); err != nil {
 			return err
 		}
+		if err = AddCachixAuthTokenSecret(ctx, conf, "wind-tunnel-runner"); err != nil {
+			return err
+		}
 
 		//
 		// must_future
@@ -1607,6 +1610,17 @@ func AddWindowsCodeSigningCertificates(ctx *pulumi.Context, cfg *config.Config, 
 		SecretName: pulumi.String("AZURE_CLIENT_SECRET"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("azureClientSecret"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+
+	return err
+}
+
+func AddCachixAuthTokenSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-cachix-auth-token", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("CACHIX_AUTH_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("cachixAuthToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
