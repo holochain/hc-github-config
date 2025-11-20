@@ -101,6 +101,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "holochain-wasmer", holochainWasmer); err != nil {
 			return err
 		}
+		if err = AddCachixAuthTokenSecret(ctx, conf, "holochain-wasmer"); err != nil {
+			return err
+		}
 
 		//
 		// wind tunnel
@@ -218,6 +221,9 @@ func main() {
 		}
 		holonixReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(holonix, NewRulesetOptions().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "holonix-release", &holonixReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddCachixAuthTokenSecret(ctx, conf, "holonix"); err != nil {
 			return err
 		}
 
@@ -556,6 +562,9 @@ func main() {
 			return err
 		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "scaffolding", scaffolding); err != nil {
+			return err
+		}
+		if err = AddCachixAuthTokenSecret(ctx, conf, "scaffolding"); err != nil {
 			return err
 		}
 
