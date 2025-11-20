@@ -216,7 +216,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "holonix-default", &holonixDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		holonixReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(holonix, NewRulesetOptions())
+		holonixReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(holonix, NewRulesetOptions().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "holonix-release", &holonixReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
