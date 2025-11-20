@@ -152,7 +152,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "holochain-client-js-default", &jsClientDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		jsClientReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(jsClient, NewRulesetOptions())
+		jsClientReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(jsClient, NewRulesetOptions().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "holochain-client-js-release", &jsClientReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
