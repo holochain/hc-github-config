@@ -192,7 +192,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "tryorama-default", &tryoramaDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		tryoramaReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(tryorama, NewRulesetOptions())
+		tryoramaReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(tryorama, NewRulesetOptions().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "tryorama-release", &tryoramaReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
