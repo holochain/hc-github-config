@@ -804,9 +804,6 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "wind-tunnel-runner"); err != nil {
 			return err
 		}
-		if err = AddGithubUserTokenSecret(ctx, conf, "wind-tunnel-runner"); err != nil {
-			return err
-		}
 
 		//
 		// must_future
