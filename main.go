@@ -475,6 +475,29 @@ func main() {
 			return err
 		}
 
+        //
+        // junit-to-influx-action
+        //
+		junitToInfluxActionRepositoryArgs := StandardRepositoryArgs("junit-to-influx-action", nil)
+		junitToInfluxAction, err := github.NewRepository(ctx, "junit-to-influx-action", &junitToInfluxActionRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "junit-to-influx-action", junitToInfluxAction); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "junit-to-influx-action", junitToInfluxAction); err != nil {
+			return err
+		}
+		junitToInfluxActionDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(junitToInfluxAction, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "junit-to-influx-action-default", &junitToInfluxActionDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		junitToInfluxActionReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(junitToInfluxAction, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "junit-to-influx-action-release", &junitToInfluxActionReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		//
 		// Kitsune2
 		//
