@@ -135,6 +135,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "wind-tunnel", windTunnel); err != nil {
 			return err
 		}
+		if err = AddHetznerHolochainInfraBucketsSecret(ctx, conf, "wind-tunnel"); err != nil {
+			return err
+		}
 
 		//
 		// Holochain JS client
@@ -1677,4 +1680,24 @@ func AddReleaseIntegrationSupport(ctx *pulumi.Context, cfg *config.Config, name 
 	}
 
 	return nil
+}
+
+func AddHetznerHolochainInfraBucketsSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-hetzner-holochain-infra-buckets-access", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("HETZNER_HOLOCHAIN_INFRA_BUCKETS_ACCESS"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("hetznerHolochainInfraBucketsAccess"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+	if err != nil {
+		return err
+	}
+	_, err = github.NewActionsSecret(ctx, fmt.Sprintf("%s-hetzner-holochain-infra-buckets-secret", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("HETZNER_HOLOCHAIN_INFRA_BUCKETS_SECRET"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("hetznerHolochainInfraBucketsSecret"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+
+	return err
 }

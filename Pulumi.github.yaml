@@ -37,3 +37,7 @@ config:
     secure: AAABAEzGqFu7Q51/mzbbfEMiQL4b2Amg4qINikyLr83PmORh660kXx/ePDUtle3wF9DV+JiLkp74U5qpDn2UFWeOpg==
   holochain:cachixAuthToken:
     secure: AAABALpDJa33HGdz8srTRxvFWITDk3Pf8xyW8M2cXulaTAfHW8NaWmN77mBhywefxJkROuoWoIlLJ4V5IWTGDDsXqgqcredX+VjlvRjHCiiLRRZLyt/V0ek2/pG7/7DldXdunHsslX71NsJbt6tI/h7vaKBUy0ZBkx6jY8y7UhURjQGaoJME1CMcemAkW8WZv1sfrQj4ZycXMY0UpxbL2lFG8MhYyleiLJfxlepXFth+liaRgg==
+  holochain:hetznerHolochainInfraBucketsAccess:
+    secure: AAABAMrlN1yOFbKYHIVOqUc8MKuzhUgPyK84dwsqh0OHKkPrKGmBUegADG5QKY0SWzihMQ==
+  holochain:hetznerHolochainInfraBucketsSecret:
+    secure: AAABAPPMLayK4tU/kYAF1iznH5dfQ/1noL83G2M0T0du6kSI5z0xdYmmoGeVUpKpeYJ6UTrQ7mPG/pkuzPMWLGvv3a6Zq3J9
