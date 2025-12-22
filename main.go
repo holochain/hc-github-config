@@ -138,6 +138,9 @@ func main() {
 		if err = AddHetznerHolochainInfraBucketsSecret(ctx, conf, "wind-tunnel"); err != nil {
 			return err
 		}
+		if err = AddCachixAuthTokenSecret(ctx, conf, "wind-tunnel"); err != nil {
+			return err
+		}
 
 		//
 		// Holochain JS client
