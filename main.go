@@ -1237,6 +1237,26 @@ func main() {
 			return err
 		}
 
+		//
+		// Wind Tunnel Runner Status Dashboard
+		//
+		windTunnelRunnerStatusDashboardDescription := "A web app to view the connection status of Wind Tunnel Runner nodes."
+		windTunnelRunnerStatusDashboardRepositoryArgs := StandardRepositoryArgs("wind-tunnel-runner-status-dashboard", &windTunnelRunnerStatusDashboardDescription)
+		windTunnelRunnerStatusDashboard, err := github.NewRepository(ctx, "wind-tunnel-runner-status-dashboard", &windTunnelRunnerStatusDashboardRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "wind-tunnel-runner-status-dashboard", windTunnelRunnerStatusDashboard); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "wind-tunnel-runner-status-dashboard", windTunnelRunnerStatusDashboard); err != nil {
+			return err
+		}
+		windTunnelRunnerStatusDashboardDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(windTunnelRunnerStatusDashboard, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-runner-status-dashboard-default", &windTunnelRunnerStatusDashboardDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
