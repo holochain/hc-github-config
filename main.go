@@ -1256,6 +1256,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-runner-status-dashboard-default", &windTunnelRunnerStatusDashboardDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddPulumiAccessTokenSecret(ctx, conf, "wind-tunnel-runner-status-dashboard"); err != nil {
+			return err
+		}
 
 		return nil
 	})
