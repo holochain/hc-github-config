@@ -165,6 +165,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "holochain-client-js-release", &jsClientReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddHolochainBackportLabels(ctx, "holochain-client-js", jsClient); err != nil {
+			return err
+		}
 
 		//
 		// Holochain Rust client
@@ -232,6 +235,9 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "holonix"); err != nil {
 			return err
 		}
+		if err = AddHolochainBackportLabels(ctx, "holonix", jsClient); err != nil {
+			return err
+		}
 
 		//
 		// Binaries
@@ -254,6 +260,9 @@ func main() {
 		}
 		binariesReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(binaries, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "binaries-release", &binariesReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddHolochainBackportLabels(ctx, "binaries", jsClient); err != nil {
 			return err
 		}
 
@@ -481,9 +490,9 @@ func main() {
 			return err
 		}
 
-        //
-        // junit-to-influx-action
-        //
+		//
+		// junit-to-influx-action
+		//
 		junitToInfluxActionRepositoryArgs := StandardRepositoryArgs("junit-to-influx-action", nil)
 		junitToInfluxAction, err := github.NewRepository(ctx, "junit-to-influx-action", &junitToInfluxActionRepositoryArgs)
 		if err != nil {
@@ -596,6 +605,9 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "scaffolding"); err != nil {
 			return err
 		}
+		if err = AddHolochainBackportLabels(ctx, "scaffolding", jsClient); err != nil {
+			return err
+		}
 
 		//
 		// hc-launch
@@ -646,6 +658,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-release", &hcSpinReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddHolochainBackportLabels(ctx, "hc-spin", jsClient); err != nil {
+			return err
+		}
 
 		//
 		// kangaroo-electron
@@ -669,17 +684,18 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-default", &kangarooElectronDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-
 		// Since kangaroo is a Github Template we currently omit mandatory CI checks
 		kangarooElectronReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(kangarooElectron, NewRulesetOptions().noStatusChecks().noLinearHistoryRequired())
 		if _, err = github.NewRepositoryRuleset(ctx, "kangaroo-electron-release", &kangarooElectronReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
-
 		if err = AddAppleAppSigningSecrets(ctx, conf, "kangaroo-electron"); err != nil {
 			return err
 		}
 		if err = AddWindowsCodeSigningCertificates(ctx, conf, "kangaroo-electron"); err != nil {
+			return err
+		}
+		if err = AddHolochainBackportLabels(ctx, "kangaroo-electron", jsClient); err != nil {
 			return err
 		}
 
@@ -1726,4 +1742,65 @@ func AddHetznerHolochainInfraBucketsSecret(ctx *pulumi.Context, cfg *config.Conf
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
+}
+
+// RepositoryLabel represents a standard label that can be applied to repositories.
+type RepositoryLabel string
+
+const (
+	// ShouldBackport05 indicates changes that should be backported to the 0.5 release branch
+	ShouldBackport05 RepositoryLabel = "ShouldBackport/0.5"
+	// ShouldBackport06 indicates changes that should be backported to the 0.6 release branch
+	ShouldBackport06 RepositoryLabel = "ShouldBackport/0.6"
+)
+
+// labelConfig holds the display name and color for a label.
+type labelConfig struct {
+	name  string
+	color string
+}
+
+// getLabelConfig maps a RepositoryLabel to its configuration (name and color).
+func getLabelConfig(label RepositoryLabel) labelConfig {
+	switch label {
+	case ShouldBackport06:
+		return labelConfig{
+			name:  "ShouldBackport/0.6",
+			color: "0E8A16", // Green
+		}
+	case ShouldBackport05:
+		return labelConfig{
+			name:  "ShouldBackport/0.5",
+			color: "0E8A16", // Green
+		}
+	default:
+		// Error, must define all labels here.
+		panic(fmt.Sprintf("Unknown RepositoryLabel: %s", label))
+	}
+}
+
+// AddRepositoryLabels creates the specified labels on a repository with consistent
+// name and color configuration.
+func AddRepositoryLabels(ctx *pulumi.Context, name string, repository *github.Repository, labels ...RepositoryLabel) error {
+	for _, label := range labels {
+		labelConfig := getLabelConfig(label)
+
+		// Create a unique resource ID by combining repo name and label name
+		resourceId := fmt.Sprintf("%s-%s-label", name, labelConfig.name)
+
+		if _, err := github.NewIssueLabel(ctx, resourceId, &github.IssueLabelArgs{
+			Repository: repository.Name,
+			Name:       pulumi.String(labelConfig.name),
+			Color:      pulumi.String(labelConfig.color),
+		}); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// AddHolochainBackportLabels adds standard backport labels to a repository.
+func AddHolochainBackportLabels(ctx *pulumi.Context, name string, repository *github.Repository) error {
+	return AddRepositoryLabels(ctx, name, repository, ShouldBackport05, ShouldBackport06)
 }
