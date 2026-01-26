@@ -1756,8 +1756,9 @@ const (
 
 // labelConfig holds the display name and color for a label.
 type labelConfig struct {
-	name  string
-	color string
+	name        string
+	description string
+	color       string
 }
 
 // getLabelConfig maps a RepositoryLabel to its configuration (name and color).
@@ -1765,13 +1766,15 @@ func getLabelConfig(label RepositoryLabel) labelConfig {
 	switch label {
 	case ShouldBackport06:
 		return labelConfig{
-			name:  "ShouldBackport/0.6",
-			color: "0E8A16", // Green
+			name:        "ShouldBackport/0.6",
+			description: "Post-merge into the default branch, this change should be backported to the release branch for version 0.6.x",
+			color:       "0E8A16", // Green
 		}
 	case ShouldBackport05:
 		return labelConfig{
-			name:  "ShouldBackport/0.5",
-			color: "0E8A16", // Green
+			name:        "ShouldBackport/0.5",
+			description: "Post-merge into the default branch, this change should be backported to the release branch for version 0.5.x",
+			color:       "0E8A16", // Green
 		}
 	default:
 		// Error, must define all labels here.
@@ -1789,9 +1792,10 @@ func AddRepositoryLabels(ctx *pulumi.Context, name string, repository *github.Re
 		resourceId := fmt.Sprintf("%s-%s-label", name, labelConfig.name)
 
 		if _, err := github.NewIssueLabel(ctx, resourceId, &github.IssueLabelArgs{
-			Repository: repository.Name,
-			Name:       pulumi.String(labelConfig.name),
-			Color:      pulumi.String(labelConfig.color),
+			Repository:  repository.Name,
+			Name:        pulumi.String(labelConfig.name),
+			Description: pulumi.String(labelConfig.description),
+			Color:       pulumi.String(labelConfig.color),
 		}); err != nil {
 			return err
 		}
