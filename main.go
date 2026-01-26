@@ -235,7 +235,7 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "holonix"); err != nil {
 			return err
 		}
-		if err = AddHolochainBackportLabels(ctx, "holonix", jsClient); err != nil {
+		if err = AddHolochainBackportLabels(ctx, "holonix", holonix); err != nil {
 			return err
 		}
 
@@ -262,7 +262,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "binaries-release", &binariesReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		if err = AddHolochainBackportLabels(ctx, "binaries", jsClient); err != nil {
+		if err = AddHolochainBackportLabels(ctx, "binaries", binaries); err != nil {
 			return err
 		}
 
@@ -605,7 +605,7 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "scaffolding"); err != nil {
 			return err
 		}
-		if err = AddHolochainBackportLabels(ctx, "scaffolding", jsClient); err != nil {
+		if err = AddHolochainBackportLabels(ctx, "scaffolding", scaffolding); err != nil {
 			return err
 		}
 
@@ -658,7 +658,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-release", &hcSpinReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		if err = AddHolochainBackportLabels(ctx, "hc-spin", jsClient); err != nil {
+		if err = AddHolochainBackportLabels(ctx, "hc-spin", hcSpin); err != nil {
 			return err
 		}
 
@@ -695,7 +695,7 @@ func main() {
 		if err = AddWindowsCodeSigningCertificates(ctx, conf, "kangaroo-electron"); err != nil {
 			return err
 		}
-		if err = AddHolochainBackportLabels(ctx, "kangaroo-electron", jsClient); err != nil {
+		if err = AddHolochainBackportLabels(ctx, "kangaroo-electron", kangarooElectron); err != nil {
 			return err
 		}
 
