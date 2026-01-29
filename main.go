@@ -1767,13 +1767,13 @@ func getLabelConfig(label RepositoryLabel) labelConfig {
 	case ShouldBackport06:
 		return labelConfig{
 			name:        "ShouldBackport/0.6",
-			description: "Post-merge into the default branch, this change should be backported to the release branch for version 0.6.x",
+			description: "Post-merge into the default branch; should be backported to the release branch for version 0.6.x",
 			color:       "0E8A16", // Green
 		}
 	case ShouldBackport05:
 		return labelConfig{
 			name:        "ShouldBackport/0.5",
-			description: "Post-merge into the default branch, this change should be backported to the release branch for version 0.5.x",
+			description: "Post-merge into the default branch; should be backported to the release branch for version 0.5.x",
 			color:       "0E8A16", // Green
 		}
 	default:
