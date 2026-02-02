@@ -1293,7 +1293,7 @@ func StandardRepositoryArgs(name string, description *string) github.RepositoryA
 		AllowAutoMerge:      pulumi.Bool(true),
 		DeleteBranchOnMerge: pulumi.Bool(true),
 		AllowUpdateBranch:   pulumi.Bool(true),
-		AllowSquashMerge:    pulumi.Bool(true),
+		AllowSquashMerge:    pulumi.Bool(false),
 		AllowRebaseMerge:    pulumi.Bool(true),
 		AllowMergeCommit:    pulumi.Bool(false),
 		AutoInit:            pulumi.Bool(true),
