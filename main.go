@@ -298,7 +298,6 @@ func main() {
 		//
 		description = "Holochain WebRTC P2P Communication Ecosystem"
 		tx5RepositoryArgs := StandardRepositoryArgs("tx5", &description)
-		tx5RepositoryArgs.SquashMergeCommitTitle = pulumi.String("PR_TITLE")
 		tx5, err := github.NewRepository(ctx, "tx5", &tx5RepositoryArgs, pulumi.Import(pulumi.ID("tx5")))
 		if err != nil {
 			return err
@@ -326,7 +325,6 @@ func main() {
 		//
 		description = "secret lair private keystore"
 		lairRepositoryArgs := StandardRepositoryArgs("lair", &description)
-		lairRepositoryArgs.SquashMergeCommitTitle = pulumi.String("PR_TITLE")
 		lair, err := github.NewRepository(ctx, "lair", &lairRepositoryArgs, pulumi.Import(pulumi.ID("lair")))
 		if err != nil {
 			return err
