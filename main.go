@@ -715,6 +715,9 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "dino-adventure", dinoAdventure); err != nil {
 			return err
 		}
+		if err = AddCachixAuthTokenSecret(ctx, conf, "dino-adventure"); err != nil {
+			return err
+		}
 		dinoAdventureDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(dinoAdventure, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "dino-adventure-default", &dinoAdventureDefaultRepositoryRulesetArgs); err != nil {
 			return err
