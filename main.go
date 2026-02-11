@@ -537,6 +537,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "kitsune2", kitsune2); err != nil {
 			return err
 		}
+		if err = AddCachixAuthTokenSecret(ctx, conf, "kitsune2"); err != nil {
+			return err
+		}
 
 		//
 		// docs-pages
