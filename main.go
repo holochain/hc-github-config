@@ -110,6 +110,12 @@ func main() {
 		//
 		description = "Performance testing for Holochain"
 		windTunnelRepositoryArgs := StandardRepositoryArgs("wind-tunnel", &description)
+		windTunnelRepositoryArgs.Pages = github.RepositoryPagesArgs{
+			Source: github.RepositoryPagesSourceArgs{
+				Branch: pulumi.String("gh-pages"),
+				Path:   pulumi.String("/"),
+			},
+		}
 		windTunnel, err := github.NewRepository(ctx, "wind-tunnel", &windTunnelRepositoryArgs, pulumi.Import(pulumi.ID("wind-tunnel")))
 		if err != nil {
 			return err
