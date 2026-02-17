@@ -238,6 +238,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "holonix-release", &holonixReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddGithubUserTokenSecret(ctx, conf, "holonix"); err != nil {
+			return err
+		}
 		if err = AddCachixAuthTokenSecret(ctx, conf, "holonix"); err != nil {
 			return err
 		}
