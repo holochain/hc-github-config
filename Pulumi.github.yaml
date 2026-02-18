@@ -41,3 +41,5 @@ config:
     secure: AAABAMrlN1yOFbKYHIVOqUc8MKuzhUgPyK84dwsqh0OHKkPrKGmBUegADG5QKY0SWzihMQ==
   holochain:hetznerHolochainInfraBucketsSecret:
     secure: AAABAPPMLayK4tU/kYAF1iznH5dfQ/1noL83G2M0T0du6kSI5z0xdYmmoGeVUpKpeYJ6UTrQ7mPG/pkuzPMWLGvv3a6Zq3J9
+  holochain:claudeCodeOauthToken:
+    secure: AAABAMM1RkgKDbPBHmuZdx+1ciCJTzDRSd/o2cm0QUPmo4jd1AICHf2qe/Vpcjvid+kFh3DuHiS9cZOgZKuG6G1NTi0l+7apL0jPZ7d+Nl1kdZqKLUWH/0zNPoZq9ng53Tr9LCZAxsa86/Jq5b9ijJXaiBxJ0jMEqGciMmBNTGtqwiqnlGrUmMqdEpE=

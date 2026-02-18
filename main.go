@@ -147,6 +147,9 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "wind-tunnel"); err != nil {
 			return err
 		}
+		if err = AddClaudeCodeOauthTokenSecret(ctx, conf, "wind-tunnel"); err != nil {
+			return err
+		}
 
 		//
 		// Holochain JS client
@@ -1749,6 +1752,17 @@ func AddHetznerHolochainInfraBucketsSecret(ctx *pulumi.Context, cfg *config.Conf
 		SecretName: pulumi.String("HETZNER_HOLOCHAIN_INFRA_BUCKETS_SECRET"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("hetznerHolochainInfraBucketsSecret"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+
+	return err
+}
+
+func AddClaudeCodeOauthTokenSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-claude-code-oauth-token", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("CLAUDE_CODE_OAUTH_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("claudeCodeOauthToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
