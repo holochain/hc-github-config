@@ -1289,6 +1289,33 @@ func main() {
 			return err
 		}
 
+		//
+		// hc-auth-server
+		//
+		hcAuthServerDescription := "Authentication hook server to use with kitsune2-bootstrap-srv"
+		hcAuthServerRepositoryArgs := StandardRepositoryArgs("hc-auth-server", &hcAuthServerDescription)
+		hcAuthServer, err := github.NewRepository(ctx, "hc-auth-server", &hcAuthServerRepositoryArgs, pulumi.Import(pulumi.ID("hc-auth-server")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "hc-auth-server", hcAuthServer); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "hc-auth-server", hcAuthServer); err != nil {
+			return err
+		}
+		hcAuthServerDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcAuthServer, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-auth-server-default", &hcAuthServerDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		hcAuthServerReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcAuthServer, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-auth-server-release", &hcAuthServerReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "hc-auth-server", hcAuthServer); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
