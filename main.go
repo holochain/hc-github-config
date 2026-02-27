@@ -589,6 +589,56 @@ func main() {
 		}
 
 		//
+		// hc-static-site
+		//
+		// There's enough different about this repo's config that it makes
+		// sense just to start from scratch.
+		hcStaticSiteRepositoryArgs := github.RepositoryArgs{
+			Name:                pulumi.String("hc-static-site"),
+			Description:         pulumi.String("Static website"),
+			Visibility:          pulumi.String("private"),
+			HasDownloads:        pulumi.Bool(true),
+			HasIssues:           pulumi.Bool(true),
+			HasProjects:         pulumi.Bool(true),
+			HasWiki:             pulumi.Bool(false),
+			VulnerabilityAlerts: pulumi.Bool(false),
+			AllowAutoMerge:      pulumi.Bool(false),
+			DeleteBranchOnMerge: pulumi.Bool(false),
+			AllowUpdateBranch:   pulumi.Bool(false),
+			AllowSquashMerge:    pulumi.Bool(false),
+			AllowRebaseMerge:    pulumi.Bool(false),
+			AllowMergeCommit:    pulumi.Bool(false),
+			AutoInit:            pulumi.Bool(false),
+		}
+		hcStaticSite, err := github.NewRepository(ctx, "hc-static-site", &hcStaticSiteRepositoryArgs, pulumi.Import(pulumi.ID("hc-static-site")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "hc-static-site", hcStaticSite); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "hc-static-site", hcStaticSite); err != nil {
+			return err
+		}
+		hcStaticSiteDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcStaticSite, NewRulesetOptions().withExtraStatusChecks([]github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
+			{
+				IntegrationId: pulumi.Int(13473), // Netlify
+				Context:       pulumi.String("Header rules - holochain-prod"),
+			},
+			{
+				IntegrationId: pulumi.Int(13473), // Netlify
+				Context:       pulumi.String("netlify/holochain-prod/deploy-preview"),
+			},
+			{
+				IntegrationId: pulumi.Int(13473), // Netlify
+				Context:       pulumi.String("Redirect rules - holochain-prod"),
+			},
+		}))
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-static-site-default", &hcStaticSiteDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
 		// scaffolding
 		//
 		scaffoldingDescription := "Scaffolding tool to quickly generate and modify holochain applications"
