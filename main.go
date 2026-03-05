@@ -1316,6 +1316,33 @@ func main() {
 			return err
 		}
 
+		//
+		// Wind Tunnel Durable Objects
+		//
+		windTunnelDurableObjectsDescription := "A Durable Objects store from Cloudflare to be used by Wind Tunnel scenarios"
+		windTunnelDurableObjectsRepositoryArgs := StandardRepositoryArgs("wind-tunnel-durable-objects", &windTunnelDurableObjectsDescription)
+		windTunnelDurableObjects, err := github.NewRepository(ctx, "wind-tunnel-durable-objects", &windTunnelDurableObjectsRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "wind-tunnel-durable-objects", windTunnelDurableObjects); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "wind-tunnel-durable-objects", windTunnelDurableObjects); err != nil {
+			return err
+		}
+		windTunnelDurableObjectsDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(windTunnelDurableObjects, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-durable-objects-default", &windTunnelDurableObjectsDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		windTunnelDurableObjectsReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(windTunnelDurableObjects, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-durable-objects-release", &windTunnelDurableObjectsReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "wind-tunnel-durable-objects", windTunnelDurableObjects); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
