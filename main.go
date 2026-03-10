@@ -865,6 +865,9 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "wind-tunnel-runner"); err != nil {
 			return err
 		}
+		if err = AddThreefoldHubApiToken(ctx, conf, "wind-tunnel-runner"); err != nil {
+			return err
+		}
 
 		//
 		// must_future
@@ -1804,6 +1807,17 @@ func AddThreefoldTfChainWalletMnemonic(ctx *pulumi.Context, cfg *config.Config, 
 		SecretName: pulumi.String("THREEFOLD_TFCHAIN_WALLET_MNEMONIC"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("threefoldTfChainWalletMnemonic"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+
+	return err
+}
+
+func AddThreefoldHubApiToken(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-threefold-hub-api-token", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("THREEFOLD_HUB_API_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("threefoldHubApiToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
