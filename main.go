@@ -150,6 +150,9 @@ func main() {
 		if err = AddClaudeCodeOauthTokenSecret(ctx, conf, "wind-tunnel"); err != nil {
 			return err
 		}
+		if err = AddThreefoldTfChainWalletMnemonic(ctx, conf, "wind-tunnel"); err != nil {
+			return err
+		}
 
 		//
 		// Holochain JS client
@@ -1790,6 +1793,17 @@ func AddClaudeCodeOauthTokenSecret(ctx *pulumi.Context, cfg *config.Config, repo
 		SecretName: pulumi.String("CLAUDE_CODE_OAUTH_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("claudeCodeOauthToken"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+
+	return err
+}
+
+func AddThreefoldTfChainWalletMnemonic(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-threefold-tfchain-wallet-mnemonic", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("THREEFOLD_TFCHAIN_WALLET_MNEMONIC"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("threefoldTfChainWalletMnemonic"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
