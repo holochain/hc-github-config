@@ -1,12 +1,17 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
+	"strings"
 
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
+
+//go:embed files/CONTRIBUTING.md
+var contributingMdContent string
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
@@ -104,6 +109,9 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "holochain-wasmer"); err != nil {
 			return err
 		}
+		if err = AddContributingGuide(ctx, "holochain-wasmer", holochainWasmer); err != nil {
+			return err
+		}
 
 		//
 		// wind tunnel
@@ -151,6 +159,9 @@ func main() {
 			return err
 		}
 		if err = AddThreefoldTfChainWalletMnemonic(ctx, conf, "wind-tunnel"); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "wind-tunnel", windTunnel); err != nil {
 			return err
 		}
 
@@ -307,6 +318,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "sbd", sbd); err != nil {
 			return err
 		}
+		if err = AddContributingGuide(ctx, "sbd", sbd); err != nil {
+			return err
+		}
 
 		//
 		// Tx5
@@ -332,6 +346,9 @@ func main() {
 			return err
 		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "tx5", tx5); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "tx5", tx5); err != nil {
 			return err
 		}
 
@@ -361,6 +378,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "lair", lair); err != nil {
 			return err
 		}
+		if err = AddContributingGuide(ctx, "lair", lair); err != nil {
+			return err
+		}
 
 		//
 		// Holochain CHC Service
@@ -386,6 +406,9 @@ func main() {
 			return err
 		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "hc-chc-service", hcChcService); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "hc-chc-service", hcChcService); err != nil {
 			return err
 		}
 
@@ -415,6 +438,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "holochain-serialization", holochainSerialization); err != nil {
 			return err
 		}
+		if err = AddContributingGuide(ctx, "holochain-serialization", holochainSerialization); err != nil {
+			return err
+		}
 
 		//
 		// Influxive
@@ -440,6 +466,9 @@ func main() {
 			return err
 		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "influxive", influxive); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "influxive", influxive); err != nil {
 			return err
 		}
 
@@ -555,6 +584,9 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "kitsune2"); err != nil {
 			return err
 		}
+		if err = AddContributingGuide(ctx, "kitsune2", kitsune2); err != nil {
+			return err
+		}
 
 		//
 		// docs-pages
@@ -622,6 +654,9 @@ func main() {
 			return err
 		}
 		if err = AddHolochainBackportLabels(ctx, "scaffolding", scaffolding); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "scaffolding", scaffolding); err != nil {
 			return err
 		}
 
@@ -813,6 +848,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "hc-http-gw", hcHttpGw); err != nil {
 			return err
 		}
+		if err = AddContributingGuide(ctx, "hc-http-gw", hcHttpGw); err != nil {
+			return err
+		}
 
 		//
 		// network-services
@@ -967,6 +1005,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "rand-utf8", randUtf8); err != nil {
 			return err
 		}
+		if err = AddContributingGuide(ctx, "rand-utf8", randUtf8); err != nil {
+			return err
+		}
 
 		//
 		// serde-json
@@ -989,6 +1030,9 @@ func main() {
 			return err
 		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "serde-json", serdeJson); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "serde-json", serdeJson); err != nil {
 			return err
 		}
 
@@ -1319,6 +1363,9 @@ func main() {
 			return err
 		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "hc-auth-server", hcAuthServer); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "hc-auth-server", hcAuthServer); err != nil {
 			return err
 		}
 
@@ -1886,4 +1933,19 @@ func AddRepositoryLabels(ctx *pulumi.Context, name string, repository *github.Re
 // AddHolochainBackportLabels adds standard backport labels to a repository.
 func AddHolochainBackportLabels(ctx *pulumi.Context, name string, repository *github.Repository) error {
 	return AddRepositoryLabels(ctx, name, repository, ShouldBackport05, ShouldBackport06)
+}
+
+// AddContributingGuide deploys the shared CONTRIBUTING.md to a repository.
+func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.Repository) error {
+	_, err := github.NewRepositoryFile(ctx, fmt.Sprintf("%s-contributing-md", name), &github.RepositoryFileArgs{
+		Repository:        repository.Name,
+		Branch:            pulumi.String("main"),
+		File:              pulumi.String("CONTRIBUTING.md"),
+		Content:           pulumi.String(strings.ReplaceAll(contributingMdContent, "{{REPO_NAME}}", name)),
+		CommitMessage:     pulumi.String("chore: add shared CONTRIBUTING.md"),
+		CommitAuthor:      pulumi.String("Holochain Repository Automation"),
+		CommitEmail:       pulumi.String("hra@holochain.org"),
+		OverwriteOnCreate: pulumi.Bool(true),
+	})
+	return err
 }
