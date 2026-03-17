@@ -158,6 +158,9 @@ func main() {
 		if err = AddThreefoldTfChainWalletMnemonic(ctx, conf, "wind-tunnel"); err != nil {
 			return err
 		}
+		if err = AddContributingGuide(ctx, "wind-tunnel", windTunnel); err != nil {
+			return err
+		}
 
 		//
 		// Holochain JS client
