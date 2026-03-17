@@ -1,12 +1,17 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
+	"strings"
 
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
 )
+
+//go:embed files/CONTRIBUTING.md
+var contributingMdContent string
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
@@ -1886,4 +1891,19 @@ func AddRepositoryLabels(ctx *pulumi.Context, name string, repository *github.Re
 // AddHolochainBackportLabels adds standard backport labels to a repository.
 func AddHolochainBackportLabels(ctx *pulumi.Context, name string, repository *github.Repository) error {
 	return AddRepositoryLabels(ctx, name, repository, ShouldBackport05, ShouldBackport06)
+}
+
+// AddContributingGuide deploys the shared CONTRIBUTING.md to a repository.
+func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.Repository) error {
+	_, err := github.NewRepositoryFile(ctx, fmt.Sprintf("%s-contributing-md", name), &github.RepositoryFileArgs{
+		Repository:        repository.Name,
+		Branch:            pulumi.String("main"),
+		File:              pulumi.String("CONTRIBUTING.md"),
+		Content:           pulumi.String(strings.ReplaceAll(contributingMdContent, "{{REPO_NAME}}", name)),
+		CommitMessage:     pulumi.String("chore: add shared CONTRIBUTING.md"),
+		CommitAuthor:      pulumi.String("Holochain Repository Automation"),
+		CommitEmail:       pulumi.String("hra@holochain.org"),
+		OverwriteOnCreate: pulumi.Bool(true),
+	})
+	return err
 }
