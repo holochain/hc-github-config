@@ -5,7 +5,7 @@ Thank you for your interest in contributing to {{REPO_NAME}}!
 ## Getting Started
 
 1. Fork the repository
-2. Create a feature branch from `main`
+2. Create a feature branch from the default branch (usually `main`)
 3. Make your changes
 4. Submit a pull request
 
