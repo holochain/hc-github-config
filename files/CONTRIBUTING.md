@@ -19,7 +19,7 @@ them clean. To help with keeping them clean, follow these principles:
 - Keep commits atomic, meaning that each commit should build and the unit tests
   should pass. If a new feature is added or a bug is fixed then fix the tests
   in the same commit
-- Always rebase, **NEVER** merge
+- In case of changes on the origin branch, always rebase, **NEVER** merge
 - Avoid referencing the issue or PR number in the commit message as the
   automated changelog will add this reference for you
 
