@@ -44,7 +44,10 @@ them clean. To help with keeping them clean, follow these principles:
   a re-approval is required
 - Squash all `fixup!` commits and clean-up the commit history before merging
   into the base branch. You can do this at the same time as rebasing with
-  `git rebase --autosquash <base_branch>`
+  `git rebase --autosquash <base_branch>`. For older versions of git, you may
+  need to use `git rebase --autosquash --interactive <base_branch>` which will
+  perform an interactive rebase with all of the `fixup!` commits rearranged and
+  marked as `fixup`, you can then accept this interactive rebase
 
 ## Reporting Issues
 
