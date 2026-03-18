@@ -48,6 +48,16 @@ them clean. To help with keeping them clean, follow these principles:
   need to use `git rebase --autosquash --interactive <base_branch>` which will
   perform an interactive rebase with all of the `fixup!` commits rearranged and
   marked as `fixup`, you can then accept this interactive rebase
+- We reserve the right to reject PRs that are purely cosmetic and appear to
+  have been automated with tooling, such as correcting spelling and grammatical
+  mistakes. If you believe that such a change is critical in making the
+  documentation or code more readable, or if the change corrects a real logical
+  mistake in the text then submit such a PR with a description explaining the
+  critical correction
+- All AI-generated PRs must have been self-reviewed. If a PR is judged to be AI
+  generated, not checked by the author, and needs a lot of work to be
+  consistent with the existing codebase and/or it does not solve the problem it
+  claims to - then we reserve the right to close the PR without comment
 
 ## Reporting Issues
 
