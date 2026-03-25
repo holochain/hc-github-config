@@ -110,9 +110,9 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "holochain-wasmer"); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "holochain-wasmer", holochainWasmer); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "holochain-wasmer", holochainWasmer); err != nil {
+		// 	return err
+		// }
 
 		//
 		// wind tunnel
@@ -319,9 +319,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "sbd", sbd); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "sbd", sbd); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "sbd", sbd); err != nil {
+		// 	return err
+		// }
 
 		//
 		// Tx5
@@ -349,9 +349,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "tx5", tx5); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "tx5", tx5); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "tx5", tx5); err != nil {
+		// 	return err
+		// }
 
 		//
 		// Lair Keystore
@@ -379,9 +379,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "lair", lair); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "lair", lair); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "lair", lair); err != nil {
+		// 	return err
+		// }
 
 		//
 		// Holochain CHC Service
@@ -409,9 +409,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "hc-chc-service", hcChcService); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "hc-chc-service", hcChcService); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "hc-chc-service", hcChcService); err != nil {
+		// 	return err
+		// }
 
 		//
 		// Holochain Serialization
@@ -439,9 +439,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "holochain-serialization", holochainSerialization); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "holochain-serialization", holochainSerialization); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "holochain-serialization", holochainSerialization); err != nil {
+		// 	return err
+		// }
 
 		//
 		// Influxive
@@ -469,9 +469,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "influxive", influxive); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "influxive", influxive); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "influxive", influxive); err != nil {
+		// 	return err
+		// }
 
 		//
 		// Holochain Python Client
@@ -585,9 +585,9 @@ func main() {
 		if err = AddCachixAuthTokenSecret(ctx, conf, "kitsune2"); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "kitsune2", kitsune2); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "kitsune2", kitsune2); err != nil {
+		// 	return err
+		// }
 
 		//
 		// docs-pages
@@ -657,9 +657,9 @@ func main() {
 		if err = AddHolochainBackportLabels(ctx, "scaffolding", scaffolding); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "scaffolding", scaffolding); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "scaffolding", scaffolding); err != nil {
+		// 	return err
+		// }
 
 		//
 		// hc-launch
@@ -849,9 +849,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "hc-http-gw", hcHttpGw); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "hc-http-gw", hcHttpGw); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "hc-http-gw", hcHttpGw); err != nil {
+		// 	return err
+		// }
 
 		//
 		// network-services
@@ -1006,9 +1006,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "rand-utf8", randUtf8); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "rand-utf8", randUtf8); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "rand-utf8", randUtf8); err != nil {
+		// 	return err
+		// }
 
 		//
 		// serde-json
@@ -1033,9 +1033,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "serde-json", serdeJson); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "serde-json", serdeJson); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "serde-json", serdeJson); err != nil {
+		// 	return err
+		// }
 
 		//
 		// isotest-rs
@@ -1366,9 +1366,9 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "hc-auth-server", hcAuthServer); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "hc-auth-server", hcAuthServer); err != nil {
-			return err
-		}
+		// if err = AddContributingGuide(ctx, "hc-auth-server", hcAuthServer); err != nil {
+		// 	return err
+		// }
 
 		return nil
 	})
