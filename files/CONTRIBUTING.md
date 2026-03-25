@@ -15,7 +15,7 @@ The commits are used to generate the changelog upon a release, therefore keep
 them clean. To help with keeping them clean, follow these principles:
 
 - Use [conventional commits](https://www.conventionalcommits.org/) for commit
-  messages. You can also use markdown, especially in the body.
+  messages. You can also use Markdown, especially in the body.
 - Keep commits atomic, meaning that each commit should build and pass all unit
   tests. If a new feature is added or a bug is fixed, then fix the tests in the
   same commit.
