@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/sha256"
 	_ "embed"
 	"fmt"
 	"strings"
@@ -1935,17 +1936,47 @@ func AddHolochainBackportLabels(ctx *pulumi.Context, name string, repository *gi
 	return AddRepositoryLabels(ctx, name, repository, ShouldBackport05, ShouldBackport06)
 }
 
-// AddContributingGuide deploys the shared CONTRIBUTING.md to a repository.
+// AddContributingGuide adds the shared CONTRIBUTING.md file to the repository
+// via a pull request against the default branch if the content has changed
+// since the last deployment.
 func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.Repository) error {
-	_, err := github.NewRepositoryFile(ctx, fmt.Sprintf("%s-contributing-md", name), &github.RepositoryFileArgs{
+	content := strings.ReplaceAll(contributingMdContent, "{{REPO_NAME}}", name)
+	contentHash := pulumi.String(fmt.Sprintf("%x", sha256.Sum256([]byte(content))))
+
+	repoData := github.LookupRepositoryOutput(ctx, github.LookupRepositoryOutputArgs{
+		Name: repository.Name,
+	})
+	defaultBranch := repoData.DefaultBranch()
+
+	branch, err := github.NewBranch(ctx, fmt.Sprintf("%s-contributing-md-branch", name), &github.BranchArgs{
+		Repository:   repository.Name,
+		Branch:       pulumi.String("chore/update-contributing-guide"),
+		SourceBranch: defaultBranch,
+	}, pulumi.ReplacementTrigger(contentHash))
+	if err != nil {
+		return err
+	}
+
+	file, err := github.NewRepositoryFile(ctx, fmt.Sprintf("%s-contributing-md", name), &github.RepositoryFileArgs{
 		Repository:        repository.Name,
-		Branch:            pulumi.String("main"),
+		Branch:            branch.Branch,
 		File:              pulumi.String("CONTRIBUTING.md"),
-		Content:           pulumi.String(strings.ReplaceAll(contributingMdContent, "{{REPO_NAME}}", name)),
-		CommitMessage:     pulumi.String("chore: add shared CONTRIBUTING.md"),
+		Content:           pulumi.String(content),
+		CommitMessage:     pulumi.String("chore: update the CONTRIBUTING.md with shared content"),
 		CommitAuthor:      pulumi.String("Holochain Repository Automation"),
 		CommitEmail:       pulumi.String("hra@holochain.org"),
 		OverwriteOnCreate: pulumi.Bool(true),
-	})
+	}, pulumi.ReplacementTrigger(contentHash))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewRepositoryPullRequest(ctx, fmt.Sprintf("%s-contributing-md-pr", name), &github.RepositoryPullRequestArgs{
+		BaseRepository: repository.Name,
+		BaseRef:        defaultBranch,
+		HeadRef:        branch.Branch,
+		Title:          pulumi.String("chore: update the CONTRIBUTING.md with shared content"),
+		Body:           pulumi.String("This PR updates the CONTRIBUTING.md file with the content from the shared file in the hc-github-config repo."),
+	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash))
 	return err
 }
