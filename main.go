@@ -153,6 +153,9 @@ func main() {
 		if err = AddThreefoldTfChainWalletMnemonic(ctx, conf, "wind-tunnel"); err != nil {
 			return err
 		}
+		if err = AddHolochainNotifierMattermostBotPersonalAccessToken(ctx, conf, "wind-tunnel"); err != nil {
+			return err
+		}
 
 		//
 		// Holochain JS client
@@ -1818,6 +1821,17 @@ func AddThreefoldHubApiToken(ctx *pulumi.Context, cfg *config.Config, repository
 		SecretName: pulumi.String("THREEFOLD_HUB_API_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("threefoldHubApiToken"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+
+	return err
+}
+
+func AddHolochainNotifierMattermostBotPersonalAccessToken(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-holochain-notifier-mattermost-bot-personal-access-token", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("HOLOCHAIN_NOTIFIER_MATTERMOST_BOT_PERSONAL_ACCESS_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("holochainNotifierMattermostBotPersonalAccessToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
