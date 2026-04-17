@@ -1358,7 +1358,6 @@ func StandardRepositoryArgs(name string, description *string) github.RepositoryA
 		Name:                pulumi.String(name),
 		Description:         nil,
 		Visibility:          pulumi.String("public"),
-		HasDownloads:        pulumi.Bool(false),
 		HasIssues:           pulumi.Bool(true),
 		HasProjects:         pulumi.Bool(true),
 		HasWiki:             pulumi.Bool(false),
