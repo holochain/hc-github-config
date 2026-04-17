@@ -11,6 +11,7 @@ pulumi stack select github
 ```
 
 You may also need to authenticate with github in order for Pulumi to be able to properly access repository settings. Using the [GitHub CLI](https://cli.github.com/), you can run:
+
 ```
 gh auth login
 ```
@@ -195,11 +196,11 @@ exampleRepositoryArgs := StandardRepositoryArgs("example", &description)
 + if err = StandardRepositoryAccess(ctx, "example", example); err != nil {
 +     return err
 + }
-+ exampleDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(example, nil)
++ exampleDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(example, NewRulesetOptions())
 + if _, err = github.NewRepositoryRuleset(ctx, "example-default", &exampleDefaultRepositoryRulesetArgs); err != nil {
 +     return err
 + }
-+ exampleReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(example, nil)
++ exampleReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(example, NewRulesetOptions())
 + if _, err = github.NewRepositoryRuleset(ctx, "example-release", &exampleReleaseRepositoryRulesetArgs); err != nil {
 +     return err
 + }
