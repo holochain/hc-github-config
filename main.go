@@ -1325,6 +1325,30 @@ func main() {
 			return err
 		}
 
+		//
+		// peerkit
+		//
+		peerkitRepositoryDescription := "A TypeScript framework for providing P2P data synchronization"
+		peerkitRepositoryArgs := StandardRepositoryArgs("peerkit", &peerkitRepositoryDescription)
+		peerkit, err := github.NewRepository(ctx, "peerkit", &peerkitRepositoryArgs, pulumi.Import(pulumi.ID("peerkit")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "peerkit", peerkit); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "peerkit", peerkit); err != nil {
+			return err
+		}
+		peerkitDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(peerkit, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "peerkit-default", &peerkitDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		peerkitReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(peerkit, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "peerkit-release", &peerkitReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
