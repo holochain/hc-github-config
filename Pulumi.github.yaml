@@ -10,7 +10,7 @@ config:
   holochain:tailscaleOAuthSecret:
     secure: AAABAIxhqX7lnm4zQfAFQzhogU0qIG/80eC9PcNPujsLal7a9mMnjvkoGpRSnanKjwCd9G4Z8KyyE56iGd6pO5+7qtzfLPd08X3UCLzAG8598YGDGTeg+TqvPLBxX1Y=
   wind-tunnel:nomadAccessToken:
-    secure: AAABAJFXFB0dfeUEtmVVVdcUdA/7b2FDc7tBKhujc0paJhYN6ZSUC3S/UGft6ym7Z7Qi2dtQ8Dpl0whCatc6XL1ksLk=
+    secure: AAABAA8TdJf9F3J5qSYuFXrnJZyhWpXxhdPRpLXEdIlW3ltOzcgycel7MbwcOIOA0Mgqx7i0oK6htARUSnwd6ep3mGI=
   holochain:appleDevIdentity:
     secure: AAABAEkJZjW6KdY3FdsVMj5fE7CPYJ4EpNUPL9ZCr8RAvhxqMsE6FpYmaaEBeGX1qgEdWYusBO3uL7Gh22lzyqk=
   holochain:appleIdEmail:
