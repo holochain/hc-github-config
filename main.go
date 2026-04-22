@@ -412,9 +412,6 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "hc-chc-service", hcChcService); err != nil {
 			return err
 		}
-		if err = AddContributingGuide(ctx, "hc-chc-service", hcChcService); err != nil {
-			return err
-		}
 
 		//
 		// Holochain Serialization
@@ -470,9 +467,6 @@ func main() {
 			return err
 		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "influxive", influxive); err != nil {
-			return err
-		}
-		if err = AddContributingGuide(ctx, "influxive", influxive); err != nil {
 			return err
 		}
 
@@ -1034,9 +1028,6 @@ func main() {
 			return err
 		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "serde-json", serdeJson); err != nil {
-			return err
-		}
-		if err = AddContributingGuide(ctx, "serde-json", serdeJson); err != nil {
 			return err
 		}
 
