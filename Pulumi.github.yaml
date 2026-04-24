@@ -48,4 +48,4 @@ config:
   holochain:threefoldHubApiToken:
     secure: AAABACRJURtkQbAnZmbb7tYn3e70n48fyccTJ3/4op0AmLxrkO4doFfP2RqjasYq6BGKRn4KxLA65MDC73PihYHh91f47hzRNXvXcPNVNTXxLuD6DP2nZwEyrcqtWjQSflW3TaiF4dsG4mD5mB96/WzS3HpbeSN+awfwOUHJl1GYGDEmhbLynbPjEnwIYVsp3KRj7oHwuZqVlQzWL+dKOA==
   holochain:holochainNotifierMattermostBotPersonalAccessToken:
-    secure: AAABAPtRAqf196Q3aegG6xzfp48LghBm3yQjyZRKh/7wbvrVCNcl8TJuIGx90oePw0sVcUxCXKhdPA==
+    secure: AAABAD/pQfAJkM65UU5guL8PaDe7eHv+bwTJZOQAg3XKAmtaCBK7x0CGFOt1GBWQ9W1CGIxKFNGccw==
