@@ -14,9 +14,9 @@ config:
   holochain:appleDevIdentity:
     secure: AAABAEkJZjW6KdY3FdsVMj5fE7CPYJ4EpNUPL9ZCr8RAvhxqMsE6FpYmaaEBeGX1qgEdWYusBO3uL7Gh22lzyqk=
   holochain:appleIdEmail:
-    secure: AAABAMbmxFKBYMQP9HnJmA6IERLAXNrgquyHsoZjoWpWz0QE2RHPNN2FlFgukW9cyBayE+sgRoM=
+    secure: AAABABwmmc77uRCnr/rLArYYQUXfvywNbOy1a7iqj3MFDyNzBlmVgSyJmP+WsI59w7pHyi3T4U8=
   holochain:appleIdPassword:
-    secure: AAABAKdxgwHGCyNjnQJyMeqDyhH7DvUhpKy9djzQjU9QXfRz2RunMLe8rhJioRXU3WWo
+    secure: AAABAHc11UVsEFf9jL1Fd+S8L8Plq62wjQ4UxmlHcbx9bIKmSjGsKJDkHb0kyZSnmpD+
   holochain:appleTeamId:
     secure: AAABANzHavz286Yz8aaO/jC9Jx23CA8F/hU2q7wpZhp+OhsjBkXVgncd
   holochain:appleCertificate:
@@ -36,7 +36,7 @@ config:
   holochain:hra2CratesIoToken:
     secure: AAABAEzGqFu7Q51/mzbbfEMiQL4b2Amg4qINikyLr83PmORh660kXx/ePDUtle3wF9DV+JiLkp74U5qpDn2UFWeOpg==
   holochain:cachixAuthToken:
-    secure: AAABALpDJa33HGdz8srTRxvFWITDk3Pf8xyW8M2cXulaTAfHW8NaWmN77mBhywefxJkROuoWoIlLJ4V5IWTGDDsXqgqcredX+VjlvRjHCiiLRRZLyt/V0ek2/pG7/7DldXdunHsslX71NsJbt6tI/h7vaKBUy0ZBkx6jY8y7UhURjQGaoJME1CMcemAkW8WZv1sfrQj4ZycXMY0UpxbL2lFG8MhYyleiLJfxlepXFth+liaRgg==
+    secure: AAABALBrhuuZhjHL9ABR8N5Xvxggw3gnGDQe8qiz30r6lGSbIRxvLr4KRJiilTD4hqXtWOAuN/TNsNOfLm7qf8mDBjGcNNTzER/Svc+3aAA7PFKPscJI/grwVcKYWnIjms20kp5FPTETXQcfkgv51AWRanbmWO6oYsmFb8KWC+j9EDaXE62mzAkY/dFAol9vPcI0nQlUcS66BMwLvfQOQJOtEpYzpaLCIodqpG+9744MwWe3kA==
   holochain:hetznerHolochainInfraBucketsAccess:
     secure: AAABAMrlN1yOFbKYHIVOqUc8MKuzhUgPyK84dwsqh0OHKkPrKGmBUegADG5QKY0SWzihMQ==
   holochain:hetznerHolochainInfraBucketsSecret:
