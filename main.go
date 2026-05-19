@@ -1395,6 +1395,30 @@ func main() {
 			return err
 		}
 
+		//
+		// peerkit-video-chat
+		//
+		peerkitVCRepositoryDescription := "A video chat app built with Peerkit"
+		peerkitVCRepositoryArgs := StandardRepositoryArgs("peerkit-video-chat", &peerkitVCRepositoryDescription)
+		peerkitVC, err := github.NewRepository(ctx, "peerkit-video-chat", &peerkitVCRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "peerkit-video-chat", peerkitVC); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "peerkit-video-chat", peerkitVC); err != nil {
+			return err
+		}
+		peerkitVCDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(peerkitVC, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "peerkit-video-chat-default", &peerkitVCDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		peerkitVCReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(peerkitVC, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "peerkit-video-chat-release", &peerkitVCReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
