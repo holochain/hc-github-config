@@ -1369,6 +1369,13 @@ func main() {
 		//
 		peerkitRepositoryDescription := "A TypeScript framework for providing P2P data synchronization"
 		peerkitRepositoryArgs := StandardRepositoryArgs("peerkit", &peerkitRepositoryDescription)
+		peerkitRepositoryArgs.Pages = github.RepositoryPagesArgs{
+			BuildType: pulumi.String("workflow"),
+			Source: github.RepositoryPagesSourceArgs{
+				Branch: pulumi.String("main"),
+				Path:   pulumi.String("/"),
+			},
+		}
 		peerkit, err := github.NewRepository(ctx, "peerkit", &peerkitRepositoryArgs, pulumi.Import(pulumi.ID("peerkit")))
 		if err != nil {
 			return err
