@@ -1394,7 +1394,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "peerkit-release", &peerkitReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		if err = AddReleaseItSupport(ctx, conf, "peerkit", peerkit); err != nil {
+		if err = AddNpmReleaseSupport(ctx, conf, "peerkit", peerkit); err != nil {
 			return err
 		}
 
@@ -1869,10 +1869,10 @@ func AddReleaseIntegrationSupport(ctx *pulumi.Context, cfg *config.Config, name 
 	return nil
 }
 
-func AddReleaseItSupport(ctx *pulumi.Context, cfg *config.Config, name string, repository *github.Repository) error {
-	if _, err := github.NewIssueLabel(ctx, fmt.Sprintf("%s-release-it-label", name), &github.IssueLabelArgs{
+func AddNpmReleaseSupport(ctx *pulumi.Context, cfg *config.Config, name string, repository *github.Repository) error {
+	if _, err := github.NewIssueLabel(ctx, fmt.Sprintf("%s-npm-release-label", name), &github.IssueLabelArgs{
 		Repository: repository.Name,
-		Name:       pulumi.String("release-it"),
+		Name:       pulumi.String("release"),
 		// Golden Fizz
 		Color: pulumi.String("E8F723"),
 	}); err != nil {
