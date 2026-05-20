@@ -1394,6 +1394,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "peerkit-release", &peerkitReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddReleaseItSupport(ctx, conf, "peerkit", peerkit); err != nil {
+			return err
+		}
 
 		//
 		// peerkit-video-chat
@@ -1860,6 +1863,23 @@ func AddReleaseIntegrationSupport(ctx *pulumi.Context, cfg *config.Config, name 
 		return err
 	}
 	if err := AddCratesIoTokenSecret(ctx, cfg, name, repository); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func AddReleaseItSupport(ctx *pulumi.Context, cfg *config.Config, name string, repository *github.Repository) error {
+	if _, err := github.NewIssueLabel(ctx, fmt.Sprintf("%s-release-it-label", name), &github.IssueLabelArgs{
+		Repository: repository.Name,
+		Name:       pulumi.String("release-it"),
+		// Golden Fizz
+		Color: pulumi.String("E8F723"),
+	}); err != nil {
+		return err
+	}
+
+	if err := AddGithubUserTokenSecret(ctx, cfg, name); err != nil {
 		return err
 	}
 
