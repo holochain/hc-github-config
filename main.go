@@ -710,6 +710,9 @@ func main() {
 		if err = AddHolochainBackportLabels(ctx, "hc-spin", hcSpin); err != nil {
 			return err
 		}
+		if err = AddGithubUserTokenSecret(ctx, conf, "hc-spin"); err != nil {
+			return err
+		}
 
 		//
 		// kangaroo-electron
