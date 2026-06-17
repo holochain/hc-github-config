@@ -1659,6 +1659,18 @@ func AddGithubUserTokenSecret(ctx *pulumi.Context, cfg *config.Config, repositor
 	return err
 }
 
+func AddGithubWorkflowsTokenSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	// A GITHUB_TOKEN with standard repository access + permissions to edit and control workflows.
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-github-token", repository), &github.ActionsSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("hra2GithubWorkflowsToken"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+
+	return err
+}
+
 func AddGithubAdminTokenSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
 	// A GITHUB_TOKEN with more access rights to larger scopes.
 	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-github-token", repository), &github.ActionsSecretArgs{
