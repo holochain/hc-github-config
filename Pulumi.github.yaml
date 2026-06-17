@@ -49,3 +49,5 @@ config:
     secure: AAABACRJURtkQbAnZmbb7tYn3e70n48fyccTJ3/4op0AmLxrkO4doFfP2RqjasYq6BGKRn4KxLA65MDC73PihYHh91f47hzRNXvXcPNVNTXxLuD6DP2nZwEyrcqtWjQSflW3TaiF4dsG4mD5mB96/WzS3HpbeSN+awfwOUHJl1GYGDEmhbLynbPjEnwIYVsp3KRj7oHwuZqVlQzWL+dKOA==
   holochain:holochainNotifierMattermostBotPersonalAccessToken:
     secure: AAABAD/pQfAJkM65UU5guL8PaDe7eHv+bwTJZOQAg3XKAmtaCBK7x0CGFOt1GBWQ9W1CGIxKFNGccw==
+  holochain:hra2GithubWorkflowsToken:
+    secure: AAABAMcxPgm7GQcNAg/YpoQxH20eqTl+5W/6P/jo5f6CB3SB01iai0ZNFBheuuIGr1vTn9tBedAzhlKbROlRsi1KITqk2OWg
