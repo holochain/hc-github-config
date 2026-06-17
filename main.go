@@ -1289,6 +1289,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "actions-default", &actionsDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddGithubWorkflowsTokenSecret(ctx, conf, "actions"); err != nil {
+			return err
+		}
 
 		//
 		// Mattermost bot
