@@ -34,7 +34,7 @@ config:
   holochain:azureClientSecret:
     secure: AAABAL7MI18NSLZ1+UjNSL8OnOUTmwNKOqbW+MY8/WRhVvgtyBq2Ew4eSelynQQp5HrWDbQWqsYAyVhIw7PzValG8gA5APFW
   holochain:hra2CratesIoToken:
-    secure: AAABAEzGqFu7Q51/mzbbfEMiQL4b2Amg4qINikyLr83PmORh660kXx/ePDUtle3wF9DV+JiLkp74U5qpDn2UFWeOpg==
+    secure: AAABADCLHwjoOjEMl8EhWDPm2yMyPhTGzNqniPdHaYIY7KDRRwZW0W4OuBf41Gs7iH0GQVfQIs3lzUrMQO0fFnU4gA==
   holochain:cachixAuthToken:
     secure: AAABALBrhuuZhjHL9ABR8N5Xvxggw3gnGDQe8qiz30r6lGSbIRxvLr4KRJiilTD4hqXtWOAuN/TNsNOfLm7qf8mDBjGcNNTzER/Svc+3aAA7PFKPscJI/grwVcKYWnIjms20kp5FPTETXQcfkgv51AWRanbmWO6oYsmFb8KWC+j9EDaXE62mzAkY/dFAol9vPcI0nQlUcS66BMwLvfQOQJOtEpYzpaLCIodqpG+9744MwWe3kA==
   holochain:hetznerHolochainInfraBucketsAccess:
