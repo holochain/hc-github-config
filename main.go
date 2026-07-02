@@ -1292,6 +1292,34 @@ func main() {
 		if err = AddGithubWorkflowsTokenSecret(ctx, conf, "actions"); err != nil {
 			return err
 		}
+		if _, err = github.NewRepositoryRuleset(ctx, "actions-stable-ruleset", &github.RepositoryRulesetArgs{
+			Name:        pulumi.String("stable"),
+			Repository:  actions.Name,
+			Target:      pulumi.String("branch"),
+			Enforcement: pulumi.String("active"),
+			Conditions: &github.RepositoryRulesetConditionsArgs{
+				RefName: &github.RepositoryRulesetConditionsRefNameArgs{
+					Includes: pulumi.StringArray{
+						pulumi.String("refs/heads/stable"),
+					},
+					Excludes: pulumi.StringArray{},
+				},
+			},
+			Rules: &github.RepositoryRulesetRulesArgs{
+				Creation: pulumi.Bool(true),
+				Update:   pulumi.Bool(true),
+				Deletion: pulumi.Bool(true),
+			},
+			BypassActors: github.RepositoryRulesetBypassActorArray{
+				&github.RepositoryRulesetBypassActorArgs{
+					ActorId:    pulumi.Int(2393742), // core-dev team
+					ActorType:  pulumi.String("Team"),
+					BypassMode: pulumi.String("always"),
+				},
+			},
+		}); err != nil {
+			return err
+		}
 
 		//
 		// Mattermost bot
