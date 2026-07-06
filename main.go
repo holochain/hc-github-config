@@ -113,6 +113,9 @@ func main() {
 		if err = AddContributingGuide(ctx, "holochain-wasmer", holochainWasmer); err != nil {
 			return err
 		}
+		if err = AddOutsideCollaborator(ctx, "holochain-wasmer", holochainWasmer, "synchwire"); err != nil {
+			return err
+		}
 
 		//
 		// wind tunnel
@@ -583,6 +586,9 @@ func main() {
 			return err
 		}
 		if err = AddContributingGuide(ctx, "kitsune2", kitsune2); err != nil {
+			return err
+		}
+		if err = AddOutsideCollaborator(ctx, "kitsune2", kitsune2, "synchwire"); err != nil {
 			return err
 		}
 
@@ -1455,6 +1461,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "peerkit-video-chat-release", &peerkitVCReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddOutsideCollaborator(ctx, "peerkit-video-chat", peerkitVC, "synchwire"); err != nil {
+			return err
+		}
 
 		return nil
 	})
@@ -2100,5 +2109,15 @@ func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.R
 		Title:          pulumi.String("chore: update the CONTRIBUTING.md with shared content"),
 		Body:           pulumi.String("This PR updates the CONTRIBUTING.md file with the content from the shared file in the hc-github-config repo."),
 	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash))
+	return err
+}
+
+func AddOutsideCollaborator(ctx *pulumi.Context, name string, repository *github.Repository, username string) error {
+	_, err := github.NewRepositoryCollaborator(ctx, fmt.Sprintf("%s-outside-collab-%s", name, username), &github.RepositoryCollaboratorArgs{
+		Permission: pulumi.String("write"),
+		Repository: repository.Name,
+		Username:   pulumi.Sprintf(username),
+	})
+
 	return err
 }
