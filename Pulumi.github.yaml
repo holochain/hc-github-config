@@ -4,7 +4,7 @@ config:
   holochain:hra2GithubUserToken:
     secure: AAABAAlX8qRvnM43/M5f1AmKvVXISNX5k91KftJjesly4mWOpJfmrV0sR8EpIF9Q48V6/1WcV1AZ9JuHqS2s4oFirwBUITaI
   holochain:hra2PulumiAccessToken:
-    secure: AAABAAh8/kzHJwpYIeI+ZtP+FInw+l26V9UI/VBCGCChNaIA+TsuPcsxdrEhbZGCH9kWmjbKlHKSB9N0RMGXHao4Kdcmq1dn
+    secure: AAABAFGn3nlpLzx3B0RQckvHOuh04MjHgnTPVPveoZ6qx9BZBsjzarKZyhedZ12Rq8dzDcJ9opexrZ2mWmeaQ6jwiIc3qNtaQ6ztbw==
   holochain:tailscaleOAuthClientId:
     secure: AAABAMqi5wFJcWIqZxuzNJCIpvN23P92kozN1LzfTRgDN5okV6Ahw7Q9oan5qPxstw==
   holochain:tailscaleOAuthSecret:
