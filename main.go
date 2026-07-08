@@ -1903,7 +1903,7 @@ func AddCachixAuthTokenSecret(ctx *pulumi.Context, cfg *config.Config, repositor
 	return err
 }
 
-func AddReleaseIntegrationSupport(ctx *pulumi.Context, cfg *config.Config, name string, repository *github.Repository) error {
+func AddReleaseIntegrationLabel(ctx *pulumi.Context, name string, repository *github.Repository) error {
 	if _, err := github.NewIssueLabel(ctx, fmt.Sprintf("%s-hra-release-label", name), &github.IssueLabelArgs{
 		Repository: repository.Name,
 		// Must match what the holochain_release_integration CLI looks for.
@@ -1914,6 +1914,13 @@ func AddReleaseIntegrationSupport(ctx *pulumi.Context, cfg *config.Config, name 
 		return err
 	}
 
+	return nil
+}
+
+func AddReleaseIntegrationSupport(ctx *pulumi.Context, cfg *config.Config, name string, repository *github.Repository) error {
+	if err := AddReleaseIntegrationLabel(ctx, name, repository); err != nil {
+		return err
+	}
 	if err := AddGithubUserTokenSecret(ctx, cfg, name); err != nil {
 		return err
 	}
@@ -1925,15 +1932,9 @@ func AddReleaseIntegrationSupport(ctx *pulumi.Context, cfg *config.Config, name 
 }
 
 func AddNpmReleaseSupport(ctx *pulumi.Context, cfg *config.Config, name string, repository *github.Repository) error {
-	if _, err := github.NewIssueLabel(ctx, fmt.Sprintf("%s-npm-release-label", name), &github.IssueLabelArgs{
-		Repository: repository.Name,
-		Name:       pulumi.String("release"),
-		// Golden Fizz
-		Color: pulumi.String("E8F723"),
-	}); err != nil {
+	if err := AddReleaseIntegrationLabel(ctx, name, repository); err != nil {
 		return err
 	}
-
 	if err := AddGithubUserTokenSecret(ctx, cfg, name); err != nil {
 		return err
 	}
