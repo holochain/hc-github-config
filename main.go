@@ -2115,7 +2115,7 @@ func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.R
 
 func AddOutsideCollaborator(ctx *pulumi.Context, name string, repository *github.Repository, username string) error {
 	_, err := github.NewRepositoryCollaborator(ctx, fmt.Sprintf("%s-outside-collab-%s", name, username), &github.RepositoryCollaboratorArgs{
-		Permission: pulumi.String("write"),
+		Permission: pulumi.String("push"),
 		Repository: repository.Name,
 		Username:   pulumi.Sprintf(username),
 	})
