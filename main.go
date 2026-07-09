@@ -14,6 +14,9 @@ import (
 //go:embed files/CONTRIBUTING.md
 var contributingMdContent string
 
+//go:embed files/CODEOWNERS
+var codeOwnersContent string
+
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
 		conf := config.New(ctx, "")
@@ -269,6 +272,9 @@ func main() {
 			return err
 		}
 		if err = AddHolochainBackportLabels(ctx, "holonix", holonix); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "holonix", holonix); err != nil {
 			return err
 		}
 
@@ -2109,6 +2115,47 @@ func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.R
 		HeadRef:        branch.Branch,
 		Title:          pulumi.String("chore: update the CONTRIBUTING.md with shared content"),
 		Body:           pulumi.String("This PR updates the CONTRIBUTING.md file with the content from the shared file in the hc-github-config repo."),
+	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash))
+	return err
+}
+
+// AddCodeOwners adds the shared CODEOWNERS file to the repository
+// via a pull request against the `main` branch if the content has changed
+// since the last deployment.
+func AddCodeOwners(ctx *pulumi.Context, name string, repository *github.Repository) error {
+	contentHash := pulumi.String(fmt.Sprintf("%x", sha256.Sum256([]byte(codeOwnersContent))))
+
+	baseBranch := pulumi.String("main")
+
+	branch, err := github.NewBranch(ctx, fmt.Sprintf("%s-code-owners-branch", name), &github.BranchArgs{
+		Repository:   repository.Name,
+		Branch:       pulumi.String("chore/update-code-owners"),
+		SourceBranch: baseBranch,
+	}, pulumi.ReplacementTrigger(contentHash))
+	if err != nil {
+		return err
+	}
+
+	file, err := github.NewRepositoryFile(ctx, fmt.Sprintf("%s-code-owners-file", name), &github.RepositoryFileArgs{
+		Repository:        repository.Name,
+		Branch:            branch.Branch,
+		File:              pulumi.String(".github/CODEOWNERS"),
+		Content:           pulumi.String(codeOwnersContent),
+		CommitMessage:     pulumi.String("chore: update CODEOWNERS with shared content"),
+		CommitAuthor:      pulumi.String("holochain-release-automation2"),
+		CommitEmail:       pulumi.String("hra@holochain.org"),
+		OverwriteOnCreate: pulumi.Bool(true),
+	}, pulumi.ReplacementTrigger(contentHash))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewRepositoryPullRequest(ctx, fmt.Sprintf("%s-codeowners-pr", name), &github.RepositoryPullRequestArgs{
+		BaseRepository: repository.Name,
+		BaseRef:        baseBranch,
+		HeadRef:        branch.Branch,
+		Title:          pulumi.String("chore: update CODEOWNERS with shared content"),
+		Body:           pulumi.String("This PR updates CODEOWNERS with the content from the shared file in the hc-github-config repo."),
 	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash))
 	return err
 }
