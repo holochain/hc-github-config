@@ -81,6 +81,9 @@ func main() {
 		if err = AddPulumiAccessTokenSecret(ctx, conf, "hc-github-config"); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "hc-github-config", self); err != nil {
+			return err
+		}
 
 		//
 		// holochain-wasmer
@@ -111,6 +114,9 @@ func main() {
 			return err
 		}
 		if err = AddContributingGuide(ctx, "holochain-wasmer", holochainWasmer); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "holochain-wasmer", holochainWasmer); err != nil {
 			return err
 		}
 		if err = AddOutsideCollaborator(ctx, "holochain-wasmer", holochainWasmer, "synchwire"); err != nil {
@@ -171,6 +177,9 @@ func main() {
 		if err = AddContributingGuide(ctx, "wind-tunnel", windTunnel); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "wind-tunnel", windTunnel); err != nil {
+			return err
+		}
 
 		//
 		// Holochain JS client
@@ -196,6 +205,9 @@ func main() {
 			return err
 		}
 		if err = AddHolochainBackportLabels(ctx, "holochain-client-js", jsClient); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "holochain-client-js", jsClient); err != nil {
 			return err
 		}
 
@@ -301,6 +313,9 @@ func main() {
 		if err = AddHolochainBackportLabels(ctx, "binaries", binaries); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "binaries", binaries); err != nil {
+			return err
+		}
 
 		//
 		// Signal bends decently
@@ -391,6 +406,9 @@ func main() {
 		if err = AddContributingGuide(ctx, "lair", lair); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "lair", lair); err != nil {
+			return err
+		}
 
 		//
 		// Holochain CHC Service
@@ -448,6 +466,9 @@ func main() {
 		if err = AddContributingGuide(ctx, "holochain-serialization", holochainSerialization); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "holochain-serialization", holochainSerialization); err != nil {
+			return err
+		}
 
 		//
 		// Influxive
@@ -473,6 +494,9 @@ func main() {
 			return err
 		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "influxive", influxive); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "influxive", influxive); err != nil {
 			return err
 		}
 
@@ -558,6 +582,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "junit-to-influx-action-release", &junitToInfluxActionReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "junit-to-influx-action", junitToInfluxAction); err != nil {
+			return err
+		}
 
 		//
 		// Kitsune2
@@ -589,6 +616,9 @@ func main() {
 			return err
 		}
 		if err = AddContributingGuide(ctx, "kitsune2", kitsune2); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "kitsune2", kitsune2); err != nil {
 			return err
 		}
 		if err = AddOutsideCollaborator(ctx, "kitsune2", kitsune2, "synchwire"); err != nil {
@@ -666,13 +696,15 @@ func main() {
 		if err = AddContributingGuide(ctx, "scaffolding", scaffolding); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "scaffolding", scaffolding); err != nil {
+			return err
+		}
 
 		//
 		// hc-launch
 		//
 		hcLaunchDescription := "tauri based CLI to run holochain apps in development mode"
 		hcLaunchRepositoryArgs := StandardRepositoryArgs("hc-launch", &hcLaunchDescription)
-
 		hcLaunch, err := github.NewRepository(ctx, "hc-launch", &hcLaunchRepositoryArgs, pulumi.Import(pulumi.ID("hc-launch")))
 		if err != nil {
 			return err
@@ -721,6 +753,9 @@ func main() {
 		if err = AddGithubUserTokenSecret(ctx, conf, "hc-spin"); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "hc-spin", hcSpin); err != nil {
+			return err
+		}
 
 		//
 		// hc-spin-rust-utils
@@ -748,6 +783,9 @@ func main() {
 		if err = AddHolochainBackportLabels(ctx, "hc-spin-rust-utils", hcSpinRustUtils); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "hc-spin-rust-utils", hcSpinRustUtils); err != nil {
+			return err
+		}
 
 		//
 		// kangaroo-electron
@@ -755,7 +793,6 @@ func main() {
 		kangarooElectronDescription := "Bundle your holochain app a a standalone electron app with a built-in conductor"
 		kangarooElectronRepositoryArgs := StandardRepositoryArgs("kangaroo-electron", &kangarooElectronDescription)
 		kangarooElectronRepositoryArgs.IsTemplate = pulumi.Bool(true)
-
 		kangarooElectron, err := github.NewRepository(ctx, "kangaroo-electron", &kangarooElectronRepositoryArgs, pulumi.Import(pulumi.ID("kangaroo-electron")))
 		if err != nil {
 			return err
@@ -785,6 +822,9 @@ func main() {
 		if err = AddHolochainBackportLabels(ctx, "kangaroo-electron", kangarooElectron); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "kangaroo-electron", kangarooElectron); err != nil {
+			return err
+		}
 
 		//
 		// Dino Adventure
@@ -809,6 +849,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "dino-adventure-release", &dinoAdventureReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "dino-adventure", dinoAdventure); err != nil {
+			return err
+		}
 
 		//
 		// Dino Adventure - Kangaroo
@@ -829,6 +872,9 @@ func main() {
 			return err
 		}
 		if err = AddWindowsCodeSigningCertificates(ctx, conf, "dino-adventure-kangaroo"); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "dino-adventure-kangaroo", dinoAdventureKangaroo); err != nil {
 			return err
 		}
 
@@ -855,6 +901,9 @@ func main() {
 			return err
 		}
 		if err = AddPulumiAccessTokenSecret(ctx, conf, "nomad-server"); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "nomad-server", nomadServer); err != nil {
 			return err
 		}
 
@@ -887,6 +936,9 @@ func main() {
 		if err = AddContributingGuide(ctx, "hc-http-gw", hcHttpGw); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "hc-http-gw", hcHttpGw); err != nil {
+			return err
+		}
 
 		//
 		// network-services
@@ -911,6 +963,9 @@ func main() {
 			return err
 		}
 		if err = AddPulumiAccessTokenSecret(ctx, conf, "network-services"); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "network-services", networkServices); err != nil {
 			return err
 		}
 
@@ -940,6 +995,9 @@ func main() {
 			return err
 		}
 		if err = AddThreefoldHubApiToken(ctx, conf, "wind-tunnel-runner"); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "wind-tunnel-runner", windTunnelRunner); err != nil {
 			return err
 		}
 
@@ -988,6 +1046,9 @@ func main() {
 		}
 		url2ReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(url2, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "url2-release", &url2ReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "url2", url2); err != nil {
 			return err
 		}
 
@@ -1304,6 +1365,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "release-integration-default", &releaseIntegrationDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "release-integration", releaseIntegration); err != nil {
+			return err
+		}
 
 		//
 		// actions
@@ -1402,6 +1466,9 @@ func main() {
 		if err = AddPulumiAccessTokenSecret(ctx, conf, "wind-tunnel-runner-status-dashboard"); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "wind-tunnel-runner-status-dashboard", windTunnelRunnerStatusDashboard); err != nil {
+			return err
+		}
 
 		//
 		// hc-auth-server
@@ -1430,6 +1497,9 @@ func main() {
 			return err
 		}
 		if err = AddContributingGuide(ctx, "hc-auth-server", hcAuthServer); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "hc-auth-server", hcAuthServer); err != nil {
 			return err
 		}
 
@@ -1464,6 +1534,12 @@ func main() {
 			return err
 		}
 		if err = AddNpmReleaseSupport(ctx, conf, "peerkit", peerkit); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "peerkit", peerkit); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "peerkit", peerkit); err != nil {
 			return err
 		}
 
@@ -1517,6 +1593,9 @@ func main() {
 		if err = AddOutsideCollaborator(ctx, "peerkit-video-chat", peerkitVC, "synchwire"); err != nil {
 			return err
 		}
+		if err = AddCodeOwners(ctx, "peerkit-video-chat", peerkitVC); err != nil {
+			return err
+		}
 
 		//
 		// sodoken
@@ -1539,6 +1618,9 @@ func main() {
 		}
 		sodokenReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(sodoken, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "sodoken-release", &sodokenReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "sodoken", sodoken); err != nil {
 			return err
 		}
 
