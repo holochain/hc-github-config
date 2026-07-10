@@ -23,9 +23,6 @@ func main() {
 
 		description := "Automation for GitHub repository configurations for the Holochain organization."
 		selfRepositoryArgs := StandardRepositoryArgs("hc-github-config", &description)
-		selfRepositoryArgs.AllowMergeCommit = pulumi.Bool(false)
-		selfRepositoryArgs.AllowSquashMerge = pulumi.Bool(false)
-		selfRepositoryArgs.AllowRebaseMerge = pulumi.Bool(true)
 		self, err := github.NewRepository(ctx, "hc-github-config", &selfRepositoryArgs, pulumi.Import(pulumi.ID("hc-github-config")))
 		if err != nil {
 			return err
@@ -700,7 +697,6 @@ func main() {
 		//
 		hcSpinDescription := "CLI to run Holochain Apps in Development Mode"
 		hcSpinRepositoryArgs := StandardRepositoryArgs("hc-spin", &hcSpinDescription)
-
 		hcSpin, err := github.NewRepository(ctx, "hc-spin", &hcSpinRepositoryArgs, pulumi.Import(pulumi.ID("hc-spin")))
 		if err != nil {
 			return err
@@ -723,6 +719,33 @@ func main() {
 			return err
 		}
 		if err = AddGithubUserTokenSecret(ctx, conf, "hc-spin"); err != nil {
+			return err
+		}
+
+		//
+		// hc-spin-rust-utils
+		//
+		hcSpinRustUtilsDescription := "Rust node add-ons for hc-spin"
+		hcSpinRustUtilsRepositoryArgs := StandardRepositoryArgs("hc-spin-rust-utils", &hcSpinRustUtilsDescription)
+		hcSpinRustUtils, err := github.NewRepository(ctx, "hc-spin-rust-utils", &hcSpinRustUtilsRepositoryArgs, pulumi.Import(pulumi.ID("hc-spin-rust-utils")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "hc-spin-rust-utils", hcSpinRustUtils); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "hc-spin-rust-utils", hcSpinRustUtils); err != nil {
+			return err
+		}
+		hcSpinRustUtilsDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(hcSpinRustUtils, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-rust-utils-default", &hcSpinRustUtilsDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		hcSpinRustUtilsReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(hcSpinRustUtils, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-rust-utils-release", &hcSpinRustUtilsReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddHolochainBackportLabels(ctx, "hc-spin-rust-utils", hcSpinRustUtils); err != nil {
 			return err
 		}
 
@@ -1445,6 +1468,30 @@ func main() {
 		}
 
 		//
+		// peerkit bootstrap relay
+		//
+		peerkitBootstrapRelayRepositoryDescription := "Deployable Peerkit bootstrap/relay node (DigitalOcean droplet) for app and Wind Tunnel testing."
+		peerkitBootstrapRelayRepositoryArgs := StandardRepositoryArgs("peerkit-bootstrap-relay", &peerkitBootstrapRelayRepositoryDescription)
+		peerkitBootstrapRelay, err := github.NewRepository(ctx, "peerkit-bootstrap-relay", &peerkitBootstrapRelayRepositoryArgs, pulumi.Import(pulumi.ID("peerkit-bootstrap-relay")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "peerkit-bootstrap-relay", peerkitBootstrapRelay); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "peerkit-bootstrap-relay", peerkitBootstrapRelay); err != nil {
+			return err
+		}
+		peerkitBootstrapRelayDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(peerkitBootstrapRelay, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "peerkit-bootstrap-relay-default", &peerkitBootstrapRelayDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		peerkitBootstrapRelayReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(peerkitBootstrapRelay, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "peerkit-bootstrap-relay-release", &peerkitBootstrapRelayReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+
+		//
 		// peerkit-video-chat
 		//
 		peerkitVCRepositoryDescription := "A video chat app built with Peerkit"
@@ -1468,6 +1515,30 @@ func main() {
 			return err
 		}
 		if err = AddOutsideCollaborator(ctx, "peerkit-video-chat", peerkitVC, "synchwire"); err != nil {
+			return err
+		}
+
+		//
+		// sodoken
+		//
+		sodokenRepositoryDescription := "Libsodium wrapper providing tokio safe memory secure api access."
+		sodokenRepositoryArgs := StandardRepositoryArgs("sodoken", &sodokenRepositoryDescription)
+		sodoken, err := github.NewRepository(ctx, "sodoken", &sodokenRepositoryArgs, pulumi.Import(pulumi.ID("sodoken")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "sodoken", sodoken); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "sodoken", sodoken); err != nil {
+			return err
+		}
+		sodokenDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(sodoken, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "sodoken-default", &sodokenDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		sodokenReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(sodoken, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "sodoken-release", &sodokenReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
 
