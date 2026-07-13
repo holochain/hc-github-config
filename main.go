@@ -496,9 +496,6 @@ func main() {
 		if err = AddReleaseIntegrationSupport(ctx, conf, "influxive", influxive); err != nil {
 			return err
 		}
-		if err = AddCodeOwners(ctx, "influxive", influxive); err != nil {
-			return err
-		}
 
 		//
 		// Holochain Python Client
