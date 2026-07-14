@@ -1620,6 +1620,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "sodoken-release", &sodokenReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "sodoken", sodoken); err != nil {
+			return err
+		}
 		if err = AddCodeOwners(ctx, "sodoken", sodoken); err != nil {
 			return err
 		}
