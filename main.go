@@ -1839,6 +1839,11 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, options Ruleset
 				ActorType:  pulumi.String("RepositoryRole"),
 				BypassMode: pulumi.String("always"),
 			},
+			&github.RepositoryRulesetBypassActorArgs{
+				ActorId:    pulumi.Int(4948308),
+				ActorType:  pulumi.String("Team"),
+				BypassMode: pulumi.String("pull_request"),
+			},
 		},
 	}
 }
