@@ -777,6 +777,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-rust-utils-release", &hcSpinRustUtilsReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddGithubUserTokenSecret(ctx, conf, "hc-spin-rust-utils"); err != nil {
+			return err
+		}
 		if err = AddHolochainBackportLabels(ctx, "hc-spin-rust-utils", hcSpinRustUtils); err != nil {
 			return err
 		}
