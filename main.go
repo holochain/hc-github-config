@@ -819,9 +819,6 @@ func main() {
 		if err = AddHolochainBackportLabels(ctx, "kangaroo-electron", kangarooElectron); err != nil {
 			return err
 		}
-		if err = AddCodeOwners(ctx, "kangaroo-electron", kangarooElectron); err != nil {
-			return err
-		}
 
 		//
 		// Dino Adventure
@@ -869,9 +866,6 @@ func main() {
 			return err
 		}
 		if err = AddWindowsCodeSigningCertificates(ctx, conf, "dino-adventure-kangaroo"); err != nil {
-			return err
-		}
-		if err = AddCodeOwners(ctx, "dino-adventure-kangaroo", dinoAdventureKangaroo); err != nil {
 			return err
 		}
 
