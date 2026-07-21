@@ -78,6 +78,9 @@ func main() {
 		if err = AddGithubAdminTokenSecret(ctx, conf, "hc-github-config"); err != nil {
 			return err
 		}
+		if err = AddGithubAdminTokenSecretForDependabot(ctx, conf, "hc-github-config"); err != nil {
+			return err
+		}
 		if err = AddPulumiAccessTokenSecret(ctx, conf, "hc-github-config"); err != nil {
 			return err
 		}
@@ -1852,6 +1855,18 @@ func AddGithubUserTokenSecret(ctx *pulumi.Context, cfg *config.Config, repositor
 		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		PlaintextValue: cfg.RequireSecret("hra2GithubUserToken"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+
+	return err
+}
+
+func AddGithubAdminTokenSecretForDependabot(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+	// A GITHUB_TOKEN with standard repository access to be used on most repositories.
+	_, err := github.NewDependabotSecret(ctx, fmt.Sprintf("%s-dependabot-github-token", repository), &github.DependabotSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("hra2GithubAdminToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
