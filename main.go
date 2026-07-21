@@ -1900,6 +1900,17 @@ func AddPulumiAccessTokenSecret(ctx *pulumi.Context, cfg *config.Config, reposit
 		PlaintextValue: cfg.RequireSecret("hra2PulumiAccessToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewDependabotSecret(ctx, fmt.Sprintf("%s-dependabot-pulumi-access-token", repository), &github.DependabotSecretArgs{
+		Repository: pulumi.String(repository),
+		SecretName: pulumi.String("HRA2_PULUMI_ACCESS_TOKEN"),
+		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
+		PlaintextValue: cfg.RequireSecret("hra2PulumiAccessToken"),
+	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
+
 	return err
 }
 
