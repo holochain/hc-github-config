@@ -207,6 +207,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "holochain-client-js-release", &jsClientReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddNpmReleaseSupport(ctx, conf, "holochain-client-js", jsClient); err != nil {
+			return err
+		}
 		if err = AddHolochainBackportLabels(ctx, "holochain-client-js", jsClient); err != nil {
 			return err
 		}
