@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"crypto/sha256"
 	_ "embed"
 	"fmt"
+	"html/template"
 	"strings"
 
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
@@ -16,6 +18,9 @@ var contributingMdContent string
 
 //go:embed files/CODEOWNERS
 var codeOwnersContent string
+
+//go:embed files/dependabot.yml.tmpl
+var dependabotYmlContent string
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
@@ -320,6 +325,9 @@ func main() {
 			return err
 		}
 		if err = AddCodeOwners(ctx, "binaries", binaries); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "binaries", binaries, DependabotConfig{}); err != nil {
 			return err
 		}
 
@@ -2340,6 +2348,63 @@ func AddCodeOwners(ctx *pulumi.Context, name string, repository *github.Reposito
 		HeadRef:        branch.Branch,
 		Title:          pulumi.String("chore: update CODEOWNERS with shared content"),
 		Body:           pulumi.String("This PR updates CODEOWNERS with the content from the shared file in the hc-github-config repo."),
+	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash))
+	return err
+}
+
+type DependabotConfig struct {
+	EnableRust bool
+	EnableNpm  bool
+	EnableGo   bool
+	EnableNix  bool
+}
+
+func AddDependabotYml(ctx *pulumi.Context, name string, repository *github.Repository, config DependabotConfig) error {
+	tmpl, err := template.New("dependabot").Parse(dependabotYmlContent)
+	if err != nil {
+		return err
+	}
+
+	var tpl bytes.Buffer
+	if err := tmpl.Execute(&tpl, config); err != nil {
+		return err
+	}
+
+	generatedDependabotYml := tpl.String()
+
+	contentHash := pulumi.String(fmt.Sprintf("%x", sha256.Sum256([]byte(generatedDependabotYml))))
+
+	baseBranch := pulumi.String("main")
+
+	branch, err := github.NewBranch(ctx, fmt.Sprintf("%s-dependabot-yml-branch", name), &github.BranchArgs{
+		Repository:   repository.Name,
+		Branch:       pulumi.String("chore/update-dependabot-yml"),
+		SourceBranch: baseBranch,
+	}, pulumi.ReplacementTrigger(contentHash))
+	if err != nil {
+		return err
+	}
+
+	file, err := github.NewRepositoryFile(ctx, fmt.Sprintf("%s-dependabot-yml-file", name), &github.RepositoryFileArgs{
+		Repository:        repository.Name,
+		Branch:            branch.Branch,
+		File:              pulumi.String(".github/dependabot.yml"),
+		Content:           pulumi.String(generatedDependabotYml),
+		CommitMessage:     pulumi.String("chore: update dependabot.yml with shared content"),
+		CommitAuthor:      pulumi.String("holochain-release-automation2"),
+		CommitEmail:       pulumi.String("hra@holochain.org"),
+		OverwriteOnCreate: pulumi.Bool(true),
+	}, pulumi.ReplacementTrigger(contentHash))
+	if err != nil {
+		return err
+	}
+
+	_, err = github.NewRepositoryPullRequest(ctx, fmt.Sprintf("%s-dependabot-yml-pr", name), &github.RepositoryPullRequestArgs{
+		BaseRepository: repository.Name,
+		BaseRef:        baseBranch,
+		HeadRef:        branch.Branch,
+		Title:          pulumi.String("chore: update dependabot.yml with shared content"),
+		Body:           pulumi.String("This PR updates dependeabot.yml with the content from the shared file in the hc-github-config repo."),
 	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash))
 	return err
 }
