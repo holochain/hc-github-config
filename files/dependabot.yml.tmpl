@@ -1,0 +1,63 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      background:
+        applies-to: version-updates
+        patterns:
+          - "*"
+  {{- if .EnableRust }}
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      background:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+  - package-ecosystem: rust-toolchain
+    directory: /
+    schedule:
+      interval: weekly
+  {{- end }}
+  {{- if .EnableNpm }}
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      background:
+        applies-to: version-updates
+        patterns:
+          - "*"
+  {{- end }}
+  {{- if .EnableGo }}
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      background:
+        applies-to: version-updates
+        patterns:
+          - "*"
+  {{- end }}
+  {{- if .EnableNix }}
+  - package-ecosystem: nix
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      background:
+        applies-to: version-updates
+        patterns:
+          - "*"
+  {{- end }}
