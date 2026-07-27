@@ -23,6 +23,9 @@ jobs:
           stack-name: holochain/github
           comment-on-pr: true
           diff: true
+          # Dependabot-triggered runs get a read-only `github.token`, which this action would
+          # otherwise default to and fail to comment with. Use our own token instead.
+          github-token: ${{ secrets.HRA2_GITHUB_TOKEN }}
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.HRA2_PULUMI_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.HRA2_GITHUB_TOKEN }}
