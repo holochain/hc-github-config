@@ -136,13 +136,8 @@ func main() {
 		//
 		description = "Performance testing for Holochain"
 		windTunnelRepositoryArgs := StandardRepositoryArgs("wind-tunnel", &description)
-		windTunnelRepositoryArgs.Pages = github.RepositoryPagesArgs{
-			Source: github.RepositoryPagesSourceArgs{
-				Branch: pulumi.String("gh-pages"),
-				Path:   pulumi.String("/"),
-			},
-		}
 		windTunnel, err := github.NewRepository(ctx, "wind-tunnel", &windTunnelRepositoryArgs, pulumi.Import(pulumi.ID("wind-tunnel")))
+
 		if err != nil {
 			return err
 		}
@@ -160,6 +155,13 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-release", &windTunnelReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		_, err = github.NewRepositoryPages(ctx, "wind-tunnel-pages", &github.RepositoryPagesArgs{
+			Repository: windTunnel.Name,
+			Source: github.RepositoryPagesSourceArgs{
+				Branch: pulumi.String("gh-pages"),
+				Path:   pulumi.String("/"),
+			},
+		})
 		windTunnelConf := config.New(ctx, "wind-tunnel")
 		if err = AddNomadAccessTokenSecret(ctx, windTunnelConf, "wind-tunnel"); err != nil {
 			return err
@@ -1516,13 +1518,6 @@ func main() {
 		//
 		peerkitRepositoryDescription := "A TypeScript framework for providing P2P data synchronization"
 		peerkitRepositoryArgs := StandardRepositoryArgs("peerkit", &peerkitRepositoryDescription)
-		peerkitRepositoryArgs.Pages = github.RepositoryPagesArgs{
-			BuildType: pulumi.String("workflow"),
-			Source: github.RepositoryPagesSourceArgs{
-				Branch: pulumi.String("main"),
-				Path:   pulumi.String("/"),
-			},
-		}
 		peerkit, err := github.NewRepository(ctx, "peerkit", &peerkitRepositoryArgs, pulumi.Import(pulumi.ID("peerkit")))
 		if err != nil {
 			return err
@@ -1539,6 +1534,13 @@ func main() {
 		}
 		peerkitReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(peerkit, NewRulesetOptions())
 		if _, err = github.NewRepositoryRuleset(ctx, "peerkit-release", &peerkitReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		_, err = github.NewRepositoryPages(ctx, "peerkit-pages", &github.RepositoryPagesArgs{
+			Repository: peerkit.Name,
+			BuildType:  pulumi.String("workflow"),
+		})
+		if err != nil {
 			return err
 		}
 		if err = AddNpmReleaseSupport(ctx, conf, "peerkit", peerkit); err != nil {
@@ -1647,7 +1649,6 @@ func StandardRepositoryArgs(name string, description *string) github.RepositoryA
 		HasIssues:           pulumi.Bool(true),
 		HasProjects:         pulumi.Bool(true),
 		HasWiki:             pulumi.Bool(false),
-		VulnerabilityAlerts: pulumi.Bool(true),
 		AllowAutoMerge:      pulumi.Bool(true),
 		DeleteBranchOnMerge: pulumi.Bool(true),
 		AllowUpdateBranch:   pulumi.Bool(true),
@@ -1868,7 +1869,7 @@ func AddGithubUserTokenSecret(ctx *pulumi.Context, cfg *config.Config, repositor
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("hra2GithubUserToken"),
+		Value: cfg.RequireSecret("hra2GithubUserToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -1880,7 +1881,7 @@ func AddGithubAdminTokenSecretForDependabot(ctx *pulumi.Context, cfg *config.Con
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("hra2GithubAdminToken"),
+		Value: cfg.RequireSecret("hra2GithubAdminToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -1892,7 +1893,7 @@ func AddGithubWorkflowsTokenSecret(ctx *pulumi.Context, cfg *config.Config, repo
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("hra2GithubWorkflowsToken"),
+		Value: cfg.RequireSecret("hra2GithubWorkflowsToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -1904,7 +1905,7 @@ func AddGithubAdminTokenSecret(ctx *pulumi.Context, cfg *config.Config, reposito
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("hra2GithubAdminToken"),
+		Value: cfg.RequireSecret("hra2GithubAdminToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -1915,7 +1916,7 @@ func AddCratesIoTokenSecret(ctx *pulumi.Context, cfg *config.Config, name string
 		Repository: repository.Name,
 		SecretName: pulumi.String("HRA2_CRATES_IO_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("hra2CratesIoToken"),
+		Value: cfg.RequireSecret("hra2CratesIoToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -1926,7 +1927,7 @@ func AddPulumiAccessTokenSecret(ctx *pulumi.Context, cfg *config.Config, reposit
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("HRA2_PULUMI_ACCESS_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("hra2PulumiAccessToken"),
+		Value: cfg.RequireSecret("hra2PulumiAccessToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	if err != nil {
@@ -1937,7 +1938,7 @@ func AddPulumiAccessTokenSecret(ctx *pulumi.Context, cfg *config.Config, reposit
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("HRA2_PULUMI_ACCESS_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("hra2PulumiAccessToken"),
+		Value: cfg.RequireSecret("hra2PulumiAccessToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -1948,7 +1949,7 @@ func AddNomadAccessTokenSecret(ctx *pulumi.Context, cfg *config.Config, reposito
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("NOMAD_ACCESS_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("nomadAccessToken"),
+		Value: cfg.RequireSecret("nomadAccessToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -1959,7 +1960,7 @@ func AddTailscaleOAuthSecrets(ctx *pulumi.Context, cfg *config.Config, repositor
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("TS_OAUTH_CLIENT_ID"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("tailscaleOAuthClientId"),
+		Value: cfg.RequireSecret("tailscaleOAuthClientId"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -1969,7 +1970,7 @@ func AddTailscaleOAuthSecrets(ctx *pulumi.Context, cfg *config.Config, repositor
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("TS_OAUTH_SECRET"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("tailscaleOAuthSecret"),
+		Value: cfg.RequireSecret("tailscaleOAuthSecret"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -1980,7 +1981,7 @@ func AddAppleAppSigningSecrets(ctx *pulumi.Context, cfg *config.Config, reposito
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("APPLE_DEV_IDENTITY"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("appleDevIdentity"),
+		Value: cfg.RequireSecret("appleDevIdentity"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -1990,7 +1991,7 @@ func AddAppleAppSigningSecrets(ctx *pulumi.Context, cfg *config.Config, reposito
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("APPLE_ID_EMAIL"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("appleIdEmail"),
+		Value: cfg.RequireSecret("appleIdEmail"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -2000,7 +2001,7 @@ func AddAppleAppSigningSecrets(ctx *pulumi.Context, cfg *config.Config, reposito
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("APPLE_ID_PASSWORD"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("appleIdPassword"),
+		Value: cfg.RequireSecret("appleIdPassword"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -2010,7 +2011,7 @@ func AddAppleAppSigningSecrets(ctx *pulumi.Context, cfg *config.Config, reposito
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("APPLE_TEAM_ID"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("appleTeamId"),
+		Value: cfg.RequireSecret("appleTeamId"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -2020,7 +2021,7 @@ func AddAppleAppSigningSecrets(ctx *pulumi.Context, cfg *config.Config, reposito
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("APPLE_CERTIFICATE"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("appleCertificate"),
+		Value: cfg.RequireSecret("appleCertificate"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -2030,7 +2031,7 @@ func AddAppleAppSigningSecrets(ctx *pulumi.Context, cfg *config.Config, reposito
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("APPLE_CERTIFICATE_PASSWORD"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("appleCertificatePassword"),
+		Value: cfg.RequireSecret("appleCertificatePassword"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -2044,7 +2045,7 @@ func AddWindowsCodeSigningCertificates(ctx *pulumi.Context, cfg *config.Config, 
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("AZURE_KEY_VAULT_URI"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("azureKeyVaultUri"),
+		Value: cfg.RequireSecret("azureKeyVaultUri"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -2054,7 +2055,7 @@ func AddWindowsCodeSigningCertificates(ctx *pulumi.Context, cfg *config.Config, 
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("AZURE_CERT_NAME"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("azureCertName"),
+		Value: cfg.RequireSecret("azureCertName"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -2064,7 +2065,7 @@ func AddWindowsCodeSigningCertificates(ctx *pulumi.Context, cfg *config.Config, 
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("AZURE_TENANT_ID"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("azureTenantId"),
+		Value: cfg.RequireSecret("azureTenantId"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -2074,7 +2075,7 @@ func AddWindowsCodeSigningCertificates(ctx *pulumi.Context, cfg *config.Config, 
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("AZURE_CLIENT_ID"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("azureClientId"),
+		Value: cfg.RequireSecret("azureClientId"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -2084,7 +2085,7 @@ func AddWindowsCodeSigningCertificates(ctx *pulumi.Context, cfg *config.Config, 
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("AZURE_CLIENT_SECRET"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("azureClientSecret"),
+		Value: cfg.RequireSecret("azureClientSecret"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -2095,7 +2096,7 @@ func AddCachixAuthTokenSecret(ctx *pulumi.Context, cfg *config.Config, repositor
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("CACHIX_AUTH_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("cachixAuthToken"),
+		Value: cfg.RequireSecret("cachixAuthToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -2145,7 +2146,7 @@ func AddHetznerHolochainInfraBucketsSecret(ctx *pulumi.Context, cfg *config.Conf
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("HETZNER_HOLOCHAIN_INFRA_BUCKETS_ACCESS"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("hetznerHolochainInfraBucketsAccess"),
+		Value: cfg.RequireSecret("hetznerHolochainInfraBucketsAccess"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 	if err != nil {
 		return err
@@ -2154,7 +2155,7 @@ func AddHetznerHolochainInfraBucketsSecret(ctx *pulumi.Context, cfg *config.Conf
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("HETZNER_HOLOCHAIN_INFRA_BUCKETS_SECRET"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("hetznerHolochainInfraBucketsSecret"),
+		Value: cfg.RequireSecret("hetznerHolochainInfraBucketsSecret"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -2165,7 +2166,7 @@ func AddClaudeCodeOauthTokenSecret(ctx *pulumi.Context, cfg *config.Config, repo
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("CLAUDE_CODE_OAUTH_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("claudeCodeOauthToken"),
+		Value: cfg.RequireSecret("claudeCodeOauthToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -2176,7 +2177,7 @@ func AddThreefoldTfChainWalletMnemonic(ctx *pulumi.Context, cfg *config.Config, 
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("THREEFOLD_TFCHAIN_WALLET_MNEMONIC"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("threefoldTfChainWalletMnemonic"),
+		Value: cfg.RequireSecret("threefoldTfChainWalletMnemonic"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -2187,7 +2188,7 @@ func AddThreefoldHubApiToken(ctx *pulumi.Context, cfg *config.Config, repository
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("THREEFOLD_HUB_API_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("threefoldHubApiToken"),
+		Value: cfg.RequireSecret("threefoldHubApiToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
@@ -2198,7 +2199,7 @@ func AddHolochainNotifierMattermostBotPersonalAccessToken(ctx *pulumi.Context, c
 		Repository: pulumi.String(repository),
 		SecretName: pulumi.String("HOLOCHAIN_NOTIFIER_MATTERMOST_BOT_PERSONAL_ACCESS_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
-		PlaintextValue: cfg.RequireSecret("holochainNotifierMattermostBotPersonalAccessToken"),
+		Value: cfg.RequireSecret("holochainNotifierMattermostBotPersonalAccessToken"),
 	}, pulumi.DeleteBeforeReplace(true), pulumi.IgnoreChanges([]string{"encryptedValue"}))
 
 	return err
