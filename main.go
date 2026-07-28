@@ -1639,6 +1639,11 @@ func main() {
 		if err = AddCodeOwners(ctx, "sodoken", sodoken); err != nil {
 			return err
 		}
+		if err = AddDependabotYml(ctx, "sodoken", sodoken, DependabotConfig{
+			EnableRust: true,
+		}); err != nil {
+			return err
+		}
 
 		return nil
 	})
