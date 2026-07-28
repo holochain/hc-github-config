@@ -161,7 +161,10 @@ func main() {
 				Branch: pulumi.String("gh-pages"),
 				Path:   pulumi.String("/"),
 			},
-		})
+		}, pulumi.Import(pulumi.ID("wind-tunnel")))
+		if err != nil {
+			return err
+		}
 		windTunnelConf := config.New(ctx, "wind-tunnel")
 		if err = AddNomadAccessTokenSecret(ctx, windTunnelConf, "wind-tunnel"); err != nil {
 			return err
@@ -2279,11 +2282,14 @@ func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.R
 
 	baseBranch := pulumi.String("main")
 
+	// The branch and file are disposed of by merging the PR, so Pulumi must not delete them when the
+	// content hash triggers a replacement: the branch name is reused, so deleting the old resources
+	// would remove the branch behind the new PR, or fail on a stale blob SHA.
 	branch, err := github.NewBranch(ctx, fmt.Sprintf("%s-contributing-md-branch", name), &github.BranchArgs{
 		Repository:   repository.Name,
 		Branch:       pulumi.String("chore/update-contributing-guide"),
 		SourceBranch: baseBranch,
-	}, pulumi.ReplacementTrigger(contentHash))
+	}, pulumi.ReplacementTrigger(contentHash), pulumi.RetainOnDelete(true))
 	if err != nil {
 		return err
 	}
@@ -2297,7 +2303,7 @@ func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.R
 		CommitAuthor:      pulumi.String("Holochain Repository Automation"),
 		CommitEmail:       pulumi.String("hra@holochain.org"),
 		OverwriteOnCreate: pulumi.Bool(true),
-	}, pulumi.ReplacementTrigger(contentHash))
+	}, pulumi.ReplacementTrigger(contentHash), pulumi.RetainOnDelete(true))
 	if err != nil {
 		return err
 	}
@@ -2308,7 +2314,7 @@ func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.R
 		HeadRef:        branch.Branch,
 		Title:          pulumi.String("chore: update the CONTRIBUTING.md with shared content"),
 		Body:           pulumi.String("This PR updates the CONTRIBUTING.md file with the content from the shared file in the hc-github-config repo."),
-	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash))
+	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash), pulumi.DeleteBeforeReplace(true))
 	return err
 }
 
@@ -2320,11 +2326,12 @@ func AddCodeOwners(ctx *pulumi.Context, name string, repository *github.Reposito
 
 	baseBranch := pulumi.String("main")
 
+	// See AddContributingGuide for why the branch and file are retained on delete.
 	branch, err := github.NewBranch(ctx, fmt.Sprintf("%s-code-owners-branch", name), &github.BranchArgs{
 		Repository:   repository.Name,
 		Branch:       pulumi.String("chore/update-code-owners"),
 		SourceBranch: baseBranch,
-	}, pulumi.ReplacementTrigger(contentHash))
+	}, pulumi.ReplacementTrigger(contentHash), pulumi.RetainOnDelete(true))
 	if err != nil {
 		return err
 	}
@@ -2338,7 +2345,7 @@ func AddCodeOwners(ctx *pulumi.Context, name string, repository *github.Reposito
 		CommitAuthor:      pulumi.String("holochain-release-automation2"),
 		CommitEmail:       pulumi.String("hra@holochain.org"),
 		OverwriteOnCreate: pulumi.Bool(true),
-	}, pulumi.ReplacementTrigger(contentHash))
+	}, pulumi.ReplacementTrigger(contentHash), pulumi.RetainOnDelete(true))
 	if err != nil {
 		return err
 	}
@@ -2349,7 +2356,7 @@ func AddCodeOwners(ctx *pulumi.Context, name string, repository *github.Reposito
 		HeadRef:        branch.Branch,
 		Title:          pulumi.String("chore: update CODEOWNERS with shared content"),
 		Body:           pulumi.String("This PR updates CODEOWNERS with the content from the shared file in the hc-github-config repo."),
-	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash))
+	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash), pulumi.DeleteBeforeReplace(true))
 	return err
 }
 
@@ -2377,11 +2384,12 @@ func AddDependabotYml(ctx *pulumi.Context, name string, repository *github.Repos
 
 	baseBranch := pulumi.String("main")
 
+	// See AddContributingGuide for why the branch and file are retained on delete.
 	branch, err := github.NewBranch(ctx, fmt.Sprintf("%s-dependabot-yml-branch", name), &github.BranchArgs{
 		Repository:   repository.Name,
 		Branch:       pulumi.String("chore/update-dependabot-yml"),
 		SourceBranch: baseBranch,
-	}, pulumi.ReplacementTrigger(contentHash))
+	}, pulumi.ReplacementTrigger(contentHash), pulumi.RetainOnDelete(true))
 	if err != nil {
 		return err
 	}
@@ -2395,7 +2403,7 @@ func AddDependabotYml(ctx *pulumi.Context, name string, repository *github.Repos
 		CommitAuthor:      pulumi.String("holochain-release-automation2"),
 		CommitEmail:       pulumi.String("hra@holochain.org"),
 		OverwriteOnCreate: pulumi.Bool(true),
-	}, pulumi.ReplacementTrigger(contentHash))
+	}, pulumi.ReplacementTrigger(contentHash), pulumi.RetainOnDelete(true))
 	if err != nil {
 		return err
 	}
@@ -2406,7 +2414,7 @@ func AddDependabotYml(ctx *pulumi.Context, name string, repository *github.Repos
 		HeadRef:        branch.Branch,
 		Title:          pulumi.String("chore: update dependabot.yml with shared content"),
 		Body:           pulumi.String("This PR updates dependeabot.yml with the content from the shared file in the hc-github-config repo."),
-	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash))
+	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash), pulumi.DeleteBeforeReplace(true))
 	return err
 }
 
