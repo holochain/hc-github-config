@@ -127,6 +127,9 @@ func main() {
 		if err = AddCodeOwners(ctx, "holochain-wasmer", holochainWasmer); err != nil {
 			return err
 		}
+		if err = AddDependabotYml(ctx, "holochain-wasmer", holochainWasmer, DependabotConfig{EnableRust: true}); err != nil {
+			return err
+		}
 		if err = AddOutsideCollaborator(ctx, "holochain-wasmer", holochainWasmer, "synchwire"); err != nil {
 			return err
 		}
@@ -193,6 +196,9 @@ func main() {
 		if err = AddCodeOwners(ctx, "wind-tunnel", windTunnel); err != nil {
 			return err
 		}
+		if err = AddDependabotYml(ctx, "wind-tunnel", windTunnel, DependabotConfig{EnableRust: true, EnableNix: true, EnableGo: true}); err != nil {
+			return err
+		}
 
 		//
 		// Holochain JS client
@@ -224,6 +230,9 @@ func main() {
 			return err
 		}
 		if err = AddCodeOwners(ctx, "holochain-client-js", jsClient); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "holochain-client-js", jsClient, DependabotConfig{EnableNix: true, EnableNpm: true}); err != nil {
 			return err
 		}
 
@@ -300,6 +309,9 @@ func main() {
 			return err
 		}
 		if err = AddCodeOwners(ctx, "holonix", holonix); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "holonix", holonix, DependabotConfig{EnableNix: true}); err != nil {
 			return err
 		}
 
@@ -428,6 +440,9 @@ func main() {
 		if err = AddCodeOwners(ctx, "lair", lair); err != nil {
 			return err
 		}
+		if err = AddDependabotYml(ctx, "lair", lair, DependabotConfig{}); err != nil {
+			return err
+		}
 
 		//
 		// Holochain CHC Service
@@ -486,6 +501,9 @@ func main() {
 			return err
 		}
 		if err = AddCodeOwners(ctx, "holochain-serialization", holochainSerialization); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "holochain-serialization", holochainSerialization, DependabotConfig{EnableRust: true}); err != nil {
 			return err
 		}
 
@@ -637,6 +655,9 @@ func main() {
 		if err = AddCodeOwners(ctx, "kitsune2", kitsune2); err != nil {
 			return err
 		}
+		if err = AddDependabotYml(ctx, "kitsune2", kitsune2, DependabotConfig{EnableRust: true, EnableNix: true}); err != nil {
+			return err
+		}
 		if err = AddOutsideCollaborator(ctx, "kitsune2", kitsune2, "synchwire"); err != nil {
 			return err
 		}
@@ -715,6 +736,12 @@ func main() {
 		if err = AddCodeOwners(ctx, "scaffolding", scaffolding); err != nil {
 			return err
 		}
+		if err = AddDependabotYml(ctx, "scaffolding", scaffolding, DependabotConfig{
+			EnableRust: true,
+			EnableNix:  true,
+		}); err != nil {
+			return err
+		}
 
 		//
 		// hc-launch
@@ -772,6 +799,9 @@ func main() {
 		if err = AddCodeOwners(ctx, "hc-spin", hcSpin); err != nil {
 			return err
 		}
+		if err = AddDependabotYml(ctx, "hc-spin", hcSpin, DependabotConfig{EnableNpm: true}); err != nil {
+			return err
+		}
 
 		//
 		// hc-spin-rust-utils
@@ -803,6 +833,9 @@ func main() {
 			return err
 		}
 		if err = AddCodeOwners(ctx, "hc-spin-rust-utils", hcSpinRustUtils); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "hc-spin-rust-utils", hcSpinRustUtils, DependabotConfig{EnableNpm: true}); err != nil {
 			return err
 		}
 
@@ -950,6 +983,9 @@ func main() {
 			return err
 		}
 		if err = AddCodeOwners(ctx, "hc-http-gw", hcHttpGw); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "hc-http-gw", hcHttpGw, DependabotConfig{EnableRust: true, EnableNix: true}); err != nil {
 			return err
 		}
 
@@ -1513,6 +1549,9 @@ func main() {
 			return err
 		}
 		if err = AddCodeOwners(ctx, "hc-auth-server", hcAuthServer); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "hc-auth-server", hcAuthServer, DependabotConfig{EnableRust: true}); err != nil {
 			return err
 		}
 
