@@ -1019,6 +1019,32 @@ func main() {
 		}
 
 		//
+		// pulumi-network-services
+		//
+		pulumiNetworkServicesDescription := "Common components for deploying Holochain network services"
+		pulumiNetworkServicesRepositoryArgs := StandardRepositoryArgs("pulumi-network-services", &pulumiNetworkServicesDescription)
+		pulumiNetworkServices, err := github.NewRepository(ctx, "pulumi-network-services", &pulumiNetworkServicesRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "pulumi-network-services", pulumiNetworkServices); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "pulumi-network-services", pulumiNetworkServices); err != nil {
+			return err
+		}
+		pulumiNetworkServicesDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(pulumiNetworkServices, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "pulumi-network-services-default", &pulumiNetworkServicesDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "pulumi-network-services", pulumiNetworkServices); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "pulumi-network-services", pulumiNetworkServices, DependabotConfig{EnableGo: true, EnableNix: true}); err != nil {
+			return err
+		}
+
+		//
 		// wind-tunnel-runner
 		//
 		windTunnelRunnerDescription := "The guide and NixOS configuration for setting up a machine to run Wind Tunnel scenarios"
