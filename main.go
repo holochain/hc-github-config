@@ -1037,6 +1037,9 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "pulumi-network-services-default", &pulumiNetworkServicesDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
+		if err = AddGoReleaseSupport(ctx, conf, "pulumi-network-services", pulumiNetworkServices); err != nil {
+			return err
+		}
 		if err = AddCodeOwners(ctx, "pulumi-network-services", pulumiNetworkServices); err != nil {
 			return err
 		}
@@ -2204,6 +2207,17 @@ func AddReleaseIntegrationSupport(ctx *pulumi.Context, cfg *config.Config, name 
 }
 
 func AddNpmReleaseSupport(ctx *pulumi.Context, cfg *config.Config, name string, repository *github.Repository) error {
+	if err := AddReleaseIntegrationLabel(ctx, name, repository); err != nil {
+		return err
+	}
+	if err := AddGithubUserTokenSecret(ctx, cfg, name); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func AddGoReleaseSupport(ctx *pulumi.Context, cfg *config.Config, name string, repository *github.Repository) error {
 	if err := AddReleaseIntegrationLabel(ctx, name, repository); err != nil {
 		return err
 	}
