@@ -16,6 +16,9 @@ import (
 //go:embed files/CONTRIBUTING.md
 var contributingMdContent string
 
+//go:embed files/AI_POLICY.md
+var aiPolicyMdContent string
+
 //go:embed files/CODEOWNERS
 var codeOwnersContent string
 
@@ -2382,12 +2385,13 @@ func AddHolochainBackportLabels(ctx *pulumi.Context, name string, repository *gi
 	return AddRepositoryLabels(ctx, name, repository, ShouldBackport05, ShouldBackport06)
 }
 
-// AddContributingGuide adds the shared CONTRIBUTING.md file to the repository
-// via a pull request against the `main` branch if the content has changed
+// AddContributingGuide adds the shared CONTRIBUTING.md and AI_POLICY.md files to the
+// repository via a pull request against the `main` branch if the content has changed
 // since the last deployment.
 func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.Repository) error {
 	content := strings.ReplaceAll(contributingMdContent, "{{REPO_NAME}}", name)
-	contentHash := pulumi.String(fmt.Sprintf("%x", sha256.Sum256([]byte(content))))
+	aiPolicyContent := strings.ReplaceAll(aiPolicyMdContent, "{{REPO_NAME}}", name)
+	contentHash := pulumi.String(fmt.Sprintf("%x", sha256.Sum256([]byte(content+aiPolicyContent))))
 
 	baseBranch := pulumi.String("main")
 
@@ -2417,13 +2421,30 @@ func AddContributingGuide(ctx *pulumi.Context, name string, repository *github.R
 		return err
 	}
 
+	// Committed to the same branch as CONTRIBUTING.md; DependsOn serialises the
+	// two commits so they don't race on the branch head. Retained on delete for
+	// the same reason as the branch and CONTRIBUTING.md above.
+	aiPolicyFile, err := github.NewRepositoryFile(ctx, fmt.Sprintf("%s-ai-policy-md", name), &github.RepositoryFileArgs{
+		Repository:        repository.Name,
+		Branch:            branch.Branch,
+		File:              pulumi.String("AI_POLICY.md"),
+		Content:           pulumi.String(aiPolicyContent),
+		CommitMessage:     pulumi.String("chore: update the AI_POLICY.md with shared content"),
+		CommitAuthor:      pulumi.String("Holochain Repository Automation"),
+		CommitEmail:       pulumi.String("hra@holochain.org"),
+		OverwriteOnCreate: pulumi.Bool(true),
+	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash), pulumi.RetainOnDelete(true))
+	if err != nil {
+		return err
+	}
+
 	_, err = github.NewRepositoryPullRequest(ctx, fmt.Sprintf("%s-contributing-md-pr", name), &github.RepositoryPullRequestArgs{
 		BaseRepository: repository.Name,
 		BaseRef:        baseBranch,
 		HeadRef:        branch.Branch,
-		Title:          pulumi.String("chore: update the CONTRIBUTING.md with shared content"),
-		Body:           pulumi.String("This PR updates the CONTRIBUTING.md file with the content from the shared file in the hc-github-config repo."),
-	}, pulumi.DependsOn([]pulumi.Resource{file}), pulumi.ReplacementTrigger(contentHash), pulumi.DeleteBeforeReplace(true))
+		Title:          pulumi.String("chore: update the CONTRIBUTING.md and AI_POLICY.md with shared content"),
+		Body:           pulumi.String("This PR updates the CONTRIBUTING.md and AI_POLICY.md files with the content from the shared files in the hc-github-config repo."),
+	}, pulumi.DependsOn([]pulumi.Resource{file, aiPolicyFile}), pulumi.ReplacementTrigger(contentHash), pulumi.DeleteBeforeReplace(true))
 	return err
 }
 
