@@ -1713,6 +1713,35 @@ func main() {
 			return err
 		}
 
+		//
+		// wind-tunnel-peerkit-bootstrap-relay
+		//
+		windTunnelPeerkitBootstrapRelayDescription := "Deployable Peerkit bootstrap/relay node for Wind Tunnel testing (fork of holochain/peerkit-bootstrap-relay)."
+		windTunnelPeerkitBootstrapRelayRepositoryArgs := StandardRepositoryArgs("wind-tunnel-peerkit-bootstrap-relay", &windTunnelPeerkitBootstrapRelayDescription)
+		windTunnelPeerkitBootstrapRelayRepositoryArgs.Visibility = pulumi.String("private")
+		windTunnelPeerkitBootstrapRelay, err := github.NewRepository(ctx, "wind-tunnel-peerkit-bootstrap-relay", &windTunnelPeerkitBootstrapRelayRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "wind-tunnel-peerkit-bootstrap-relay", windTunnelPeerkitBootstrapRelay); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "wind-tunnel-peerkit-bootstrap-relay", windTunnelPeerkitBootstrapRelay); err != nil {
+			return err
+		}
+		windTunnelPeerkitBootstrapRelayDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(windTunnelPeerkitBootstrapRelay, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-peerkit-bootstrap-relay-default", &windTunnelPeerkitBootstrapRelayDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "wind-tunnel-peerkit-bootstrap-relay", windTunnelPeerkitBootstrapRelay); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "wind-tunnel-peerkit-bootstrap-relay", windTunnelPeerkitBootstrapRelay, DependabotConfig{
+			EnableNpm: true,
+		}); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
