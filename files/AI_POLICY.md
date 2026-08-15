@@ -40,7 +40,7 @@ party's rights. This is the same standard that applies to code you write by hand
 
 ## Consequences
 
-Violating this policy may get your contribution rejected and, for repeated or
+Violating this policy is likely to get your contribution rejected and, for repeated or
 egregious violations, get you blocked from the project without further warning.
 
 ## Examples
@@ -49,9 +49,9 @@ Examples of things that will get your PR closed:
 
 - Point an agent to a GitHub issue, ask it to solve the issue and open a PR,
   without understanding the issue, the PR, or testing the solution yourself.
-- Copy responses from the AI when replying to questions from maintainers,
+- Copy responses from the AI (or having it post directly because it has your credentials) when replying to questions from maintainers,
   without understanding the question or the response.
-  In other words, you should not "play telephone" between your AI-generated code,
+  In other words, you should not just be a go-between for
   the reviewer, and the AI tool.
 
 ## Inspiration
