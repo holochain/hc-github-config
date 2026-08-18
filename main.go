@@ -2329,6 +2329,8 @@ const (
 	ShouldBackport05 RepositoryLabel = "ShouldBackport/0.5"
 	// ShouldBackport06 indicates changes that should be backported to the 0.6 release branch
 	ShouldBackport06 RepositoryLabel = "ShouldBackport/0.6"
+	// ShouldBackport07 indicates changes that should be backported to the 0.7 release branch
+	ShouldBackport07 RepositoryLabel = "ShouldBackport/0.7"
 )
 
 // labelConfig holds the display name and color for a label.
@@ -2341,6 +2343,12 @@ type labelConfig struct {
 // getLabelConfig maps a RepositoryLabel to its configuration (name and color).
 func getLabelConfig(label RepositoryLabel) labelConfig {
 	switch label {
+	case ShouldBackport07:
+		return labelConfig{
+			name:        "ShouldBackport07",
+			description: "Should Backport07",
+			color:       "5681D6", // Blue
+		}
 	case ShouldBackport06:
 		return labelConfig{
 			name:        "ShouldBackport/0.6",
