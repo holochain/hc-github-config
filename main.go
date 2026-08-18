@@ -1729,10 +1729,6 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "wind-tunnel-peerkit-bootstrap-relay", windTunnelPeerkitBootstrapRelay); err != nil {
 			return err
 		}
-		windTunnelPeerkitBootstrapRelayDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(windTunnelPeerkitBootstrapRelay, NewRulesetOptions())
-		if _, err = github.NewRepositoryRuleset(ctx, "wind-tunnel-peerkit-bootstrap-relay-default", &windTunnelPeerkitBootstrapRelayDefaultRepositoryRulesetArgs); err != nil {
-			return err
-		}
 		if err = AddCodeOwners(ctx, "wind-tunnel-peerkit-bootstrap-relay", windTunnelPeerkitBootstrapRelay); err != nil {
 			return err
 		}
