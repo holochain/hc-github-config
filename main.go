@@ -1729,14 +1729,6 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "wind-tunnel-peerkit-bootstrap-relay", windTunnelPeerkitBootstrapRelay); err != nil {
 			return err
 		}
-		if err = AddCodeOwners(ctx, "wind-tunnel-peerkit-bootstrap-relay", windTunnelPeerkitBootstrapRelay); err != nil {
-			return err
-		}
-		if err = AddDependabotYml(ctx, "wind-tunnel-peerkit-bootstrap-relay", windTunnelPeerkitBootstrapRelay, DependabotConfig{
-			EnableNpm: true,
-		}); err != nil {
-			return err
-		}
 
 		return nil
 	})
