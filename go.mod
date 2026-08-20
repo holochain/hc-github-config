@@ -3,7 +3,7 @@ module holochain
 go 1.25.11
 
 require (
-	github.com/pulumi/pulumi-github/sdk/v6 v6.14.1
+	github.com/pulumi/pulumi-github/sdk/v6 v6.15.0
 	github.com/pulumi/pulumi/sdk/v3 v3.256.0
 )
 
