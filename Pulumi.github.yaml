@@ -36,7 +36,7 @@ config:
   holochain:hra2CratesIoToken:
     secure: AAABADCLHwjoOjEMl8EhWDPm2yMyPhTGzNqniPdHaYIY7KDRRwZW0W4OuBf41Gs7iH0GQVfQIs3lzUrMQO0fFnU4gA==
   holochain:cachixAuthToken:
-    secure: AAABALBrhuuZhjHL9ABR8N5Xvxggw3gnGDQe8qiz30r6lGSbIRxvLr4KRJiilTD4hqXtWOAuN/TNsNOfLm7qf8mDBjGcNNTzER/Svc+3aAA7PFKPscJI/grwVcKYWnIjms20kp5FPTETXQcfkgv51AWRanbmWO6oYsmFb8KWC+j9EDaXE62mzAkY/dFAol9vPcI0nQlUcS66BMwLvfQOQJOtEpYzpaLCIodqpG+9744MwWe3kA==
+    secure: AAABAE+PBOlP+nxOFCagRHzjrgnUwUdAGwtdgTXtn1WWcuI0duK+/DBWR22BGtugSoS4FTf6HuD/438EZThimRSeua+sC95nYvSFHY7fXpWmm09fHl0nyxQH7FNH4P8pmQI5sQk4u5hOY6Pce6B/SI8c8csUAKdngtd1vWpEyWMz6Y9JwPM9t5eH24QHh+md4M17Hrwo6yH0emvFPXaPkrQPi/dYo0Da/1+s3FwRpvLOW9fGWQ==
   holochain:hetznerHolochainInfraBucketsAccess:
     secure: AAABAMrlN1yOFbKYHIVOqUc8MKuzhUgPyK84dwsqh0OHKkPrKGmBUegADG5QKY0SWzihMQ==
   holochain:hetznerHolochainInfraBucketsSecret:
