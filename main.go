@@ -302,7 +302,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "holonix-release", &holonixReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		if err = AddGithubUserTokenSecret(ctx, conf, "holonix"); err != nil {
+		if err = AddGithubUserTokenSecret(ctx, conf, "holonix", holonix); err != nil {
 			return err
 		}
 		if err = AddCachixAuthTokenSecret(ctx, conf, "holonix"); err != nil {
@@ -796,7 +796,7 @@ func main() {
 		if err = AddHolochainBackportLabels(ctx, "hc-spin", hcSpin); err != nil {
 			return err
 		}
-		if err = AddGithubUserTokenSecret(ctx, conf, "hc-spin"); err != nil {
+		if err = AddGithubUserTokenSecret(ctx, conf, "hc-spin", hcSpin); err != nil {
 			return err
 		}
 		if err = AddCodeOwners(ctx, "hc-spin", hcSpin); err != nil {
@@ -829,7 +829,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "hc-spin-rust-utils-release", &hcSpinRustUtilsReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		if err = AddGithubUserTokenSecret(ctx, conf, "hc-spin-rust-utils"); err != nil {
+		if err = AddGithubUserTokenSecret(ctx, conf, "hc-spin-rust-utils", hcSpinRustUtils); err != nil {
 			return err
 		}
 		if err = AddHolochainBackportLabels(ctx, "hc-spin-rust-utils", hcSpinRustUtils); err != nil {
@@ -946,7 +946,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "nomad-server-default", &nomadServerDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		if err = AddGithubUserTokenSecret(ctx, conf, "nomad-server"); err != nil {
+		if err = AddGithubUserTokenSecret(ctx, conf, "nomad-server", nomadServer); err != nil {
 			return err
 		}
 		if err = AddPulumiAccessTokenSecret(ctx, conf, "nomad-server"); err != nil {
@@ -1011,7 +1011,7 @@ func main() {
 		if _, err = github.NewRepositoryRuleset(ctx, "network-services-default", &networkServicesDefaultRepositoryRulesetArgs); err != nil {
 			return err
 		}
-		if err = AddGithubUserTokenSecret(ctx, conf, "network-services"); err != nil {
+		if err = AddGithubUserTokenSecret(ctx, conf, "network-services", networkServices); err != nil {
 			return err
 		}
 		if err = AddPulumiAccessTokenSecret(ctx, conf, "network-services"); err != nil {
@@ -2019,10 +2019,10 @@ func ReleaseRepositoryRulesetArgs(repository *github.Repository, options Ruleset
 	}
 }
 
-func AddGithubUserTokenSecret(ctx *pulumi.Context, cfg *config.Config, repository string) error {
+func AddGithubUserTokenSecret(ctx *pulumi.Context, cfg *config.Config, name string, repository *github.Repository) error {
 	// A GITHUB_TOKEN with standard repository access to be used on most repositories.
-	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-github-token", repository), &github.ActionsSecretArgs{
-		Repository: pulumi.String(repository),
+	_, err := github.NewActionsSecret(ctx, fmt.Sprintf("%s-github-token", name), &github.ActionsSecretArgs{
+		Repository: repository.Name,
 		SecretName: pulumi.String("HRA2_GITHUB_TOKEN"),
 		// The GitHub API only accepts encrypted values. This will be encrypted by the provider before being sent.
 		Value: cfg.RequireSecret("hra2GithubUserToken"),
@@ -2276,7 +2276,7 @@ func AddReleaseIntegrationSupport(ctx *pulumi.Context, cfg *config.Config, name 
 	if err := AddReleaseIntegrationLabel(ctx, name, repository); err != nil {
 		return err
 	}
-	if err := AddGithubUserTokenSecret(ctx, cfg, name); err != nil {
+	if err := AddGithubUserTokenSecret(ctx, cfg, name, repository); err != nil {
 		return err
 	}
 	if err := AddCratesIoTokenSecret(ctx, cfg, name, repository); err != nil {
@@ -2290,7 +2290,7 @@ func AddNpmReleaseSupport(ctx *pulumi.Context, cfg *config.Config, name string, 
 	if err := AddReleaseIntegrationLabel(ctx, name, repository); err != nil {
 		return err
 	}
-	if err := AddGithubUserTokenSecret(ctx, cfg, name); err != nil {
+	if err := AddGithubUserTokenSecret(ctx, cfg, name, repository); err != nil {
 		return err
 	}
 
@@ -2301,7 +2301,7 @@ func AddGoReleaseSupport(ctx *pulumi.Context, cfg *config.Config, name string, r
 	if err := AddReleaseIntegrationLabel(ctx, name, repository); err != nil {
 		return err
 	}
-	if err := AddGithubUserTokenSecret(ctx, cfg, name); err != nil {
+	if err := AddGithubUserTokenSecret(ctx, cfg, name, repository); err != nil {
 		return err
 	}
 
