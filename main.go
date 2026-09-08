@@ -1748,6 +1748,14 @@ func main() {
 		if err = StandardRepositoryAccess(ctx, "holochain-hdi", holochainHdi); err != nil {
 			return err
 		}
+		holochainHdiDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(holochainHdi, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "holochain-hdi-default", &holochainHdiDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		holochainHdiReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(holochainHdi, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "holochain-hdi-release", &holochainHdiReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "holochain-hdi", holochainHdi); err != nil {
 			return err
 		}
@@ -1776,6 +1784,14 @@ func main() {
 			return err
 		}
 		if err = StandardRepositoryAccess(ctx, "holochain-hdk", holochainHdk); err != nil {
+			return err
+		}
+		holochainHdkDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(holochainHdk, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "holochain-hdk-default", &holochainHdkDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		holochainHdkReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(holochainHdk, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "holochain-hdk-release", &holochainHdkReleaseRepositoryRulesetArgs); err != nil {
 			return err
 		}
 		if err = AddReleaseIntegrationSupport(ctx, conf, "holochain-hdk", holochainHdk); err != nil {
