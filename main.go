@@ -1763,6 +1763,36 @@ func main() {
 			return err
 		}
 
+		//
+		// holochain-hdk
+		//
+		holochainHdkDescription := "The Holochain HDK (coordinator zome SDK), zome types and nonce crates."
+		holochainHdkRepositoryArgs := StandardRepositoryArgs("holochain-hdk", &holochainHdkDescription)
+		holochainHdk, err := github.NewRepository(ctx, "holochain-hdk", &holochainHdkRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "holochain-hdk", holochainHdk); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "holochain-hdk", holochainHdk); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "holochain-hdk", holochainHdk); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "holochain-hdk", holochainHdk); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "holochain-hdk", holochainHdk); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "holochain-hdk", holochainHdk, DependabotConfig{
+			EnableRust: true,
+		}); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
