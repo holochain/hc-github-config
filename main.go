@@ -1733,6 +1733,36 @@ func main() {
 			return err
 		}
 
+		//
+		// holochain-hdi
+		//
+		holochainHdiDescription := "The Holochain HDI (integrity zome SDK) and the type crates it depends on."
+		holochainHdiRepositoryArgs := StandardRepositoryArgs("holochain-hdi", &holochainHdiDescription)
+		holochainHdi, err := github.NewRepository(ctx, "holochain-hdi", &holochainHdiRepositoryArgs)
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "holochain-hdi", holochainHdi); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "holochain-hdi", holochainHdi); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "holochain-hdi", holochainHdi); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "holochain-hdi", holochainHdi); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "holochain-hdi", holochainHdi); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "holochain-hdi", holochainHdi, DependabotConfig{
+			EnableRust: true,
+		}); err != nil {
+			return err
+		}
+
 		return nil
 	})
 }
