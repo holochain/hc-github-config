@@ -879,6 +879,48 @@ func main() {
 		}
 
 		//
+		// runtime-tauri
+		//
+		runtimeTauriDescription := "crates, and supporting tools for deploying holochain apps on desktop and mobile using Tauri"
+		runtimeTauriRepositoryArgs := StandardRepositoryArgs("runtime-tauri", &runtimeTauriDescription)
+		runtimeTauri, err := github.NewRepository(ctx, "runtime-tauri", &runtimeTauriRepositoryArgs, pulumi.Import(pulumi.ID("runtime-tauri")))
+		if err != nil {
+			return err
+		}
+		if err = RequireMainAsDefaultBranch(ctx, "runtime-tauri", runtimeTauri); err != nil {
+			return err
+		}
+		if err = StandardRepositoryAccess(ctx, "runtime-tauri", runtimeTauri); err != nil {
+			return err
+		}
+		runtimeTauriDefaultRepositoryRulesetArgs := DefaultRepositoryRulesetArgs(runtimeTauri, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "runtime-tauri-default", &runtimeTauriDefaultRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		runtimeTauriReleaseRepositoryRulesetArgs := ReleaseRepositoryRulesetArgs(runtimeTauri, NewRulesetOptions())
+		if _, err = github.NewRepositoryRuleset(ctx, "runtime-tauri-release", &runtimeTauriReleaseRepositoryRulesetArgs); err != nil {
+			return err
+		}
+		if err = AddReleaseIntegrationSupport(ctx, conf, "runtime-tauri", runtimeTauri); err != nil {
+			return err
+		}
+		if err = AddCachixAuthTokenSecret(ctx, conf, "runtime-tauri"); err != nil {
+			return err
+		}
+		if err = AddHolochainBackportLabels(ctx, "runtime-tauri", runtimeTauri); err != nil {
+			return err
+		}
+		if err = AddContributingGuide(ctx, "runtime-tauri", runtimeTauri); err != nil {
+			return err
+		}
+		if err = AddCodeOwners(ctx, "runtime-tauri", runtimeTauri); err != nil {
+			return err
+		}
+		if err = AddDependabotYml(ctx, "runtime-tauri", runtimeTauri, DependabotConfig{EnableRust: true, EnableNpm: true, EnableNix: true}); err != nil {
+			return err
+		}
+
+		//
 		// Dino Adventure
 		//
 		dinoAdventureDescription := "A dinosaur adventure game for testing Holochain"
