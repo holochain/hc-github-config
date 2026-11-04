@@ -1668,6 +1668,9 @@ func main() {
 		if err = AddCodeOwners(ctx, "peerkit", peerkit); err != nil {
 			return err
 		}
+		if err = AddDependabotYml(ctx, "peerkit", peerkit, DependabotConfig{EnableNpm: true}); err != nil {
+			return err
+		}
 
 		//
 		// peerkit bootstrap relay
